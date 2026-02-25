@@ -6,6 +6,7 @@ on:
     paths:
       - 'site/**'
       - 'data/**'
+  workflow_dispatch:
 
 permissions:
   pages: write
