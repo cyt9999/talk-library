@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#0d1117">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>投資Talk君</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- ====== Detail Header ====== -->
+    <div class="detail-header">
+      <a href="index.html" class="back-btn" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+      </a>
+      <div class="detail-header-title" id="header-title"></div>
+      <div class="header-actions">
+        <div class="lang-toggle" data-lang="zh-Hant" role="radiogroup" aria-label="Language">
+          <span class="lang-toggle-option active" data-lang="zh-Hant" role="radio" aria-checked="true">繁體</span>
+          <span class="lang-toggle-option" data-lang="zh-Hans" role="radio" aria-checked="false">簡體</span>
+          <div class="lang-toggle-slider" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== Content (populated by JS) ====== -->
+    <main id="detail-content">
+      <div class="page-loader" id="page-loader">
+        <div class="loader-dots">
+          <div class="loader-dot"></div>
+          <div class="loader-dot"></div>
+          <div class="loader-dot"></div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ====== Bottom Navigation ====== -->
+    <nav class="bottom-nav">
+      <a href="index.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        <span data-label="home">首頁</span>
+      </a>
+      <a href="bookmarks.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>
+        </svg>
+        <span data-label="bookmarks">收藏</span>
+        <span class="nav-badge" data-count="0"></span>
+      </a>
+    </nav>
+    <div class="nav-spacer"></div>
+
+  </div><!-- /.app-shell -->
+
+  <script src="js/bookmarks.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      var summaryData = null;
+      var summaryId = TalkApp.getQueryParam('id');
+      var summaryDate = TalkApp.getQueryParam('date');
+
+      if (!summaryId) {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      // Boot
+      TalkApp.initLangToggle();
+      TalkApp.updateBookmarkBadges();
+
+      // Load summary (filename is {date}-{id}.json)
+      TalkApp.fetchSummary(summaryId, summaryDate)
+        .then(function (data) {
+          summaryData = data;
+          var loader = document.getElementById('page-loader');
+          if (loader) loader.style.display = 'none';
+          renderDetail(data);
+        })
+        .catch(function (err) {
+          console.error('[summary] Failed to load summary:', err);
+          var loader = document.getElementById('page-loader');
+          if (loader) loader.style.display = 'none';
+          renderError();
+        });
+
+      // Language changes
+      window.addEventListener('lang-changed', function () {
+        if (summaryData) {
+          renderDetail(summaryData);
+        }
+        updateNavLabels();
+        TalkApp.updateBookmarkBadges();
+      });
+
+      // Bookmark changes
+      window.addEventListener('bookmark-changed', function () {
+        TalkApp.updateBookmarkBadges();
+        if (summaryData) {
+          updateBookmarkButton(summaryData);
+        }
+      });
+
+      /* ---- Render Detail ---- */
+      function renderDetail(data) {
+        var lang = TalkApp.getLang();
+        var content = document.getElementById('detail-content');
+        var langData = data.summary && data.summary[lang] ? data.summary[lang] : (data.summary ? data.summary['zh-Hant'] || data.summary['zh-Hans'] : null);
+
+        if (!langData) {
+          renderError();
+          return;
+        }
+
+        // Update header title
+        var headerTitle = document.getElementById('header-title');
+        if (headerTitle) {
+          headerTitle.textContent = data.title || '';
+        }
+
+        // Update page title
+        document.title = (data.title || '投資Talk君') + ' - 投資Talk君';
+
+        var videoId = TalkApp.extractYouTubeId(data.videoUrl);
+        var embedUrl = TalkApp.youtubeEmbedUrl(data.videoUrl);
+        var duration = TalkApp.formatDuration(data.duration || 0);
+        var date = TalkApp.formatDate(data.publishedAt);
+        var channel = TalkApp.escapeHtml(data.channelName || '');
+
+        var html = '';
+
+        // Video player
+        html += '<div class="video-section">';
+        html += '<div class="video-container">';
+        if (embedUrl) {
+          html += '<iframe id="yt-player" src="' + TalkApp.escapeHtml(embedUrl) + '" ' +
+                  'title="YouTube video player" ' +
+                  'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" ' +
+                  'allowfullscreen></iframe>';
+        }
+        html += '</div>';
+        html += '</div>';
+
+        // Video info
+        html += '<div class="video-info">';
+        html += '<h1 class="video-title">' + TalkApp.escapeHtml(data.title || '') + '</h1>';
+        html += '<div class="video-meta">';
+        html += '<span class="video-meta-item">';
+        html += '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>';
+        html += channel;
+        html += '</span>';
+        html += '<span class="card-meta-dot"></span>';
+        html += '<span class="video-meta-item">';
+        html += '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>';
+        html += date;
+        html += '</span>';
+        html += '<span class="card-meta-dot"></span>';
+        html += '<span class="video-meta-item">';
+        html += '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+        html += duration;
+        html += '</span>';
+        html += '</div>';
+        html += '</div>';
+
+        // Bookmark button
+        var isBookmarked = BookmarkManager.isBookmarked(data.id);
+        html += '<button class="bookmark-toggle' + (isBookmarked ? ' bookmarked' : '') + '" id="bookmark-btn" type="button">';
+        html += '<svg viewBox="0 0 24 24" fill="' + (isBookmarked ? 'currentColor' : 'none') + '" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
+        html += '<path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>';
+        html += '</svg>';
+        html += '<span>' + (isBookmarked ? TalkApp.label('bookmarkRemove') : TalkApp.label('bookmarkAdd')) + '</span>';
+        html += '</button>';
+
+        // Key Points section
+        var keyPoints = langData.keyPoints || [];
+        if (keyPoints.length > 0) {
+          html += '<div class="detail-section" data-section="keypoints">';
+          html += '<h2 class="section-title">' + TalkApp.label('keyPoints') + '</h2>';
+          html += '<div class="key-points-list">';
+          keyPoints.forEach(function (kp) {
+            html += '<div class="key-point">';
+            html += '<button class="timestamp-badge" type="button" data-time="' + kp.timestamp + '">' + TalkApp.formatTimestamp(kp.timestamp) + '</button>';
+            html += '<div class="key-point-text">' + TalkApp.escapeHtml(kp.text) + '</div>';
+            html += '</div>';
+          });
+          html += '</div>';
+          html += '</div>';
+        }
+
+        // Summary paragraph section
+        if (langData.paragraph) {
+          html += '<div class="detail-section" data-section="summary">';
+          html += '<h2 class="section-title">' + TalkApp.label('summary') + '</h2>';
+          html += '<p class="summary-paragraph">' + TalkApp.escapeHtml(langData.paragraph) + '</p>';
+          html += '</div>';
+        }
+
+        // Tickers section
+        var tickers = data.tickers || [];
+        if (tickers.length > 0) {
+          html += '<div class="detail-section" data-section="tickers">';
+          html += '<h2 class="section-title">' + TalkApp.label('tickers') + '</h2>';
+          html += '<div class="ticker-list">';
+          tickers.forEach(function (tk) {
+            var sentimentLabel = TalkApp.label(tk.sentiment || 'neutral');
+            var sentimentClass = tk.sentiment || 'neutral';
+
+            html += '<div class="ticker-card">';
+            html += '<div class="ticker-card-header">';
+            html += '<div class="ticker-symbol-group">';
+            html += '<span class="ticker-symbol">' + TalkApp.escapeHtml(tk.symbol) + '</span>';
+            html += '<span class="ticker-name">' + TalkApp.escapeHtml(tk.name || '') + '</span>';
+            html += '</div>';
+            html += '<span class="sentiment-badge ' + sentimentClass + '">' + sentimentLabel + '</span>';
+            html += '</div>';
+
+            // Mentions
+            var mentions = tk.mentions || [];
+            if (mentions.length > 0) {
+              html += '<div class="ticker-mentions-label">' + TalkApp.label('mentionedAt') + '</div>';
+              mentions.forEach(function (m) {
+                html += '<div style="margin-bottom: 6px;">';
+                html += '<div class="ticker-mentions">';
+                html += '<button class="mention-range" type="button" data-time="' + m.start + '">' +
+                         TalkApp.formatTimestamp(m.start) + ' - ' + TalkApp.formatTimestamp(m.end) +
+                         '</button>';
+                html += '</div>';
+                if (m.context) {
+                  html += '<div class="mention-context">' + TalkApp.escapeHtml(m.context) + '</div>';
+                }
+                html += '</div>';
+              });
+            }
+
+            html += '</div>'; // .ticker-card
+          });
+          html += '</div>'; // .ticker-list
+          html += '</div>'; // .detail-section
+        }
+
+        // Add nav spacer
+        html += '<div class="nav-spacer"></div>';
+
+        content.innerHTML = html;
+
+        // Bind interactions
+        bindTimestampClicks();
+        bindBookmarkButton(data);
+
+        // Reveal sections
+        setTimeout(function () {
+          TalkApp.revealElements('.detail-section', 100);
+        }, 100);
+      }
+
+      /* ---- Timestamp Clicks ---- */
+      function bindTimestampClicks() {
+        var buttons = document.querySelectorAll('[data-time]');
+        buttons.forEach(function (btn) {
+          btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            var time = parseInt(btn.getAttribute('data-time'), 10);
+            if (!isNaN(time)) {
+              TalkApp.seekYouTube(time);
+              // Scroll to video
+              var videoSection = document.querySelector('.video-section');
+              if (videoSection) {
+                videoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }
+          });
+        });
+      }
+
+      /* ---- Bookmark Button ---- */
+      function bindBookmarkButton(data) {
+        var btn = document.getElementById('bookmark-btn');
+        if (!btn) return;
+
+        btn.addEventListener('click', function () {
+          var nowBookmarked = BookmarkManager.toggleBookmark(data.id, data.title, data.publishedAt);
+          updateBookmarkButtonState(btn, nowBookmarked);
+
+          if (nowBookmarked) {
+            btn.classList.add('just-bookmarked');
+            setTimeout(function () {
+              btn.classList.remove('just-bookmarked');
+            }, 500);
+          }
+        });
+      }
+
+      function updateBookmarkButton(data) {
+        var btn = document.getElementById('bookmark-btn');
+        if (!btn) return;
+        var isBookmarked = BookmarkManager.isBookmarked(data.id);
+        updateBookmarkButtonState(btn, isBookmarked);
+      }
+
+      function updateBookmarkButtonState(btn, isBookmarked) {
+        var svg = btn.querySelector('svg');
+        var label = btn.querySelector('span');
+
+        if (isBookmarked) {
+          btn.classList.add('bookmarked');
+          if (svg) svg.setAttribute('fill', 'currentColor');
+          if (label) label.textContent = TalkApp.label('bookmarkRemove');
+        } else {
+          btn.classList.remove('bookmarked');
+          if (svg) svg.setAttribute('fill', 'none');
+          if (label) label.textContent = TalkApp.label('bookmarkAdd');
+        }
+      }
+
+      /* ---- Error ---- */
+      function renderError() {
+        var content = document.getElementById('detail-content');
+        content.innerHTML =
+          '<div class="error-state">' +
+            '<div class="error-state-title">' + TalkApp.label('loadError') + '</div>' +
+            '<div class="error-state-desc">' + TalkApp.label('loadErrorDesc') + '</div>' +
+            '<button class="retry-btn" onclick="location.reload()">' + TalkApp.label('retry') + '</button>' +
+          '</div>';
+      }
+
+      /* ---- Nav Labels ---- */
+      function updateNavLabels() {
+        var labels = document.querySelectorAll('[data-label]');
+        labels.forEach(function (el) {
+          var key = el.getAttribute('data-label');
+          if (key) el.textContent = TalkApp.label(key);
+        });
+
+        var hantOpt = document.querySelector('.lang-toggle-option[data-lang="zh-Hant"]');
+        var hansOpt = document.querySelector('.lang-toggle-option[data-lang="zh-Hans"]');
+        if (hantOpt) hantOpt.textContent = TalkApp.label('langHant');
+        if (hansOpt) hansOpt.textContent = TalkApp.label('langHans');
+      }
+
+    })();
+  </script>
+</body>
+</html>

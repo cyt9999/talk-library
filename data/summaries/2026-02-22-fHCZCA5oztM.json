@@ -1,0 +1,127 @@
+{
+  "id": "fHCZCA5oztM",
+  "videoId": "fHCZCA5oztM",
+  "source": "youtube",
+  "channelName": "投资TALK君",
+  "title": "投资TALK君1395期：煤矿里的金丝雀，金融危机再现？聚焦私人信贷",
+  "publishedAt": "2026-02-22",
+  "summarizedAt": "2026-02-24T08:03:46.207313+00:00",
+  "duration": 1827,
+  "thumbnailUrl": "https://img.youtube.com/vi/fHCZCA5oztM/hqdefault.jpg",
+  "videoUrl": "https://www.youtube.com/watch?v=fHCZCA5oztM",
+  "summary": {
+    "zh-Hans": {
+      "keyPoints": [
+        {
+          "timestamp": 16,
+          "text": "分析Blue Owl事件与金融危机前的潜在相似性。"
+        },
+        {
+          "timestamp": 22,
+          "text": "美元指数和美债收益率上升，显示市场的相对强势。"
+        },
+        {
+          "timestamp": 56,
+          "text": "市场对关税变化的影响反应不一，中国市场受益。"
+        },
+        {
+          "timestamp": 114,
+          "text": "英伟达的股票在6个月内走势持平，财报可能会是突破口。"
+        },
+        {
+          "timestamp": 305,
+          "text": "Blue Owl阻止投资者提取资金，并开始出售资产返还本金。"
+        },
+        {
+          "timestamp": 564,
+          "text": "英伟达未来一年营收大增的确定性高，目前估值合理。"
+        },
+        {
+          "timestamp": 1295,
+          "text": "二级市场Blue Owl相关标的有套利机会，因价格折扣较大。"
+        }
+      ],
+      "paragraph": "本期视频讨论了Blue Owl资管事件对私人信贷市场的影响。分析师指出，美元和美债收益上升，市场表现强势。关税调整短期利好中国市场，亚洲股市走强。英伟达目前股价持平，未来财报可能带动上涨，因营收增长确定性高。Blue Owl事件中，由于提取资金限制和资产出售，市场对此担忧。存在二级市场套利机会，因标的价格折扣显著。视频最后推荐了相关投资活动。",
+      "tags": [
+        "美股",
+        "私人信贷",
+        "美元",
+        "关税",
+        "半导体",
+        "AI"
+      ]
+    },
+    "zh-Hant": {
+      "keyPoints": [
+        {
+          "timestamp": 16,
+          "text": "分析Blue Owl事件與金融危機前的潛在相似性。"
+        },
+        {
+          "timestamp": 22,
+          "text": "美元指數和美債收益率上升，顯示市場的相對強勢。"
+        },
+        {
+          "timestamp": 56,
+          "text": "市場對關稅變化的影響反應不一，中國市場受益。"
+        },
+        {
+          "timestamp": 114,
+          "text": "英偉達的股票在6個月內走勢持平，財報可能會是突破口。"
+        },
+        {
+          "timestamp": 305,
+          "text": "Blue Owl阻止投資者提取資金，並開始出售資產返還本金。"
+        },
+        {
+          "timestamp": 564,
+          "text": "英偉達未來一年營收大增的確定性高，目前估值合理。"
+        },
+        {
+          "timestamp": 1295,
+          "text": "二級市場Blue Owl相關標的有套利機會，因價格折扣較大。"
+        }
+      ],
+      "paragraph": "本期視頻討論了Blue Owl資管事件對私人信貸市場的影響。分析師指出，美元和美債收益上升，市場表現強勢。關稅調整短期利好中國市場，亞洲股市走強。英偉達目前股價持平，未來財報可能帶動上漲，因營收增長確定性高。Blue Owl事件中，由於提取資金限制和資產出售，市場對此擔憂。存在二級市場套利機會，因標的價格折扣顯著。視頻最後推薦了相關投資活動。",
+      "tags": [
+        "美股",
+        "私人信貸",
+        "美元",
+        "關稅",
+        "半導體",
+        "AI"
+      ]
+    }
+  },
+  "tickers": [
+    {
+      "symbol": "NVDA",
+      "name": "英伟达",
+      "sentiment": "bullish",
+      "mentions": [
+        {
+          "start": 114,
+          "end": 444,
+          "context": "讨论英伟达股价持平及财报可能带动上涨"
+        },
+        {
+          "start": 564,
+          "end": 723,
+          "context": "分析英伟达未来营收增加的确定性和估值"
+        }
+      ]
+    },
+    {
+      "symbol": "OBDC",
+      "name": "Blue Owl Capital",
+      "sentiment": "neutral",
+      "mentions": [
+        {
+          "start": 305,
+          "end": 1020,
+          "context": "讨论Blue Owl事件对市场的影响及套利机会"
+        }
+      ]
+    }
+  ]
+}

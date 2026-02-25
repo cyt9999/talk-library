@@ -1,0 +1,335 @@
+/* ============================================================
+   投資Talk君 — Core Application Logic
+   ============================================================ */
+
+var TalkApp = (function () {
+  'use strict';
+
+  /* ----------------------------------------------------------
+     Configuration
+  ---------------------------------------------------------- */
+
+  // Data base path — always use data/ relative to current page.
+  // In local dev: site/data/ (copied). In deployed (GitHub Pages): data/ (copied by workflow).
+  var DATA_BASE = 'data/';
+
+  var LANG_KEY = 'talkjun_lang';
+  var DEFAULT_LANG = 'zh-Hant';
+
+  /* ----------------------------------------------------------
+     Language Management
+  ---------------------------------------------------------- */
+
+  function getLang() {
+    try {
+      var stored = localStorage.getItem(LANG_KEY);
+      if (stored === 'zh-Hans' || stored === 'zh-Hant') return stored;
+    } catch (e) { /* noop */ }
+    return DEFAULT_LANG;
+  }
+
+  function setLang(lang) {
+    try {
+      localStorage.setItem(LANG_KEY, lang);
+    } catch (e) { /* noop */ }
+    window.dispatchEvent(new CustomEvent('lang-changed', { detail: { lang: lang } }));
+  }
+
+  function toggleLang() {
+    var current = getLang();
+    var next = current === 'zh-Hant' ? 'zh-Hans' : 'zh-Hant';
+    setLang(next);
+    return next;
+  }
+
+  /* ----------------------------------------------------------
+     UI Labels (bilingual)
+  ---------------------------------------------------------- */
+  var UI_LABELS = {
+    'zh-Hant': {
+      searchPlaceholder: '搜尋影片標題、標籤、代號...',
+      tagsLabel: '標籤',
+      tickersLabel: '代號',
+      keyPoints: '重點摘要',
+      summary: '內容總結',
+      tickers: '提及標的',
+      mentionedAt: '提及時段',
+      bookmarkAdd: '加入收藏',
+      bookmarkRemove: '已收藏',
+      bookmarksTitle: '我的收藏',
+      bookmarksSubtitle: '已儲存的影片摘要',
+      emptyBookmarks: '尚無收藏',
+      emptyBookmarksDesc: '瀏覽摘要時點選收藏按鈕即可加入',
+      noResults: '未找到結果',
+      noResultsDesc: '請嘗試其他關鍵字或篩選條件',
+      loadError: '載入失敗',
+      loadErrorDesc: '請檢查網路連線後重試',
+      retry: '重試',
+      bullish: '看多',
+      bearish: '看空',
+      neutral: '中性',
+      home: '首頁',
+      bookmarks: '收藏',
+      back: '返回',
+      langHant: '繁體',
+      langHans: '簡體'
+    },
+    'zh-Hans': {
+      searchPlaceholder: '搜索视频标题、标签、代号...',
+      tagsLabel: '标签',
+      tickersLabel: '代号',
+      keyPoints: '重点摘要',
+      summary: '内容总结',
+      tickers: '提及标的',
+      mentionedAt: '提及时段',
+      bookmarkAdd: '加入收藏',
+      bookmarkRemove: '已收藏',
+      bookmarksTitle: '我的收藏',
+      bookmarksSubtitle: '已保存的视频摘要',
+      emptyBookmarks: '暂无收藏',
+      emptyBookmarksDesc: '浏览摘要时点击收藏按钮即可加入',
+      noResults: '未找到结果',
+      noResultsDesc: '请尝试其他关键字或筛选条件',
+      loadError: '加载失败',
+      loadErrorDesc: '请检查网络连接后重试',
+      retry: '重试',
+      bullish: '看多',
+      bearish: '看空',
+      neutral: '中性',
+      home: '首页',
+      bookmarks: '收藏',
+      back: '返回',
+      langHant: '繁体',
+      langHans: '简体'
+    }
+  };
+
+  function label(key) {
+    var lang = getLang();
+    return (UI_LABELS[lang] && UI_LABELS[lang][key]) || key;
+  }
+
+  /* ----------------------------------------------------------
+     Data Fetching
+  ---------------------------------------------------------- */
+
+  function fetchIndex() {
+    return fetch(DATA_BASE + 'index.json')
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      });
+  }
+
+  /**
+   * Fetch a summary JSON.
+   * The files are named {publishedAt}-{id}.json (e.g. 2026-02-20-sample001.json).
+   * @param {string} id - The summary ID
+   * @param {string} publishedAt - The published date (YYYY-MM-DD)
+   */
+  function fetchSummary(id, publishedAt) {
+    var filename = publishedAt ? (publishedAt + '-' + id) : id;
+    return fetch(DATA_BASE + 'summaries/' + encodeURIComponent(filename) + '.json')
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      });
+  }
+
+  /* ----------------------------------------------------------
+     Formatting Helpers
+  ---------------------------------------------------------- */
+
+  /**
+   * Format seconds into MM:SS or H:MM:SS.
+   */
+  function formatDuration(totalSeconds) {
+    var sec = Math.floor(totalSeconds);
+    var h = Math.floor(sec / 3600);
+    var m = Math.floor((sec % 3600) / 60);
+    var s = sec % 60;
+    var mm = m < 10 ? '0' + m : '' + m;
+    var ss = s < 10 ? '0' + s : '' + s;
+    if (h > 0) {
+      return h + ':' + mm + ':' + ss;
+    }
+    return mm + ':' + ss;
+  }
+
+  /**
+   * Format a timestamp in seconds to MM:SS for display.
+   */
+  function formatTimestamp(sec) {
+    return formatDuration(sec);
+  }
+
+  /**
+   * Format a date string (YYYY-MM-DD) for display.
+   */
+  function formatDate(dateStr) {
+    if (!dateStr) return '';
+    var parts = dateStr.split('-');
+    if (parts.length === 3) {
+      return parts[0] + '/' + parts[1] + '/' + parts[2];
+    }
+    return dateStr;
+  }
+
+  /**
+   * Extract the YouTube video ID from a URL.
+   */
+  function extractYouTubeId(url) {
+    if (!url) return null;
+    var match = url.match(/(?:v=|\/embed\/|\/v\/|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+    return match ? match[1] : null;
+  }
+
+  /**
+   * Build a YouTube embed URL with optional start time.
+   */
+  function youtubeEmbedUrl(videoUrl, startSeconds) {
+    var vid = extractYouTubeId(videoUrl);
+    if (!vid) return '';
+    var url = 'https://www.youtube.com/embed/' + vid + '?rel=0&modestbranding=1&enablejsapi=1';
+    if (startSeconds && startSeconds > 0) {
+      url += '&start=' + Math.floor(startSeconds);
+    }
+    return url;
+  }
+
+  /* ----------------------------------------------------------
+     Language Toggle UI Binding
+  ---------------------------------------------------------- */
+
+  function initLangToggle() {
+    var toggle = document.querySelector('.lang-toggle');
+    if (!toggle) return;
+
+    var lang = getLang();
+    _updateToggleUI(toggle, lang);
+
+    var options = toggle.querySelectorAll('.lang-toggle-option');
+    options.forEach(function (opt) {
+      opt.addEventListener('click', function () {
+        var targetLang = opt.getAttribute('data-lang');
+        if (targetLang && targetLang !== getLang()) {
+          setLang(targetLang);
+          _updateToggleUI(toggle, targetLang);
+        }
+      });
+    });
+  }
+
+  function _updateToggleUI(toggle, lang) {
+    toggle.setAttribute('data-lang', lang);
+    var options = toggle.querySelectorAll('.lang-toggle-option');
+    options.forEach(function (opt) {
+      if (opt.getAttribute('data-lang') === lang) {
+        opt.classList.add('active');
+      } else {
+        opt.classList.remove('active');
+      }
+    });
+  }
+
+  /* ----------------------------------------------------------
+     Bookmark Badge Update
+  ---------------------------------------------------------- */
+
+  function updateBookmarkBadges() {
+    var count = BookmarkManager.count();
+    var badges = document.querySelectorAll('.bookmark-count, .nav-badge');
+    badges.forEach(function (badge) {
+      badge.textContent = count > 0 ? count : '';
+      badge.setAttribute('data-count', count);
+    });
+  }
+
+  /* ----------------------------------------------------------
+     Staggered Reveal Animation
+  ---------------------------------------------------------- */
+
+  function revealElements(selector, baseDelay) {
+    baseDelay = baseDelay || 0;
+    var elements = document.querySelectorAll(selector);
+    elements.forEach(function (el, i) {
+      setTimeout(function () {
+        el.classList.add('revealed');
+      }, baseDelay + i * 60);
+    });
+  }
+
+  /* ----------------------------------------------------------
+     YouTube Player Control
+  ---------------------------------------------------------- */
+
+  var _ytPlayer = null;
+
+  function getYouTubeIframe() {
+    return document.querySelector('.video-container iframe');
+  }
+
+  /**
+   * Seek the YouTube embed to a specific time.
+   * Uses postMessage for cross-origin iframe control.
+   */
+  function seekYouTube(seconds) {
+    var iframe = getYouTubeIframe();
+    if (!iframe) return;
+
+    // Method 1: Update src with start param (reliable fallback)
+    var src = iframe.getAttribute('src');
+    if (src) {
+      // Remove existing start param
+      src = src.replace(/[&?]start=\d+/, '');
+      // Add new start param
+      var separator = src.indexOf('?') === -1 ? '?' : '&';
+      iframe.setAttribute('src', src + separator + 'start=' + Math.floor(seconds));
+    }
+  }
+
+  /* ----------------------------------------------------------
+     Query Parameters
+  ---------------------------------------------------------- */
+
+  function getQueryParam(name) {
+    var params = new URLSearchParams(window.location.search);
+    return params.get(name);
+  }
+
+  /* ----------------------------------------------------------
+     HTML Escaping
+  ---------------------------------------------------------- */
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  /* ----------------------------------------------------------
+     Public API
+  ---------------------------------------------------------- */
+
+  return {
+    DATA_BASE: DATA_BASE,
+    getLang: getLang,
+    setLang: setLang,
+    toggleLang: toggleLang,
+    label: label,
+    fetchIndex: fetchIndex,
+    fetchSummary: fetchSummary,
+    formatDuration: formatDuration,
+    formatTimestamp: formatTimestamp,
+    formatDate: formatDate,
+    extractYouTubeId: extractYouTubeId,
+    youtubeEmbedUrl: youtubeEmbedUrl,
+    initLangToggle: initLangToggle,
+    updateBookmarkBadges: updateBookmarkBadges,
+    revealElements: revealElements,
+    seekYouTube: seekYouTube,
+    getQueryParam: getQueryParam,
+    escapeHtml: escapeHtml
+  };
+})();

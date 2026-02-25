@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#0d1117">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>收藏 - 投資Talk君</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- ====== Header ====== -->
+    <header class="app-header">
+      <div class="header-row">
+        <a href="index.html" class="brand">
+          <div class="brand-icon">T</div>
+          <div class="brand-text">投資<span>Talk</span>君</div>
+        </a>
+
+        <div class="header-actions">
+          <div class="lang-toggle" data-lang="zh-Hant" role="radiogroup" aria-label="Language">
+            <span class="lang-toggle-option active" data-lang="zh-Hant" role="radio" aria-checked="true">繁體</span>
+            <span class="lang-toggle-option" data-lang="zh-Hans" role="radio" aria-checked="false">簡體</span>
+            <div class="lang-toggle-slider" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ====== Page Title ====== -->
+    <div class="page-title-bar">
+      <h1 class="page-title" id="page-title">我的收藏</h1>
+      <div class="page-subtitle" id="page-subtitle">已儲存的影片摘要</div>
+    </div>
+
+    <!-- ====== Bookmarks List ====== -->
+    <div class="bookmarks-list" id="bookmarks-list">
+      <!-- Populated by JS -->
+    </div>
+
+    <!-- ====== Bottom Navigation ====== -->
+    <nav class="bottom-nav">
+      <a href="index.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        <span data-label="home">首頁</span>
+      </a>
+      <a href="bookmarks.html" class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>
+        </svg>
+        <span data-label="bookmarks">收藏</span>
+        <span class="nav-badge" data-count="0"></span>
+      </a>
+    </nav>
+    <div class="nav-spacer"></div>
+
+  </div><!-- /.app-shell -->
+
+  <script src="js/bookmarks.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      // Boot
+      TalkApp.initLangToggle();
+      TalkApp.updateBookmarkBadges();
+
+      // Initial render
+      renderBookmarks();
+
+      // Language changes
+      window.addEventListener('lang-changed', function () {
+        renderBookmarks();
+        updateNavLabels();
+        updatePageTitle();
+        TalkApp.updateBookmarkBadges();
+      });
+
+      // Bookmark changes (in case of cross-tab events)
+      window.addEventListener('bookmark-changed', function () {
+        renderBookmarks();
+        TalkApp.updateBookmarkBadges();
+      });
+
+      /* ---- Render Bookmarks ---- */
+      function renderBookmarks() {
+        var container = document.getElementById('bookmarks-list');
+        var bookmarks = BookmarkManager.getBookmarks();
+
+        container.innerHTML = '';
+
+        if (bookmarks.length === 0) {
+          renderEmpty(container);
+          return;
+        }
+
+        bookmarks.forEach(function (bm) {
+          var item = document.createElement('div');
+          item.className = 'bookmark-item';
+          item.setAttribute('data-id', bm.id);
+
+          item.innerHTML =
+            '<a href="summary.html?id=' + encodeURIComponent(bm.id) + '&date=' + encodeURIComponent(bm.publishedAt || '') + '" class="bookmark-item-link">' +
+              '<div class="bookmark-item-title">' + TalkApp.escapeHtml(bm.title || bm.id) + '</div>' +
+              '<div class="bookmark-item-date">' + TalkApp.formatDate(bm.publishedAt) + '</div>' +
+            '</a>' +
+            '<button class="bookmark-remove" type="button" data-id="' + TalkApp.escapeHtml(bm.id) + '" aria-label="Remove bookmark">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+                '<polyline points="3 6 5 6 21 6"/>' +
+                '<path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>' +
+              '</svg>' +
+            '</button>';
+
+          container.appendChild(item);
+        });
+
+        // Bind remove buttons
+        container.querySelectorAll('.bookmark-remove').forEach(function (btn) {
+          btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var id = btn.getAttribute('data-id');
+            if (id) {
+              // Animate out
+              var itemEl = btn.closest('.bookmark-item');
+              if (itemEl) {
+                itemEl.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+                itemEl.style.opacity = '0';
+                itemEl.style.transform = 'translateX(30px)';
+                setTimeout(function () {
+                  BookmarkManager.removeBookmark(id);
+                  renderBookmarks();
+                  TalkApp.updateBookmarkBadges();
+                }, 250);
+              } else {
+                BookmarkManager.removeBookmark(id);
+                renderBookmarks();
+                TalkApp.updateBookmarkBadges();
+              }
+            }
+          });
+        });
+
+        // Staggered reveal
+        TalkApp.revealElements('.bookmark-item', 50);
+      }
+
+      function renderEmpty(container) {
+        container.innerHTML =
+          '<div class="empty-state">' +
+            '<svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' +
+              '<path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>' +
+            '</svg>' +
+            '<div class="empty-state-title">' + TalkApp.label('emptyBookmarks') + '</div>' +
+            '<div class="empty-state-desc">' + TalkApp.label('emptyBookmarksDesc') + '</div>' +
+          '</div>';
+      }
+
+      /* ---- Update Page Title ---- */
+      function updatePageTitle() {
+        var titleEl = document.getElementById('page-title');
+        var subtitleEl = document.getElementById('page-subtitle');
+        if (titleEl) titleEl.textContent = TalkApp.label('bookmarksTitle');
+        if (subtitleEl) subtitleEl.textContent = TalkApp.label('bookmarksSubtitle');
+        document.title = TalkApp.label('bookmarksTitle') + ' - 投資Talk君';
+      }
+
+      /* ---- Nav Labels ---- */
+      function updateNavLabels() {
+        var labels = document.querySelectorAll('[data-label]');
+        labels.forEach(function (el) {
+          var key = el.getAttribute('data-label');
+          if (key) el.textContent = TalkApp.label(key);
+        });
+
+        var hantOpt = document.querySelector('.lang-toggle-option[data-lang="zh-Hant"]');
+        var hansOpt = document.querySelector('.lang-toggle-option[data-lang="zh-Hans"]');
+        if (hantOpt) hantOpt.textContent = TalkApp.label('langHant');
+        if (hansOpt) hansOpt.textContent = TalkApp.label('langHans');
+      }
+
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#0d1117">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>投資Talk君</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- ====== Header ====== -->
+    <header class="app-header">
+      <div class="header-row">
+        <a href="index.html" class="brand">
+          <div class="brand-icon">T</div>
+          <div class="brand-text">投資<span>Talk</span>君</div>
+        </a>
+
+        <div class="header-actions">
+          <div class="lang-toggle" data-lang="zh-Hant" role="radiogroup" aria-label="Language">
+            <span class="lang-toggle-option active" data-lang="zh-Hant" role="radio" aria-checked="true">繁體</span>
+            <span class="lang-toggle-option" data-lang="zh-Hans" role="radio" aria-checked="false">簡體</span>
+            <div class="lang-toggle-slider" aria-hidden="true"></div>
+          </div>
+
+          <a href="bookmarks.html" class="header-btn" aria-label="Bookmarks">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>
+            </svg>
+            <span class="bookmark-count" data-count="0"></span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- ====== Search ====== -->
+    <div class="search-container">
+      <div class="search-bar">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" id="search-input" class="search-input" placeholder="搜尋影片標題、標籤、代號..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <button type="button" id="search-clear" class="search-clear" aria-label="Clear search">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ====== Filters ====== -->
+    <div class="filter-section" id="filter-tags">
+      <div class="filter-label">標籤</div>
+      <div class="chip-scroll" id="tag-chips"></div>
+    </div>
+
+    <div class="filter-section" id="filter-tickers">
+      <div class="filter-label">代號</div>
+      <div class="chip-scroll" id="ticker-chips"></div>
+    </div>
+
+    <!-- ====== Card List ====== -->
+    <div class="card-list" id="card-list">
+      <!-- Populated by JS -->
+      <div class="page-loader" id="page-loader">
+        <div class="loader-dots">
+          <div class="loader-dot"></div>
+          <div class="loader-dot"></div>
+          <div class="loader-dot"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== Bottom Navigation ====== -->
+    <nav class="bottom-nav">
+      <a href="index.html" class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        <span data-label="home">首頁</span>
+      </a>
+      <a href="bookmarks.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>
+        </svg>
+        <span data-label="bookmarks">收藏</span>
+        <span class="nav-badge" data-count="0"></span>
+      </a>
+    </nav>
+    <div class="nav-spacer"></div>
+
+  </div><!-- /.app-shell -->
+
+  <script src="js/bookmarks.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/search.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      var indexData = [];
+
+      // Boot
+      TalkApp.initLangToggle();
+      TalkApp.updateBookmarkBadges();
+
+      // Load data
+      TalkApp.fetchIndex()
+        .then(function (data) {
+          indexData = data;
+          // Hide loader
+          var loader = document.getElementById('page-loader');
+          if (loader) loader.style.display = 'none';
+
+          // Initialize search/filter with render callback
+          SearchFilter.init(data, renderCards);
+        })
+        .catch(function (err) {
+          console.error('[index] Failed to load index.json:', err);
+          var loader = document.getElementById('page-loader');
+          if (loader) loader.style.display = 'none';
+          renderError();
+        });
+
+      // Listen for language changes
+      window.addEventListener('lang-changed', function () {
+        SearchFilter.refreshForLang();
+        SearchFilter.updateSearchPlaceholder();
+        updateNavLabels();
+        TalkApp.updateBookmarkBadges();
+      });
+
+      // Listen for bookmark changes
+      window.addEventListener('bookmark-changed', function () {
+        TalkApp.updateBookmarkBadges();
+      });
+
+      /* ---- Render Cards ---- */
+      function renderCards(items) {
+        var container = document.getElementById('card-list');
+        // Remove existing cards but keep loader element (hidden)
+        var loader = document.getElementById('page-loader');
+        container.innerHTML = '';
+        if (loader) container.appendChild(loader);
+
+        if (items.length === 0) {
+          renderEmpty(container);
+          return;
+        }
+
+        items.forEach(function (item) {
+          var card = createCard(item);
+          container.appendChild(card);
+        });
+
+        // Trigger staggered reveal
+        TalkApp.revealElements('.summary-card', 50);
+      }
+
+      function createCard(item) {
+        var lang = TalkApp.getLang();
+        var card = document.createElement('a');
+        card.className = 'summary-card';
+        card.href = 'summary.html?id=' + encodeURIComponent(item.id) + '&date=' + encodeURIComponent(item.publishedAt || '');
+
+        // Title: index.json stores title at top-level (Simplified Chinese in current data)
+        // We'll use it directly since index.json doesn't have per-lang titles
+        var title = TalkApp.escapeHtml(item.title || '');
+        var date = TalkApp.formatDate(item.publishedAt);
+        var channel = TalkApp.escapeHtml(item.channelName || '');
+        var duration = TalkApp.formatDuration(item.duration || 0);
+        var thumb = item.thumbnailUrl || '';
+
+        // Build tag pills HTML
+        var tagPillsHtml = '';
+        var tags = item.tags || [];
+        // Show max 3 tags on card
+        var displayTags = tags.slice(0, 3);
+        displayTags.forEach(function (tag) {
+          tagPillsHtml += '<span class="pill pill-tag">' + TalkApp.escapeHtml(tag) + '</span>';
+        });
+        if (tags.length > 3) {
+          tagPillsHtml += '<span class="pill pill-tag">+' + (tags.length - 3) + '</span>';
+        }
+
+        // Build ticker pills HTML
+        var tickerPillsHtml = '';
+        var tickers = item.tickers || [];
+        tickers.forEach(function (tk) {
+          var sym = typeof tk === 'string' ? tk : tk.symbol;
+          tickerPillsHtml += '<span class="pill pill-ticker sentiment-neutral">' + TalkApp.escapeHtml(sym) + '</span>';
+        });
+
+        card.innerHTML =
+          '<div class="card-thumb">' +
+            '<img src="' + TalkApp.escapeHtml(thumb) + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">' +
+            '<span class="card-thumb-duration">' + duration + '</span>' +
+          '</div>' +
+          '<div class="card-body">' +
+            '<div class="card-title">' + title + '</div>' +
+            '<div class="card-meta">' +
+              '<span>' + channel + '</span>' +
+              '<span class="card-meta-dot"></span>' +
+              '<span>' + date + '</span>' +
+            '</div>' +
+            '<div class="card-pills">' +
+              tagPillsHtml + tickerPillsHtml +
+            '</div>' +
+          '</div>';
+
+        return card;
+      }
+
+      function renderEmpty(container) {
+        var lang = TalkApp.getLang();
+        var html =
+          '<div class="empty-state">' +
+            '<svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' +
+              '<circle cx="11" cy="11" r="8"/>' +
+              '<line x1="21" y1="21" x2="16.65" y2="16.65"/>' +
+            '</svg>' +
+            '<div class="empty-state-title">' + TalkApp.label('noResults') + '</div>' +
+            '<div class="empty-state-desc">' + TalkApp.label('noResultsDesc') + '</div>' +
+          '</div>';
+        container.insertAdjacentHTML('beforeend', html);
+      }
+
+      function renderError() {
+        var container = document.getElementById('card-list');
+        container.innerHTML =
+          '<div class="error-state">' +
+            '<div class="error-state-title">' + TalkApp.label('loadError') + '</div>' +
+            '<div class="error-state-desc">' + TalkApp.label('loadErrorDesc') + '</div>' +
+            '<button class="retry-btn" onclick="location.reload()">' + TalkApp.label('retry') + '</button>' +
+          '</div>';
+      }
+
+      /* ---- Nav labels ---- */
+      function updateNavLabels() {
+        var labels = document.querySelectorAll('[data-label]');
+        labels.forEach(function (el) {
+          var key = el.getAttribute('data-label');
+          if (key) el.textContent = TalkApp.label(key);
+        });
+
+        // Also update lang toggle button text
+        var hantOpt = document.querySelector('.lang-toggle-option[data-lang="zh-Hant"]');
+        var hansOpt = document.querySelector('.lang-toggle-option[data-lang="zh-Hans"]');
+        if (hantOpt) hantOpt.textContent = TalkApp.label('langHant');
+        if (hansOpt) hansOpt.textContent = TalkApp.label('langHans');
+      }
+
+    })();
+  </script>
+</body>
+</html>

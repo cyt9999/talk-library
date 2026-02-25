@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+.env
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp audio files
+scripts/*.mp3
+scripts/*.wav
+scripts/*.m4a
+data/uploads/*.mp3
+data/uploads/*.wav
+data/uploads/*.m4a
+data/uploads/*.mp4
+
+# IDE
+.vscode/
+.idea/
+
+# Local dev copy of data in site/
+site/data/

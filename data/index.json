@@ -1,0 +1,40 @@
+[
+  {
+    "id": "0110_free_final",
+    "title": "0110_free_final",
+    "publishedAt": "2026-02-24",
+    "channelName": "手動上傳",
+    "duration": 311,
+    "thumbnailUrl": "",
+    "videoUrl": "",
+    "tags": [
+      "美股",
+      "大飞农数据",
+      "失业率",
+      "联准会",
+      "货币政策"
+    ],
+    "tickers": []
+  },
+  {
+    "id": "fHCZCA5oztM",
+    "title": "投资TALK君1395期：煤矿里的金丝雀，金融危机再现？聚焦私人信贷",
+    "publishedAt": "2026-02-22",
+    "channelName": "投资TALK君",
+    "duration": 1827,
+    "thumbnailUrl": "https://img.youtube.com/vi/fHCZCA5oztM/hqdefault.jpg",
+    "videoUrl": "https://www.youtube.com/watch?v=fHCZCA5oztM",
+    "tags": [
+      "美股",
+      "私人信贷",
+      "美元",
+      "关税",
+      "半导体",
+      "AI"
+    ],
+    "tickers": [
+      "NVDA",
+      "OBDC"
+    ]
+  }
+]
