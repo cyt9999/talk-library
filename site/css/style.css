@@ -1,5 +1,5 @@
 /* ============================================================
-   投資Talk君 — Dark Financial Editorial Theme
+   投資Talk君 — Financial Terminal + Editorial Theme
    ============================================================ */
 
 /* --- Google Fonts loaded in HTML head --- */
@@ -8,13 +8,13 @@
    1. Custom Properties
    ============================================================ */
 :root {
-  /* Palette */
-  --bg-primary: #0d1117;
-  --bg-secondary: #161b22;
-  --bg-tertiary: #1c2129;
-  --bg-elevated: #21262d;
-  --border-default: #30363d;
-  --border-muted: #21262d;
+  /* Palette — Deep Terminal */
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #111118;
+  --bg-tertiary: #16161f;
+  --bg-elevated: #1c1c28;
+  --border-default: #2a2a3a;
+  --border-muted: #1e1e2c;
 
   /* Text */
   --text-primary: #e6edf3;
@@ -22,19 +22,24 @@
   --text-muted: #8b949e;
   --text-faint: #6e7681;
 
-  /* Accents */
-  --accent-gold: #f0b429;
-  --accent-gold-dim: rgba(240, 180, 41, 0.15);
-  --accent-gold-glow: rgba(240, 180, 41, 0.3);
-  --accent-crimson: #da3633;
-  --accent-crimson-dim: rgba(218, 54, 51, 0.15);
-  --accent-crimson-glow: rgba(218, 54, 51, 0.3);
-  --accent-neutral: #8b949e;
-  --accent-neutral-dim: rgba(139, 148, 158, 0.15);
+  /* Accents — Cyan Primary */
+  --accent-primary: #00d4ff;
+  --accent-primary-dim: rgba(0, 212, 255, 0.12);
+  --accent-primary-glow: rgba(0, 212, 255, 0.25);
+
+  /* Sentiment */
+  --color-bullish: #00e676;
+  --color-bullish-dim: rgba(0, 230, 118, 0.12);
+  --color-bullish-glow: rgba(0, 230, 118, 0.25);
+  --color-bearish: #ff4757;
+  --color-bearish-dim: rgba(255, 71, 87, 0.12);
+  --color-bearish-glow: rgba(255, 71, 87, 0.25);
+  --color-neutral: #8b949e;
+  --color-neutral-dim: rgba(139, 148, 158, 0.12);
 
   /* Brand */
-  --brand-amber: #f0b429;
-  --brand-navy: #0d1117;
+  --brand-cyan: #00d4ff;
+  --brand-dark: #0a0a0f;
 
   /* Radius */
   --radius-sm: 6px;
@@ -52,14 +57,14 @@
   --space-3xl: 40px;
 
   /* Typography */
-  --font-display: 'DM Serif Display', 'Noto Serif TC', serif;
+  --font-display: 'IBM Plex Mono', 'Noto Sans TC', monospace;
   --font-body: 'Noto Sans TC', 'Noto Sans SC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
-  --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  --font-mono: 'IBM Plex Mono', 'SF Mono', 'Fira Code', monospace;
 
   /* Shadows */
-  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
-  --shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-glow-gold: 0 0 20px rgba(240, 180, 41, 0.15);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-glow-cyan: 0 0 20px rgba(0, 212, 255, 0.15);
 
   /* Transitions */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -158,12 +163,11 @@ input {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--bg-primary);
   border-bottom: 1px solid var(--border-muted);
   padding: var(--space-md) var(--space-lg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  background: rgba(13, 17, 23, 0.92);
+  background: rgba(10, 10, 15, 0.92);
 }
 
 .app-header::before {
@@ -172,9 +176,9 @@ input {
   inset: 0;
   background: linear-gradient(
     135deg,
-    rgba(240, 180, 41, 0.06) 0%,
+    rgba(0, 212, 255, 0.04) 0%,
     transparent 50%,
-    rgba(240, 180, 41, 0.03) 100%
+    rgba(0, 212, 255, 0.02) 100%
   );
   pointer-events: none;
 }
@@ -196,28 +200,29 @@ input {
 .brand-icon {
   width: 28px;
   height: 28px;
-  background: linear-gradient(135deg, var(--accent-gold) 0%, #d4982a 100%);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, #0099bb 100%);
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: var(--font-mono);
   font-size: 14px;
   font-weight: 700;
   color: var(--bg-primary);
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(240, 180, 41, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 212, 255, 0.3);
 }
 
 .brand-text {
   font-family: var(--font-display);
   font-size: 1.2rem;
-  font-weight: 400;
-  letter-spacing: 0.02em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
   color: var(--text-primary);
 }
 
 .brand-text span {
-  color: var(--accent-gold);
+  color: var(--accent-primary);
 }
 
 /* Header actions */
@@ -256,7 +261,7 @@ input {
   right: 2px;
   min-width: 16px;
   height: 16px;
-  background: var(--accent-gold);
+  background: var(--accent-primary);
   color: var(--bg-primary);
   font-size: 10px;
   font-weight: 700;
@@ -313,7 +318,7 @@ input {
   left: 2px;
   height: calc(100% - 4px);
   width: calc(50% - 2px);
-  background: var(--accent-gold);
+  background: var(--accent-primary);
   border-radius: var(--radius-pill);
   transition: transform var(--duration-normal) var(--ease-out-expo);
   z-index: 1;
@@ -343,8 +348,8 @@ input {
 }
 
 .search-bar:focus-within {
-  border-color: var(--accent-gold);
-  box-shadow: 0 0 0 3px var(--accent-gold-dim);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px var(--accent-primary-dim);
 }
 
 .search-icon {
@@ -357,13 +362,15 @@ input {
 .search-input {
   flex: 1;
   height: 100%;
-  font-size: 14px;
+  font-size: 15px;
+  font-family: var(--font-mono);
   color: var(--text-primary);
   background: transparent;
 }
 
 .search-input::placeholder {
   color: var(--text-faint);
+  font-family: var(--font-body);
 }
 
 .search-clear {
@@ -398,10 +405,11 @@ input {
 }
 
 .filter-label {
-  font-size: 11px;
+  font-family: var(--font-mono);
+  font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   color: var(--text-faint);
   padding: 0 var(--space-lg);
   margin-bottom: var(--space-xs);
@@ -428,8 +436,8 @@ input {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 5px 12px;
-  font-size: 12px;
+  padding: 6px 14px;
+  font-size: 13px;
   font-weight: 500;
   border-radius: var(--radius-pill);
   border: 1px solid var(--border-default);
@@ -453,36 +461,36 @@ input {
 }
 
 .chip.active {
-  background: var(--accent-gold-dim);
-  border-color: var(--accent-gold);
-  color: var(--accent-gold);
+  background: var(--accent-primary-dim);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
 }
 
 .chip-ticker {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.03em;
   font-weight: 600;
 }
 
 .chip-ticker.sentiment-bullish {
-  border-color: rgba(240, 180, 41, 0.4);
-  color: var(--accent-gold);
+  border-color: rgba(0, 230, 118, 0.4);
+  color: var(--color-bullish);
 }
 
 .chip-ticker.sentiment-bullish.active {
-  background: var(--accent-gold-dim);
-  border-color: var(--accent-gold);
+  background: var(--color-bullish-dim);
+  border-color: var(--color-bullish);
 }
 
 .chip-ticker.sentiment-bearish {
-  border-color: rgba(218, 54, 51, 0.4);
-  color: var(--accent-crimson);
+  border-color: rgba(255, 71, 87, 0.4);
+  color: var(--color-bearish);
 }
 
 .chip-ticker.sentiment-bearish.active {
-  background: var(--accent-crimson-dim);
-  border-color: var(--accent-crimson);
+  background: var(--color-bearish-dim);
+  border-color: var(--color-bearish);
 }
 
 /* ============================================================
@@ -508,7 +516,6 @@ input {
               box-shadow var(--duration-normal) ease;
   position: relative;
   overflow: hidden;
-  /* Animation initial state */
   opacity: 0;
   transform: translateY(16px);
 }
@@ -524,8 +531,8 @@ input {
 
 .summary-card:hover,
 .summary-card:active {
-  border-color: var(--border-default);
-  box-shadow: var(--shadow-card);
+  border-color: var(--accent-primary);
+  box-shadow: var(--shadow-card), 0 0 12px rgba(0, 212, 255, 0.08);
 }
 
 .summary-card:active {
@@ -571,7 +578,7 @@ input {
 }
 
 .card-title {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   line-height: 1.4;
   color: var(--text-primary);
@@ -585,7 +592,7 @@ input {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-muted);
 }
 
@@ -607,8 +614,8 @@ input {
 .pill {
   display: inline-flex;
   align-items: center;
-  padding: 1px 7px;
-  font-size: 10px;
+  padding: 2px 8px;
+  font-size: 11px;
   font-weight: 500;
   border-radius: var(--radius-pill);
   border: 1px solid var(--border-default);
@@ -618,32 +625,32 @@ input {
 }
 
 .pill-tag {
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .pill-ticker {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.03em;
 }
 
 .pill-ticker.sentiment-bullish {
-  border-color: var(--accent-gold);
-  color: var(--accent-gold);
-  background: var(--accent-gold-dim);
+  border-color: var(--color-bullish);
+  color: var(--color-bullish);
+  background: var(--color-bullish-dim);
 }
 
 .pill-ticker.sentiment-bearish {
-  border-color: var(--accent-crimson);
-  color: var(--accent-crimson);
-  background: var(--accent-crimson-dim);
+  border-color: var(--color-bearish);
+  color: var(--color-bearish);
+  background: var(--color-bearish-dim);
 }
 
 .pill-ticker.sentiment-neutral {
-  border-color: var(--accent-neutral);
-  color: var(--accent-neutral);
-  background: var(--accent-neutral-dim);
+  border-color: var(--color-neutral);
+  color: var(--color-neutral);
+  background: var(--color-neutral-dim);
 }
 
 /* Empty / no results state */
@@ -665,13 +672,14 @@ input {
 }
 
 .empty-state-title {
-  font-size: 16px;
+  font-family: var(--font-mono);
+  font-size: 18px;
   font-weight: 600;
   color: var(--text-muted);
 }
 
 .empty-state-desc {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-faint);
   max-width: 260px;
 }
@@ -750,7 +758,7 @@ input {
 .video-title {
   font-family: var(--font-display);
   font-size: 1.25rem;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 1.4;
   color: var(--text-primary);
   margin-bottom: var(--space-sm);
@@ -807,9 +815,9 @@ input {
 }
 
 .bookmark-toggle.bookmarked {
-  border-color: var(--accent-gold);
-  color: var(--accent-gold);
-  background: var(--accent-gold-dim);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  background: var(--accent-primary-dim);
 }
 
 .bookmark-toggle.bookmarked svg {
@@ -821,7 +829,6 @@ input {
   padding: var(--space-lg) var(--space-lg);
   border-top: 1px solid var(--border-muted);
   margin-top: var(--space-md);
-  /* Animation */
   opacity: 0;
   transform: translateY(12px);
 }
@@ -835,8 +842,10 @@ input {
 
 .section-title {
   font-family: var(--font-display);
-  font-size: 1.1rem;
-  font-weight: 400;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   color: var(--text-primary);
   margin-bottom: var(--space-lg);
   display: flex;
@@ -848,7 +857,7 @@ input {
   content: '';
   width: 3px;
   height: 18px;
-  background: var(--accent-gold);
+  background: var(--accent-primary);
   border-radius: 2px;
   flex-shrink: 0;
 }
@@ -869,10 +878,10 @@ input {
 .timestamp-badge {
   flex-shrink: 0;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
-  color: var(--accent-gold);
-  background: var(--accent-gold-dim);
+  color: var(--accent-primary);
+  background: var(--accent-primary-dim);
   padding: 3px 8px;
   border-radius: var(--radius-sm);
   cursor: pointer;
@@ -884,9 +893,9 @@ input {
 }
 
 .timestamp-badge:hover {
-  background: var(--accent-gold-glow);
-  border-color: var(--accent-gold);
-  box-shadow: 0 0 8px rgba(240, 180, 41, 0.2);
+  background: var(--accent-primary-glow);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.2);
 }
 
 .timestamp-badge:active {
@@ -894,14 +903,14 @@ input {
 }
 
 .key-point-text {
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.6;
   color: var(--text-secondary);
 }
 
 /* Summary paragraph */
 .summary-paragraph {
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.8;
   color: var(--text-secondary);
   text-align: justify;
@@ -953,33 +962,35 @@ input {
 }
 
 .sentiment-badge {
-  font-size: 11px;
+  font-family: var(--font-mono);
+  font-size: 12px;
   font-weight: 600;
-  padding: 3px 10px;
+  padding: 4px 12px;
   border-radius: var(--radius-pill);
   letter-spacing: 0.02em;
 }
 
 .sentiment-badge.bullish {
-  background: var(--accent-gold-dim);
-  color: var(--accent-gold);
-  border: 1px solid rgba(240, 180, 41, 0.3);
+  background: var(--color-bullish-dim);
+  color: var(--color-bullish);
+  border: 1px solid rgba(0, 230, 118, 0.3);
 }
 
 .sentiment-badge.bearish {
-  background: var(--accent-crimson-dim);
-  color: var(--accent-crimson);
-  border: 1px solid rgba(218, 54, 51, 0.3);
+  background: var(--color-bearish-dim);
+  color: var(--color-bearish);
+  border: 1px solid rgba(255, 71, 87, 0.3);
 }
 
 .sentiment-badge.neutral {
-  background: var(--accent-neutral-dim);
-  color: var(--accent-neutral);
+  background: var(--color-neutral-dim);
+  color: var(--color-neutral);
   border: 1px solid rgba(139, 148, 158, 0.3);
 }
 
 .ticker-mentions-label {
-  font-size: 11px;
+  font-family: var(--font-mono);
+  font-size: 12px;
   font-weight: 600;
   color: var(--text-faint);
   text-transform: uppercase;
@@ -996,9 +1007,9 @@ input {
 
 .mention-range {
   font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--accent-gold);
-  background: var(--accent-gold-dim);
+  font-size: 12px;
+  color: var(--accent-primary);
+  background: var(--accent-primary-dim);
   padding: 2px 8px;
   border-radius: var(--radius-sm);
   cursor: pointer;
@@ -1007,8 +1018,8 @@ input {
 }
 
 .mention-range:hover {
-  background: var(--accent-gold-glow);
-  border-color: var(--accent-gold);
+  background: var(--accent-primary-glow);
+  border-color: var(--accent-primary);
 }
 
 .mention-range:active {
@@ -1016,11 +1027,12 @@ input {
 }
 
 .mention-context {
-  font-size: 12px;
-  color: var(--text-faint);
+  font-size: 13px;
+  color: var(--text-muted);
   margin-top: var(--space-xs);
   padding-left: var(--space-sm);
   border-left: 2px solid var(--border-default);
+  line-height: 1.6;
 }
 
 /* ============================================================
@@ -1042,7 +1054,6 @@ input {
   border-radius: var(--radius-md);
   padding: var(--space-md);
   transition: all var(--duration-fast) ease;
-  /* Animation */
   opacity: 0;
   transform: translateX(-12px);
 }
@@ -1063,7 +1074,7 @@ input {
 }
 
 .bookmark-item-title {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--text-primary);
   line-height: 1.4;
@@ -1074,7 +1085,7 @@ input {
 }
 
 .bookmark-item-date {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-muted);
 }
 
@@ -1092,8 +1103,8 @@ input {
 
 .bookmark-remove:hover,
 .bookmark-remove:active {
-  background: var(--accent-crimson-dim);
-  color: var(--accent-crimson);
+  background: var(--color-bearish-dim);
+  color: var(--color-bearish);
 }
 
 .bookmark-remove svg {
@@ -1111,7 +1122,7 @@ input {
   transform: translateX(-50%);
   width: 100%;
   max-width: var(--max-width);
-  background: rgba(13, 17, 23, 0.95);
+  background: rgba(10, 10, 15, 0.95);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-top: 1px solid var(--border-muted);
@@ -1130,7 +1141,7 @@ input {
   gap: 2px;
   padding: var(--space-xs) var(--space-md);
   color: var(--text-faint);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 500;
   transition: color var(--duration-fast) ease;
   position: relative;
@@ -1142,7 +1153,7 @@ input {
 }
 
 .nav-item.active {
-  color: var(--accent-gold);
+  color: var(--accent-primary);
 }
 
 .nav-item:active {
@@ -1155,7 +1166,7 @@ input {
   right: 4px;
   min-width: 14px;
   height: 14px;
-  background: var(--accent-gold);
+  background: var(--accent-primary);
   color: var(--bg-primary);
   font-size: 9px;
   font-weight: 700;
@@ -1191,7 +1202,7 @@ input {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--accent-gold);
+  background: var(--accent-primary);
   opacity: 0.3;
   animation: dotPulse 1.2s ease-in-out infinite;
 }
@@ -1219,7 +1230,6 @@ input {
    13. Animations
    ============================================================ */
 
-/* Staggered card reveal — delays applied via JS */
 @keyframes cardReveal {
   from {
     opacity: 0;
@@ -1305,8 +1315,9 @@ input {
   border: 0;
 }
 
-.text-gold { color: var(--accent-gold); }
-.text-crimson { color: var(--accent-crimson); }
+.text-cyan { color: var(--accent-primary); }
+.text-bearish { color: var(--color-bearish); }
+.text-bullish { color: var(--color-bullish); }
 .text-muted { color: var(--text-muted); }
 
 /* Bottom nav spacer */
@@ -1343,13 +1354,14 @@ input {
 }
 
 .error-state-title {
-  font-size: 16px;
+  font-family: var(--font-mono);
+  font-size: 18px;
   font-weight: 600;
-  color: var(--accent-crimson);
+  color: var(--color-bearish);
 }
 
 .error-state-desc {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-muted);
   max-width: 280px;
 }
@@ -1367,8 +1379,8 @@ input {
 }
 
 .retry-btn:hover {
-  border-color: var(--accent-gold);
-  color: var(--accent-gold);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
 }
 
 /* ============================================================
@@ -1380,13 +1392,422 @@ input {
 
 .page-title {
   font-family: var(--font-display);
-  font-size: 1.4rem;
-  font-weight: 400;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
   color: var(--text-primary);
 }
 
 .page-subtitle {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-muted);
   margin-top: 2px;
+}
+
+/* ============================================================
+   19. Ticker Search Page
+   ============================================================ */
+
+/* Ticker search input */
+.ticker-search-container {
+  padding: var(--space-lg) var(--space-lg) var(--space-sm);
+  position: relative;
+}
+
+.ticker-search-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 0 var(--space-md);
+  height: 48px;
+  transition: border-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
+}
+
+.ticker-search-bar:focus-within {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px var(--accent-primary-dim), var(--shadow-glow-cyan);
+}
+
+.ticker-search-bar .search-icon {
+  color: var(--accent-primary);
+  opacity: 0.6;
+}
+
+.ticker-search-input {
+  flex: 1;
+  height: 100%;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  background: transparent;
+}
+
+.ticker-search-input::placeholder {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--text-faint);
+}
+
+/* Autocomplete dropdown */
+.ticker-autocomplete {
+  position: absolute;
+  top: calc(100% - var(--space-sm) + 2px);
+  left: var(--space-lg);
+  right: var(--space-lg);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-elevated);
+  z-index: 50;
+  max-height: 240px;
+  overflow-y: auto;
+  display: none;
+}
+
+.ticker-autocomplete.visible {
+  display: block;
+}
+
+.ticker-ac-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  cursor: pointer;
+  transition: background var(--duration-fast) ease;
+  border-bottom: 1px solid var(--border-muted);
+}
+
+.ticker-ac-item:last-child {
+  border-bottom: none;
+}
+
+.ticker-ac-item:hover,
+.ticker-ac-item.highlighted {
+  background: rgba(0, 212, 255, 0.06);
+}
+
+.ticker-ac-symbol {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent-primary);
+  letter-spacing: 0.04em;
+}
+
+.ticker-ac-name {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-left: var(--space-sm);
+}
+
+.ticker-ac-count {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+/* Popular tickers section */
+.popular-tickers-section {
+  padding: var(--space-md) var(--space-lg);
+}
+
+.popular-tickers-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+  margin-bottom: var(--space-sm);
+}
+
+.popular-tickers-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.popular-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-default);
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--duration-fast) ease;
+}
+
+.popular-chip:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.1);
+}
+
+.popular-chip:active {
+  transform: scale(0.96);
+}
+
+.popular-chip-count {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-faint);
+}
+
+/* Ticker results */
+.ticker-results {
+  padding: var(--space-md) var(--space-lg) var(--space-3xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+/* Ticker result header card */
+.ticker-result-header {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl);
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.ticker-result-header.revealed {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--duration-slow) var(--ease-out-expo),
+              transform var(--duration-slow) var(--ease-out-expo);
+}
+
+.ticker-result-symbol {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--accent-primary);
+}
+
+.ticker-result-name {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.ticker-result-stats {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  margin-top: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+.ticker-stat {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.ticker-stat-value {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.ticker-stat-label {
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 12px;
+}
+
+/* Sentiment histogram bar */
+.sentiment-bar {
+  display: flex;
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: var(--space-md);
+  background: var(--bg-tertiary);
+}
+
+.sentiment-bar-segment {
+  height: 100%;
+  transition: width var(--duration-slow) var(--ease-out-expo);
+}
+
+.sentiment-bar-segment.bullish {
+  background: var(--color-bullish);
+}
+
+.sentiment-bar-segment.bearish {
+  background: var(--color-bearish);
+}
+
+.sentiment-bar-segment.neutral {
+  background: var(--color-neutral);
+  opacity: 0.4;
+}
+
+.sentiment-bar-legend {
+  display: flex;
+  gap: var(--space-lg);
+  margin-top: var(--space-sm);
+  font-size: 12px;
+}
+
+.sentiment-legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  color: var(--text-faint);
+}
+
+.sentiment-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.sentiment-legend-dot.bullish { background: var(--color-bullish); }
+.sentiment-legend-dot.bearish { background: var(--color-bearish); }
+.sentiment-legend-dot.neutral { background: var(--color-neutral); opacity: 0.5; }
+
+/* Ticker mention cards */
+.ticker-mention-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-muted);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  transition: border-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.ticker-mention-card.revealed {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--duration-slow) var(--ease-out-expo),
+              transform var(--duration-slow) var(--ease-out-expo),
+              border-color var(--duration-fast) ease,
+              box-shadow var(--duration-fast) ease;
+}
+
+.ticker-mention-card:hover {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 12px rgba(0, 212, 255, 0.06);
+}
+
+.ticker-mention-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-sm);
+}
+
+.ticker-mention-date {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-faint);
+  letter-spacing: 0.02em;
+}
+
+.ticker-mention-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.4;
+  margin-bottom: var(--space-sm);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ticker-mention-context {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  padding-left: var(--space-md);
+  border-left: 2px solid var(--accent-primary);
+  margin-bottom: var(--space-sm);
+}
+
+/* Key points within mention cards — the full opinion */
+.ticker-mention-keypoints {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.ticker-mention-kp {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: flex-start;
+}
+
+.ticker-mention-kp-bullet {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  margin-top: 8px;
+  opacity: 0.6;
+}
+
+.ticker-mention-kp-text {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.ticker-mention-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent-primary);
+  opacity: 0.7;
+  transition: opacity var(--duration-fast) ease;
+}
+
+.ticker-mention-link:hover {
+  opacity: 1;
+}
+
+.ticker-mention-link svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Staggered reveal for ticker results */
+@keyframes tickerReveal {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

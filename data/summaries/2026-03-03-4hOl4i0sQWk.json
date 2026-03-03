@@ -1,0 +1,118 @@
+{
+  "id": "4hOl4i0sQWk",
+  "videoId": "4hOl4i0sQWk",
+  "source": "youtube",
+  "channelName": "投资TALK君",
+  "title": "✨【投资TALK君1391期】AI死神来了，杀遍各个板块！又快到了买点！COIN财报分析✨2026212#CPI #nvda #美股 #投资 #英伟达 #ai #特斯拉",
+  "publishedAt": "2026-03-03",
+  "summarizedAt": "2026-03-03T03:58:22.898826+00:00",
+  "duration": 1778,
+  "thumbnailUrl": "https://img.youtube.com/vi/4hOl4i0sQWk/hqdefault.jpg",
+  "videoUrl": "https://www.youtube.com/watch?v=4hOl4i0sQWk",
+  "summary": {
+    "zh-Hans": {
+      "keyPoints": [
+        {
+          "timestamp": 260,
+          "text": "市场对于AI的恐慌情绪加剧，导致多板块和个股被抛售。"
+        },
+        {
+          "timestamp": 869,
+          "text": "AI对保险、金融和运输等传统行业构成威胁，市场对此做出负面反应。"
+        },
+        {
+          "timestamp": 433,
+          "text": "Coinbase的财报表现不佳，但股价未跌反涨，可能短期见底。"
+        },
+        {
+          "timestamp": 1327,
+          "text": "SPGI等数据公司可能因AI而错杀，其护城河在于大量的专有数据。"
+        },
+        {
+          "timestamp": 1455,
+          "text": "软件公司的竞争力转向于与客户的信任和数据的整合深度。"
+        },
+        {
+          "timestamp": 1497,
+          "text": "Coinbase计划通过稳定币在AI代理间支付实现市场领导地位。"
+        }
+      ],
+      "paragraph": "近期，美股市场因AI技术的发展而产生波动，尤其对传统行业如保险、金融和运输业造成了影响，市场对此表现出恐慌情绪。这种情绪导致相关板块和个股被大量抛售。然而，一些企业如Coinbase在财报不佳的情况下，其股价表现令人意外地保持稳定，显示出短期见底的可能性。在数据行业，像SPGI这样的公司因AI的潜在影响被市场错杀，但其实这些公司的核心竞争力在于其丰富的专有数据。软件企业则需愈发关注客户信任与数据整合能力。Coinbase也在探索通过稳定币在AI代理间的支付与沟通来确保其市场地位。",
+      "tags": [
+        "美股",
+        "AI",
+        "保险",
+        "金融",
+        "运输",
+        "Coinbase",
+        "数据公司",
+        "软件企业"
+      ]
+    },
+    "zh-Hant": {
+      "keyPoints": [
+        {
+          "timestamp": 260,
+          "text": "市場對於AI的恐慌情緒加劇，導致多板塊和個股被拋售。"
+        },
+        {
+          "timestamp": 869,
+          "text": "AI對保險、金融和運輸等傳統行業構成威脅，市場對此做出負面反應。"
+        },
+        {
+          "timestamp": 433,
+          "text": "Coinbase的財報表現不佳，但股價未跌反漲，可能短期見底。"
+        },
+        {
+          "timestamp": 1327,
+          "text": "SPGI等數據公司可能因AI而錯殺，其護城河在於大量的專有數據。"
+        },
+        {
+          "timestamp": 1455,
+          "text": "軟件公司的競爭力轉向於與客戶的信任和數據的整合深度。"
+        },
+        {
+          "timestamp": 1497,
+          "text": "Coinbase計劃通過穩定幣在AI代理間支付實現市場領導地位。"
+        }
+      ],
+      "paragraph": "近期，美股市場因AI技術的發展而產生波動，尤其對傳統行業如保險、金融和運輸業造成了影響，市場對此表現出恐慌情緒。這種情緒導致相關板塊和個股被大量拋售。然而，一些企業如Coinbase在財報不佳的情況下，其股價表現令人意外地保持穩定，顯示出短期見底的可能性。在數據行業，像SPGI這樣的公司因AI的潛在影響被市場錯殺，但其實這些公司的核心競爭力在於其豐富的專有數據。軟件企業則需愈發關注客戶信任與數據整合能力。Coinbase也在探索通過穩定幣在AI代理間的支付與溝通來確保其市場地位。",
+      "tags": [
+        "美股",
+        "AI",
+        "保險",
+        "金融",
+        "運輸",
+        "Coinbase",
+        "數據公司",
+        "軟件企業"
+      ]
+    }
+  },
+  "tickers": [
+    {
+      "symbol": "COIN",
+      "name": "Coinbase",
+      "sentiment": "neutral",
+      "mentions": [
+        {
+          "start": 433,
+          "end": 654,
+          "context": "Coinbase的财报表现不佳，但股价未跌反涨，有短期见底的可能性。"
+        }
+      ]
+    },
+    {
+      "symbol": "SPGI",
+      "name": "标普全球",
+      "sentiment": "bearish",
+      "mentions": [
+        {
+          "start": 1327,
+          "end": 1421,
+          "context": "市场担忧AI对SPGI等数据公司的影响，但其实这些公司的护城河在于专有数据。"
+        }
+      ]
+    }
+  ]
+}

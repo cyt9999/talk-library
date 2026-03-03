@@ -1,0 +1,162 @@
+{
+  "id": "5Xvsubl_Tbs",
+  "videoId": "5Xvsubl_Tbs",
+  "source": "youtube",
+  "channelName": "投资TALK君",
+  "title": "✨【投资TALK君1393期】机构大举加仓，股神反向操作！网络安全被错杀吗✨2026217#CPI #nvda #美股 #投资 #英伟达 #ai #特斯拉",
+  "publishedAt": "2026-03-03",
+  "summarizedAt": "2026-03-03T03:54:19.532151+00:00",
+  "duration": 1262,
+  "thumbnailUrl": "https://img.youtube.com/vi/5Xvsubl_Tbs/hqdefault.jpg",
+  "videoUrl": "https://www.youtube.com/watch?v=5Xvsubl_Tbs",
+  "summary": {
+    "zh-Hans": {
+      "keyPoints": [
+        {
+          "timestamp": 44,
+          "text": "视频主要讨论价值股和成长股的轮动，并介绍了两个相关ETF。"
+        },
+        {
+          "timestamp": 70,
+          "text": "2月17日是机构披露Q4持仓的截止日期，视频分析了几家主要机构的仓位调整。"
+        },
+        {
+          "timestamp": 219,
+          "text": "VIX指数收于20.3，相对高位，比长期中位数高。"
+        },
+        {
+          "timestamp": 293,
+          "text": "分析成长股和价值股之间的轮动，并描述了IWF/IWD的比例变化。"
+        },
+        {
+          "timestamp": 427,
+          "text": "介绍了IWF和IWD中排名前几的成分股，包括英伟达和苹果。"
+        },
+        {
+          "timestamp": 911,
+          "text": "伯克希尔在Q4中新建了一些象征仓位，但减持亚马逊达77.24%。"
+        },
+        {
+          "timestamp": 1020,
+          "text": "网络安全公司Palo Alto Networks的业绩表现和AI的影响。"
+        }
+      ],
+      "paragraph": "视频从多个角度分析了美股市场的动态。首先，讨论了当前价值股和成长股之间的轮动情况，以及涉及的主要ETF和一些重仓个股。同时，通过13F档案，分析了几家知名投资机构如伯克希尔和Pershing Square在第四季度的仓位调整，指出这些操作背后可能的策略意图。在市场波动方面，强调了VIX指数仍处于相对高位。在美国科技股的表现方面，着重分析了大科技股在机构投资者中的配置变化，提供了对于投资者选股的建议。最后，详细介绍了网络安全行业现状及AI技术对该行业潜在影响。整体内容深入，并结合市场实际数据进行解读，为投资决策提供有价值的参考。 ",
+      "tags": [
+        "美股",
+        "成长股",
+        "价值股",
+        "投资策略",
+        "VIX指数",
+        "13F",
+        "网络安全",
+        "AI"
+      ]
+    },
+    "zh-Hant": {
+      "keyPoints": [
+        {
+          "timestamp": 44,
+          "text": "影片主要討論價值股和成長股的輪動，並介紹了兩個相關ETF。"
+        },
+        {
+          "timestamp": 70,
+          "text": "2月17日是機構披露Q4持倉的截止日期，影片分析了幾家主要機構的倉位調整。"
+        },
+        {
+          "timestamp": 219,
+          "text": "VIX指數收於20.3，相對高位，比長期中位數高。"
+        },
+        {
+          "timestamp": 293,
+          "text": "分析成長股和價值股之間的輪動，並描述了IWF/IWD的比例變化。"
+        },
+        {
+          "timestamp": 427,
+          "text": "介紹了IWF和IWD中排名前幾的成分股，包括英偉達和蘋果。"
+        },
+        {
+          "timestamp": 911,
+          "text": "伯克希爾在Q4中新建了一些象徵倉位，但減持亞馬遜達77.24%。"
+        },
+        {
+          "timestamp": 1020,
+          "text": "網絡安全公司Palo Alto Networks的業績表現和AI的影響。"
+        }
+      ],
+      "paragraph": "影片從多個角度分析了美股市場的動態。首先，討論了當前價值股和成長股之間的輪動情況，以及涉及的主要ETF和一些重倉個股。同時，通過13F檔案，分析了幾家知名投資機構如伯克希爾和Pershing Square在第四季度的倉位調整，指出這些操作背後可能的策略意圖。在市場波動方面，強調了VIX指數仍處於相對高位。在美國科技股的表現方面，著重分析了大科技股在機構投資者中的配置變化，提供了對於投資者選股的建議。最後，詳細介紹了網絡安全行業現狀及AI技術對該行業潛在影響。整體內容深入，並結合市場實際數據進行解讀，為投資決策提供有價值的參考。",
+      "tags": [
+        "美股",
+        "成長股",
+        "價值股",
+        "投資策略",
+        "VIX指數",
+        "13F",
+        "網絡安全",
+        "AI"
+      ]
+    }
+  },
+  "tickers": [
+    {
+      "symbol": "NVDA",
+      "name": "英伟达",
+      "sentiment": "bullish",
+      "mentions": [
+        {
+          "start": 425,
+          "end": 495,
+          "context": "英伟达在IWF成长股ETF中占比较高"
+        }
+      ]
+    },
+    {
+      "symbol": "AAPL",
+      "name": "苹果",
+      "sentiment": "neutral",
+      "mentions": [
+        {
+          "start": 450,
+          "end": 495,
+          "context": "苹果是IWF中值得注意的持股之一"
+        }
+      ]
+    },
+    {
+      "symbol": "GOOGL",
+      "name": "谷歌",
+      "sentiment": "neutral",
+      "mentions": [
+        {
+          "start": 1040,
+          "end": 1086,
+          "context": "表示谷歌同时是在成长股和价值股ETF中"
+        }
+      ]
+    },
+    {
+      "symbol": "AMZN",
+      "name": "亚马逊",
+      "sentiment": "bullish",
+      "mentions": [
+        {
+          "start": 895,
+          "end": 930,
+          "context": "亚马逊在Q4中被多家机构增持"
+        }
+      ]
+    },
+    {
+      "symbol": "PANW",
+      "name": "Palo Alto Networks",
+      "sentiment": "neutral",
+      "mentions": [
+        {
+          "start": 3850,
+          "end": 3910,
+          "context": "网络安全公司财报表现和AI的长远影响"
+        }
+      ]
+    }
+  ]
+}

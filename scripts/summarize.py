@@ -129,7 +129,9 @@ def create_summary(video_info, transcript):
 
 def save_summary(summary, output_dir):
     """Save summary JSON to data/summaries/."""
-    date_str = summary['publishedAt'][:10] if summary['publishedAt'] else datetime.now().strftime('%Y-%m-%d')
+    if not summary['publishedAt']:
+        summary['publishedAt'] = datetime.now().strftime('%Y-%m-%d')
+    date_str = summary['publishedAt'][:10]
     filename = f"{date_str}-{summary['videoId']}.json"
     filepath = os.path.join(output_dir, filename)
 
