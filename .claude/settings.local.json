@@ -27,7 +27,23 @@
       "Bash(cd \"C:/Users/user1/Documents/TALK君/talk_library\" && git add .github/workflows/deploy-pages.yml && git commit -m \"$\\(cat <<'EOF'\nfix: add workflow_dispatch trigger to deploy workflow\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\" && git push 2>&1)",
       "Bash(wc:*)",
       "Bash(pip install:*)",
-      "Bash(PYTHONIOENCODING=utf-8 python:*)"
+      "Bash(PYTHONIOENCODING=utf-8 python:*)",
+      "Bash(gh repo:*)",
+      "Bash(git:*)",
+      "Bash(gh issue:*)",
+      "WebSearch",
+      "Bash(gcloud auth:*)",
+      "Bash(gcloud compute instances list:*)",
+      "Bash(gcloud services:*)",
+      "Bash(gcloud app:*)",
+      "Bash(gcloud run:*)",
+      "WebFetch(domain:docs.dify.ai)",
+      "WebFetch(domain:platform.openai.com)",
+      "Bash(py:*)",
+      "Bash(\"/c/Users/user1/AppData/Local/Microsoft/WindowsApps/python3.exe\":*)",
+      "Bash(winget install:*)",
+      "Bash(\"/c/Users/user1/AppData/Local/Programs/Python/Python312/python.exe\":*)",
+      "Bash(\"/c/Users/user1/AppData/Local/Programs/Python/Python312/python.exe\":)"
     ]
   }
 }

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>投資Talk君 AI</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, "Microsoft JhengHei", "PingFang TC", sans-serif;
+      background: #0f1117;
+      color: #e4e4e7;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      padding: 16px 24px;
+      border-bottom: 1px solid #27272a;
+      background: #18181b;
+    }
+    header h1 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #f4f4f5;
+    }
+    header p {
+      font-size: 13px;
+      color: #71717a;
+      margin-top: 4px;
+    }
+    #chat {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .msg {
+      max-width: 720px;
+      width: 100%;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .msg.user {
+      background: #27272a;
+      padding: 12px 16px;
+      border-radius: 12px;
+      align-self: flex-end;
+    }
+    .msg.bot {
+      padding: 4px 0;
+    }
+    .msg.bot .answer {
+      white-space: pre-wrap;
+    }
+    .msg.bot .sources {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #27272a;
+      font-size: 13px;
+      color: #a1a1aa;
+    }
+    .msg.bot .sources span {
+      display: inline-block;
+      background: #27272a;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin: 2px 4px 2px 0;
+      font-size: 12px;
+    }
+    .typing {
+      color: #71717a;
+      font-style: italic;
+    }
+    .error {
+      color: #ef4444;
+    }
+    #input-area {
+      padding: 16px 24px;
+      border-top: 1px solid #27272a;
+      background: #18181b;
+    }
+    #input-area form {
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      gap: 8px;
+    }
+    #input-area input {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid #3f3f46;
+      background: #27272a;
+      color: #f4f4f5;
+      font-size: 15px;
+      outline: none;
+    }
+    #input-area input:focus {
+      border-color: #6366f1;
+    }
+    #input-area input::placeholder {
+      color: #52525b;
+    }
+    #input-area button {
+      padding: 12px 20px;
+      border-radius: 8px;
+      border: none;
+      background: #6366f1;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    #input-area button:hover {
+      background: #4f46e5;
+    }
+    #input-area button:disabled {
+      background: #3f3f46;
+      cursor: not-allowed;
+    }
+    .suggestions {
+      max-width: 720px;
+      margin: 40px auto;
+      text-align: center;
+    }
+    .suggestions h2 {
+      font-size: 24px;
+      margin-bottom: 8px;
+      color: #f4f4f5;
+    }
+    .suggestions p {
+      color: #71717a;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+    .suggestions .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+    .suggestions .chip {
+      padding: 8px 16px;
+      background: #27272a;
+      border: 1px solid #3f3f46;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #d4d4d8;
+      transition: border-color 0.15s;
+    }
+    .suggestions .chip:hover {
+      border-color: #6366f1;
+      color: #f4f4f5;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>投資Talk君 AI</h1>
+    <p>根據Talk君的YouTube影片和X平台短評，回答投資相關問題</p>
+  </header>
+
+  <div id="chat">
+    <div class="suggestions" id="suggestions">
+      <h2>有什麼想問的？</h2>
+      <p>試試以下問題，或輸入你自己的問題</p>
+      <div class="chips">
+        <div class="chip" onclick="askSuggestion(this)">NVDA 最近的分析是什麼？</div>
+        <div class="chip" onclick="askSuggestion(this)">Talk君最近討論了哪些主題？</div>
+        <div class="chip" onclick="askSuggestion(this)">美股目前有什麼風險？</div>
+        <div class="chip" onclick="askSuggestion(this)">AI 對哪些產業有影響？</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="input-area">
+    <form onsubmit="handleSubmit(event)">
+      <input type="text" id="question" placeholder="輸入問題..." autocomplete="off" />
+      <button type="submit" id="btn">送出</button>
+    </form>
+  </div>
+
+  <script>
+    const chat = document.getElementById('chat');
+    const input = document.getElementById('question');
+    const btn = document.getElementById('btn');
+    const suggestions = document.getElementById('suggestions');
+
+    function askSuggestion(el) {
+      input.value = el.textContent;
+      handleSubmit();
+    }
+
+    async function handleSubmit(e) {
+      if (e) e.preventDefault();
+      const q = input.value.trim();
+      if (!q) return;
+
+      if (suggestions) suggestions.remove();
+
+      // User message
+      const userDiv = document.createElement('div');
+      userDiv.className = 'msg user';
+      userDiv.textContent = q;
+      chat.appendChild(userDiv);
+
+      // Typing indicator
+      const botDiv = document.createElement('div');
+      botDiv.className = 'msg bot';
+      botDiv.innerHTML = '<div class="typing">思考中...</div>';
+      chat.appendChild(botDiv);
+
+      input.value = '';
+      btn.disabled = true;
+      chat.scrollTop = chat.scrollHeight;
+
+      try {
+        const resp = await fetch('/api/ask', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question: q })
+        });
+        const data = await resp.json();
+
+        if (data.error) {
+          botDiv.innerHTML = `<div class="error">Error: ${data.error}</div>`;
+        } else {
+          let html = `<div class="answer">${escapeHtml(data.answer)}</div>`;
+          if (data.sources && data.sources.length > 0) {
+            html += `<div class="sources">參考來源：${data.sources.map(s =>
+              `<span>${escapeHtml(s)}</span>`
+            ).join('')}</div>`;
+          }
+          botDiv.innerHTML = html;
+        }
+      } catch (err) {
+        botDiv.innerHTML = `<div class="error">連線錯誤: ${err.message}</div>`;
+      }
+
+      btn.disabled = false;
+      input.focus();
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function escapeHtml(text) {
+      const d = document.createElement('div');
+      d.textContent = text;
+      return d.innerHTML;
+    }
+
+    input.focus();
+  </script>
+</body>
+</html>
