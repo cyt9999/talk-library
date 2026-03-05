@@ -15,6 +15,7 @@ client = OpenAI()
 # Allowed origins for CORS (GitHub Pages + local dev)
 ALLOWED_ORIGINS = {
     "https://cyt9999.github.io",
+    "https://talk-library.onrender.com",
     "http://localhost:5500",
     "http://localhost:5501",
     "http://127.0.0.1:5500",
