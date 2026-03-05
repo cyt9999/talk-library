@@ -15,3 +15,16 @@ ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 SUMMARIES_DIR = os.path.join(ROOT_DIR, 'data', 'summaries')
 TWEETS_DIR = os.path.join(ROOT_DIR, 'data', 'tweets')
 TWEETS_FILE = os.path.join(TWEETS_DIR, 'tweets.json')
+SHEETS_DIR = os.path.join(ROOT_DIR, 'data', 'sheets')
+DOCS_DIR = os.path.join(ROOT_DIR, 'data', 'docs')
+
+# Google Sheets
+GOOGLE_SERVICE_ACCOUNT_KEY = os.getenv("GOOGLE_SERVICE_ACCOUNT_KEY", "")
+
+GOOGLE_SHEETS = [
+    {"id": os.getenv("SHEET_ID_MACRO", ""), "slug": "macro-announcements", "name": "投資talk君-總經公告"},
+    {"id": os.getenv("SHEET_ID_POSITIONS", ""), "slug": "positions-ytd", "name": "投資Talk君-持倉績效 ytd"},
+    {"id": os.getenv("SHEET_ID_DATASOURCES", ""), "slug": "data-sources", "name": "投資talk君-資料來源"},
+    {"id": os.getenv("SHEET_ID_BETA", ""), "slug": "portfolio-beta", "name": "投資talk君-持倉Beta"},
+    {"id": os.getenv("SHEET_ID_COMMUNITY", ""), "slug": "community-posts", "name": "爬蟲-投資talk君2025文章"},
+]
