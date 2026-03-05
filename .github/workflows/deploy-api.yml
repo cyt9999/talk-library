@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  PROJECT_ID: overseas-author
+  PROJECT_ID: my-sheets-tool
   REGION: asia-east1
   SERVICE_NAME: talk-ai-api
 
