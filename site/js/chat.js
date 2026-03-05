@@ -225,8 +225,40 @@ var ChatModule = (function () {
   }
 
   function _cleanSourceName(filename) {
-    // Remove .json extension and path prefixes
-    return filename.replace(/\.json$/, '').replace(/^.*\//, '');
+    // Strip path, extension, and temp suffixes (e.g. _pw55djdi)
+    var name = filename.replace(/^.*\//, '').replace(/\.md$/, '').replace(/\.json$/, '').replace(/_[a-z0-9]{6,}$/, '');
+
+    // video-2026-03-03-XKgWzUWnoa8 → 📺 YouTube影片 [2026/03/03]
+    var videoMatch = name.match(/^video-(\d{4})-(\d{2})-(\d{2})-(.+)$/);
+    if (videoMatch) {
+      return '📺 YouTube影片 [' + videoMatch[1] + '/' + videoMatch[2] + '/' + videoMatch[3] + ']';
+    }
+
+    // tweets-2026-W09 → 📝 X平台短評 [2026年第09週]
+    var tweetMatch = name.match(/^tweets-(\d{4})-W(\d{2})$/);
+    if (tweetMatch) {
+      return '📝 X平台短評 [' + tweetMatch[1] + '年第' + tweetMatch[2] + '週]';
+    }
+
+    // sheet-xxx-latest → 📊 Sheet name
+    var sheetMatch = name.match(/^sheet-(.+?)-latest$/);
+    if (sheetMatch) {
+      var sheetNames = {
+        'macro-announcements': '📊 總經公告',
+        'positions-ytd': '📊 持倉績效',
+        'data-sources': '📊 資料來源',
+        'portfolio-beta': '📊 持倉Beta',
+        'community-posts': '📊 社團貼文'
+      };
+      return sheetNames[sheetMatch[1]] || '📊 ' + sheetMatch[1];
+    }
+
+    // app-guide → 📖 使用指南
+    if (name === 'app-guide') {
+      return '📖 使用指南';
+    }
+
+    return name;
   }
 
   /* ----------------------------------------------------------
