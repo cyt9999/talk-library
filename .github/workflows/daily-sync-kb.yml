@@ -13,6 +13,16 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      VECTOR_STORE_ID: ${{ secrets.VECTOR_STORE_ID }}
+      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+      GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
+      SHEET_ID_MACRO: ${{ secrets.SHEET_ID_MACRO }}
+      SHEET_ID_POSITIONS: ${{ secrets.SHEET_ID_POSITIONS }}
+      SHEET_ID_DATASOURCES: ${{ secrets.SHEET_ID_DATASOURCES }}
+      SHEET_ID_BETA: ${{ secrets.SHEET_ID_BETA }}
+      SHEET_ID_COMMUNITY: ${{ secrets.SHEET_ID_COMMUNITY }}
 
     steps:
       - uses: actions/checkout@v4
@@ -26,26 +36,14 @@ jobs:
         run: pip install -r scripts/requirements.txt
 
       - name: Fetch tweets
-        env:
-          X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
         run: cd scripts/dify_sync && python3 fetch_tweets.py
         continue-on-error: true
 
       - name: Fetch Google Sheets
-        env:
-          GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
-          SHEET_ID_MACRO: ${{ secrets.SHEET_ID_MACRO }}
-          SHEET_ID_POSITIONS: ${{ secrets.SHEET_ID_POSITIONS }}
-          SHEET_ID_DATASOURCES: ${{ secrets.SHEET_ID_DATASOURCES }}
-          SHEET_ID_BETA: ${{ secrets.SHEET_ID_BETA }}
-          SHEET_ID_COMMUNITY: ${{ secrets.SHEET_ID_COMMUNITY }}
         run: cd scripts/dify_sync && python3 fetch_sheets.py
         continue-on-error: true
 
       - name: Sync to vector store
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          VECTOR_STORE_ID: ${{ secrets.VECTOR_STORE_ID }}
         run: cd scripts/dify_sync && python3 sync_vector_store.py
 
       - name: Commit data changes
