@@ -79,7 +79,21 @@ var TalkApp = (function () {
       viewSummary: '查看摘要',
       back: '返回',
       langHant: '繁體',
-      langHans: '簡體'
+      langHans: '簡體',
+      chatNav: 'AI問答',
+      chatTitle: 'AI 問答',
+      chatSubtitle: '根據Talk君影片內容回答',
+      chatPlaceholder: '輸入你的投資問題...',
+      chatSend: '發送',
+      chatSuggestion1: 'Talk君最近分析了哪些股票？',
+      chatSuggestion2: '半導體產業的最新觀點是什麼？',
+      chatSuggestion3: '最近有什麼值得關注的投資趨勢？',
+      chatSources: '參考來源',
+      chatError: '無法連線至 AI 服務，請確認伺服器已啟動',
+      chatThinking: '思考中...',
+      chatWelcome: '你好！我是投資Talk君 AI 助手，可以根據Talk君的影片內容回答你的投資問題。',
+      chatOffline: 'AI 服務目前離線，請稍後再試',
+      chatEmpty: '請輸入問題'
     },
     'zh-Hans': {
       searchPlaceholder: '搜索视频标题、标签、代号...',
@@ -114,7 +128,21 @@ var TalkApp = (function () {
       viewSummary: '查看摘要',
       back: '返回',
       langHant: '繁体',
-      langHans: '简体'
+      langHans: '简体',
+      chatNav: 'AI问答',
+      chatTitle: 'AI 问答',
+      chatSubtitle: '根据Talk君视频内容回答',
+      chatPlaceholder: '输入你的投资问题...',
+      chatSend: '发送',
+      chatSuggestion1: 'Talk君最近分析了哪些股票？',
+      chatSuggestion2: '半导体产业的最新观点是什么？',
+      chatSuggestion3: '最近有什么值得关注的投资趋势？',
+      chatSources: '参考来源',
+      chatError: '无法连线至 AI 服务，请确认服务器已启动',
+      chatThinking: '思考中...',
+      chatWelcome: '你好！我是投资Talk君 AI 助手，可以根据Talk君的视频内容回答你的投资问题。',
+      chatOffline: 'AI 服务目前离线，请稍后再试',
+      chatEmpty: '请输入问题'
     }
   };
 
