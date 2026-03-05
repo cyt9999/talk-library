@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: talk-ai-api
+    runtime: docker
+    dockerfilePath: scripts/dify_sync/Dockerfile
+    dockerContext: scripts/dify_sync
+    region: singapore
+    plan: free
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: VECTOR_STORE_ID
+        sync: false
