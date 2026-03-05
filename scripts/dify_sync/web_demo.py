@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Simple web demo for the Q&A bot. No extra dependencies needed."""
+"""Q&A API server. Runs locally or on Cloud Run."""
 
 import json
 import os
@@ -11,6 +11,14 @@ from openai import OpenAI
 from config import VECTOR_STORE_ID
 
 client = OpenAI()
+
+# Allowed origins for CORS (GitHub Pages + local dev)
+ALLOWED_ORIGINS = {
+    "https://cyt9999.github.io",
+    "http://localhost:5500",
+    "http://localhost:5501",
+    "http://127.0.0.1:5500",
+}
 
 SYSTEM_PROMPT = """\
 你是「投資Talk君 AI」，專門根據Talk君的YouTube影片摘要和X平台短評回答投資相關問題。
@@ -28,7 +36,32 @@ STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 
 
 class Handler(SimpleHTTPRequestHandler):
+    def _cors_origin(self):
+        origin = self.headers.get("Origin", "")
+        if origin in ALLOWED_ORIGINS:
+            return origin
+        return ""
+
+    def _send_cors_headers(self):
+        origin = self._cors_origin()
+        if origin:
+            self.send_header("Access-Control-Allow-Origin", origin)
+            self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+            self.send_header("Access-Control-Allow-Headers", "Content-Type")
+
+    def do_OPTIONS(self):
+        self.send_response(204)
+        self._send_cors_headers()
+        self.end_headers()
+
     def do_GET(self):
+        # Health check for Cloud Run
+        if self.path == "/health":
+            self.send_response(200)
+            self.send_header("Content-Type", "text/plain")
+            self.end_headers()
+            self.wfile.write(b"ok")
+            return
         if self.path == "/" or self.path == "/index.html":
             self.path = "/index.html"
             os.chdir(STATIC_DIR)
@@ -46,6 +79,7 @@ class Handler(SimpleHTTPRequestHandler):
                 answer, sources = ask(question)
                 self.send_response(200)
                 self.send_header("Content-Type", "application/json; charset=utf-8")
+                self._send_cors_headers()
                 self.end_headers()
                 self.wfile.write(json.dumps({
                     "answer": answer,
@@ -54,12 +88,14 @@ class Handler(SimpleHTTPRequestHandler):
             except Exception as e:
                 self.send_response(500)
                 self.send_header("Content-Type", "application/json; charset=utf-8")
+                self._send_cors_headers()
                 self.end_headers()
                 self.wfile.write(json.dumps({
                     "error": str(e)
                 }, ensure_ascii=False).encode("utf-8"))
         else:
             self.send_response(404)
+            self._send_cors_headers()
             self.end_headers()
 
     def log_message(self, format, *args):
@@ -99,14 +135,14 @@ def ask(question):
 
 def main():
     if not VECTOR_STORE_ID:
-        print("Error: VECTOR_STORE_ID not set in .env")
+        print("Error: VECTOR_STORE_ID not set", file=sys.stderr)
         sys.exit(1)
 
-    port = int(sys.argv[1]) if len(sys.argv) > 1 else 8080
-    server = HTTPServer(("127.0.0.1", port), Handler)
-    print(f"投資Talk君 AI — Web Demo")
-    print(f"Open http://localhost:{port} in your browser")
-    print("Press Ctrl+C to stop\n")
+    port = int(os.getenv("PORT", sys.argv[1] if len(sys.argv) > 1 else 8080))
+    host = "0.0.0.0"
+    server = HTTPServer((host, port), Handler)
+    print(f"投資Talk君 AI — API Server")
+    print(f"Listening on {host}:{port}")
     try:
         server.serve_forever()
     except KeyboardInterrupt:
