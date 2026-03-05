@@ -86,7 +86,8 @@ def main():
         print(f"  Saved: {slug}.json ({len(data)} rows)", file=sys.stderr)
 
     print(f"Fetched {total} sheets ({errors} errors)", file=sys.stderr)
-    return 0 if errors == 0 else 1
+    # Return 0 even with partial errors — some sheets may not be shared yet
+    return 0
 
 
 if __name__ == "__main__":

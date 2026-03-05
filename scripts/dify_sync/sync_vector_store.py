@@ -13,12 +13,36 @@ from config import (
     VECTOR_STORE_ID, SUMMARIES_DIR, TWEETS_FILE,
     SHEETS_DIR, DOCS_DIR
 )
-from convert_and_upload import (
-    summary_to_markdown, tweets_to_markdown_by_week,
-    get_or_create_vector_store
-)
+from convert_and_upload import summary_to_markdown, tweets_to_markdown_by_week
 
-client = OpenAI()
+# Verify API key is available before proceeding
+api_key = os.getenv("OPENAI_API_KEY", "")
+if not api_key:
+    print("Error: OPENAI_API_KEY not set", file=sys.stderr)
+    sys.exit(1)
+print(f"OPENAI_API_KEY set (length={len(api_key)})", file=sys.stderr)
+print(f"VECTOR_STORE_ID={VECTOR_STORE_ID or '(empty)'}", file=sys.stderr)
+
+client = OpenAI(api_key=api_key)
+
+VECTOR_STORE_NAME = "投資Talk君-知識庫"
+
+
+def get_or_create_vector_store():
+    """Get existing vector store or create a new one."""
+    if VECTOR_STORE_ID:
+        try:
+            vs = client.vector_stores.retrieve(VECTOR_STORE_ID)
+            print(f"Using existing vector store: {vs.id}", file=sys.stderr)
+            return vs
+        except Exception as e:
+            print(f"Warning: Could not retrieve store {VECTOR_STORE_ID}: {e}",
+                  file=sys.stderr)
+
+    vs = client.vector_stores.create(name=VECTOR_STORE_NAME)
+    print(f"Created new vector store: {vs.id}", file=sys.stderr)
+    print(f"  → Add to .env: VECTOR_STORE_ID={vs.id}", file=sys.stderr)
+    return vs
 
 
 def list_vector_store_files(vector_store_id):
