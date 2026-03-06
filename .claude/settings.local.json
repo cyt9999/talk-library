@@ -43,7 +43,22 @@
       "Bash(\"/c/Users/user1/AppData/Local/Microsoft/WindowsApps/python3.exe\":*)",
       "Bash(winget install:*)",
       "Bash(\"/c/Users/user1/AppData/Local/Programs/Python/Python312/python.exe\":*)",
-      "Bash(\"/c/Users/user1/AppData/Local/Programs/Python/Python312/python.exe\":)"
+      "Bash(\"/c/Users/user1/AppData/Local/Programs/Python/Python312/python.exe\":)",
+      "Bash(curl -s -X POST https://talk-library.onrender.com/api/ask \\\\\n  -H \"Content-Type: application/json\" \\\\\n  -d '{\"question\": \"Talk君最近分析了哪些股票？\"}' 2>&1 | python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(d.get\\('answer',''\\)[:300]\\); print\\('\\\\nSources:', d.get\\('sources',[]\\)\\)\")",
+      "Bash(npx skills find \"subagent development workflow\" 2>&1 | head -40)",
+      "Bash(npx skills add pcvelz/superpowers@subagent-driven-development -g -y 2>&1)",
+      "Bash(cd \"/Users/a01-0218-0042/Documents/TALK君/talk_library\" && python3 scripts/collect_codebase_meta.py | python3 -m json.tool | head -40)",
+      "Bash(which gh || brew list gh 2>/dev/null || echo \"gh CLI not installed\")",
+      "Bash(python3 scripts/generate_architecture_doc.py 2>&1)",
+      "Bash(python3 scripts/fix_video_dates.py)",
+      "Bash(which python3 && python3 -c \"import yt_dlp; print\\('found'\\)\" 2>&1; pip3 list 2>/dev/null | grep yt-dlp; which yt-dlp 2>/dev/null)",
+      "Bash(pip3 install yt-dlp 2>&1 | tail -5)",
+      "Bash(python3 scripts/dify_sync/sync_vector_store.py)",
+      "Bash(python3 -c \"\nfrom openai import OpenAI\nfrom dotenv import load_dotenv\nimport os\nload_dotenv\\('.env'\\)\nclient = OpenAI\\(\\)\nvs_id = os.environ.get\\('VECTOR_STORE_ID', 'vs_69a812cf85008191aefce462491a94e3'\\)\nvs = client.vector_stores.retrieve\\(vs_id\\)\nprint\\(f'Status: {vs.status}'\\)\nprint\\(f'File counts: {vs.file_counts}'\\)\n# List files and their status\nfiles = client.vector_stores.files.list\\(vs_id\\)\nstatuses = {}\nfor f in files.data:\n    statuses[f.status] = statuses.get\\(f.status, 0\\) + 1\nprint\\(f'File statuses: {statuses}'\\)\nif 'failed' in statuses or 'cancelled' in statuses:\n    for f in files.data:\n        if f.status in \\('failed', 'cancelled'\\):\n            print\\(f'  FAILED: {f.id} - {f.last_error}'\\)\n\")",
+      "Bash(python3 -c \"\nfrom dotenv import load_dotenv\nload_dotenv\\('.env'\\)\nimport os\nfrom openai import OpenAI\nclient = OpenAI\\(\\)\nvs_id = os.environ['VECTOR_STORE_ID']\n\nresponse = client.responses.create\\(\n    model='gpt-4o',\n    tools=[{'type': 'file_search', 'vector_store_ids': [vs_id]}],\n    input=[\n        {'role': 'user', 'content': '最近有什麼影片？'}\n    ]\n\\)\nfor item in response.output:\n    if hasattr\\(item, 'content'\\):\n        for c in item.content:\n            if hasattr\\(c, 'text'\\):\n                print\\(c.text[:500]\\)\n                break\nprint\\('---'\\)\nprint\\('STATUS: OK'\\)\n\")",
+      "Bash(brew install gh 2>&1 | tail -3)",
+      "Bash(python3 scripts/fetch_new_videos.py 2>&1)",
+      "Bash(python3 scripts/test_chat.py)"
     ]
   }
 }
