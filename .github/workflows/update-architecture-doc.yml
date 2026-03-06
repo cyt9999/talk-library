@@ -1,0 +1,44 @@
+name: Update Architecture Doc
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/**'
+      - 'site/**'
+      - '.github/workflows/**'
+      - 'data/docs/**'
+      - 'render.yaml'
+  workflow_dispatch:
+
+jobs:
+  update-doc:
+    runs-on: ubuntu-latest
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install openai
+
+      - name: Generate architecture doc
+        run: python3 scripts/generate_architecture_doc.py
+
+      - name: Check for changes
+        id: diff
+        run: |
+          git diff --quiet docs/architecture-overview.md || echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Commit and push
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/architecture-overview.md
+          git commit -m "docs: auto-update architecture overview"
+          git push
