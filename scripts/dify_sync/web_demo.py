@@ -4,6 +4,8 @@
 import json
 import os
 import sys
+import time
+from collections import defaultdict
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 
 from openai import OpenAI
@@ -11,6 +13,23 @@ from openai import OpenAI
 from config import VECTOR_STORE_ID
 
 client = OpenAI()
+
+# --- Rate Limiter (per-IP, sliding window) ---
+RATE_LIMIT = 20          # max requests per window
+RATE_WINDOW = 60         # window in seconds
+_request_log = defaultdict(list)   # ip -> [timestamp, ...]
+
+
+def _is_rate_limited(ip):
+    """Return True if this IP has exceeded the rate limit."""
+    now = time.time()
+    timestamps = _request_log[ip]
+    # Prune old entries
+    _request_log[ip] = [t for t in timestamps if now - t < RATE_WINDOW]
+    if len(_request_log[ip]) >= RATE_LIMIT:
+        return True
+    _request_log[ip].append(now)
+    return False
 
 # Allowed origins for CORS (GitHub Pages + local dev)
 ALLOWED_ORIGINS = {
@@ -72,6 +91,18 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_POST(self):
         if self.path == "/api/ask":
+            # Rate limit check
+            client_ip = self.client_address[0]
+            if _is_rate_limited(client_ip):
+                self.send_response(429)
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self._send_cors_headers()
+                self.end_headers()
+                self.wfile.write(json.dumps({
+                    "error": "請求過於頻繁，請稍後再試"
+                }, ensure_ascii=False).encode("utf-8"))
+                return
+
             length = int(self.headers.get("Content-Length", 0))
             body = json.loads(self.rfile.read(length))
             question = body.get("question", "")
@@ -134,10 +165,23 @@ def ask(question):
     return "\n".join(answer_parts), sources
 
 
+def _validate_vector_store():
+    """Verify the Vector Store exists and is accessible on startup."""
+    try:
+        vs = client.vector_stores.retrieve(VECTOR_STORE_ID)
+        count = vs.file_counts.completed if hasattr(vs.file_counts, "completed") else "?"
+        print(f"Vector Store OK: {VECTOR_STORE_ID} ({count} files)")
+    except Exception as e:
+        print(f"WARNING: Vector Store validation failed: {e}", file=sys.stderr)
+        print("Chat will still start but queries may fail.", file=sys.stderr)
+
+
 def main():
     if not VECTOR_STORE_ID:
         print("Error: VECTOR_STORE_ID not set", file=sys.stderr)
         sys.exit(1)
+
+    _validate_vector_store()
 
     port = int(os.getenv("PORT", sys.argv[1] if len(sys.argv) > 1 else 8080))
     host = "0.0.0.0"

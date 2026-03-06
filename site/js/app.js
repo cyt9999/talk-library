@@ -93,6 +93,7 @@ var TalkApp = (function () {
       chatThinking: '思考中...',
       chatWelcome: '你好！我是投資Talk君 AI 助手，可以根據Talk君的影片內容回答你的投資問題。',
       chatOffline: 'AI 服務目前離線，請稍後再試',
+      chatRateLimit: '請求過於頻繁，請稍後再試',
       chatEmpty: '請輸入問題'
     },
     'zh-Hans': {
@@ -142,6 +143,7 @@ var TalkApp = (function () {
       chatThinking: '思考中...',
       chatWelcome: '你好！我是投资Talk君 AI 助手，可以根据Talk君的视频内容回答你的投资问题。',
       chatOffline: 'AI 服务目前离线，请稍后再试',
+      chatRateLimit: '请求过于频繁，请稍后再试',
       chatEmpty: '请输入问题'
     }
   };

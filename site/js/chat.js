@@ -25,6 +25,7 @@ var ChatModule = (function () {
   var _inputEl = null;
   var _sendBtn = null;
   var _isSending = false;
+  var _videoIndex = {};  // videoId → title lookup
 
   /* ----------------------------------------------------------
      Initialization
@@ -36,6 +37,13 @@ var ChatModule = (function () {
     _sendBtn = document.getElementById('chat-send');
 
     if (!_messagesEl || !_inputEl || !_sendBtn) return;
+
+    // Load video index for title lookups
+    TalkApp.fetchIndex().then(function (videos) {
+      videos.forEach(function (v) {
+        if (v.id) _videoIndex[v.id] = v.title;
+      });
+    }).catch(function () { /* index unavailable, fallback to date display */ });
 
     // Show welcome message
     _addAiBubble(TalkApp.label('chatWelcome'), []);
@@ -115,6 +123,7 @@ var ChatModule = (function () {
       body: JSON.stringify({ question: text })
     })
       .then(function (res) {
+        if (res.status === 429) throw new Error('RATE_LIMIT');
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.json();
       })
@@ -122,9 +131,13 @@ var ChatModule = (function () {
         thinkingEl.remove();
         _addAiBubble(data.answer || '', data.sources || []);
       })
-      .catch(function () {
+      .catch(function (err) {
         thinkingEl.remove();
-        _addErrorBubble(TalkApp.label('chatError'));
+        if (err.message === 'RATE_LIMIT') {
+          _addErrorBubble(TalkApp.label('chatRateLimit'));
+        } else {
+          _addErrorBubble(TalkApp.label('chatError'));
+        }
       })
       .finally(function () {
         _isSending = false;
@@ -228,10 +241,18 @@ var ChatModule = (function () {
     // Strip path, extension, and temp suffixes (e.g. _pw55djdi)
     var name = filename.replace(/^.*\//, '').replace(/\.md$/, '').replace(/\.json$/, '').replace(/_[a-z0-9]{6,}$/, '');
 
-    // video-2026-03-03-XKgWzUWnoa8 → 📺 YouTube影片 [2026/03/03]
+    // video-2026-03-03-XKgWzUWnoa8 → 📺 影片標題 [2026/03/03]
     var videoMatch = name.match(/^video-(\d{4})-(\d{2})-(\d{2})-(.+)$/);
     if (videoMatch) {
-      return '📺 YouTube影片 [' + videoMatch[1] + '/' + videoMatch[2] + '/' + videoMatch[3] + ']';
+      var videoId = videoMatch[4];
+      var dateStr = videoMatch[1] + '/' + videoMatch[2] + '/' + videoMatch[3];
+      var title = _videoIndex[videoId];
+      if (title) {
+        // Truncate long titles
+        var short = title.length > 40 ? title.substring(0, 40) + '…' : title;
+        return '📺 ' + short + ' [' + dateStr + ']';
+      }
+      return '📺 YouTube影片 [' + dateStr + ']';
     }
 
     // tweets-2026-W09 → 📝 X平台短評 [2026年第09週]

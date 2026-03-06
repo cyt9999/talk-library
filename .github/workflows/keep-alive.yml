@@ -1,0 +1,15 @@
+name: Keep Alive
+
+on:
+  schedule:
+    # Every 14 minutes to prevent Render free tier cold starts
+    - cron: '*/14 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping health endpoint
+        run: |
+          curl -sf https://talk-library.onrender.com/health || echo "Service unavailable (may be deploying)"
