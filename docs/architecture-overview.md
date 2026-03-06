@@ -437,6 +437,7 @@ deploy-pages（重新部署靜態網站）
 
 ---
 
+<!-- manual-start:risks -->
 ## 10. 風險與限制
 
 ### 10.1 🔴 高風險
@@ -467,8 +468,11 @@ deploy-pages（重新部署靜態網站）
 | YouTube 字幕品質 | 自動生成字幕可能有辨識錯誤 |
 | 時區問題 | GitHub Actions 以 UTC 執行，可能影響日期判斷 |
 
+<!-- manual-end:risks -->
+
 ---
 
+<!-- manual-start:readiness -->
 ## 11. 正式環境準備度評估
 
 ### ✅ 已就緒
@@ -502,8 +506,11 @@ deploy-pages（重新部署靜態網站）
 > **目前適合作為內部 Demo 或小規模測試使用，尚未具備面向公開用戶的正式環境條件。**
 > 最大障礙是缺乏 API 認證機制與監控，可能導致費用失控或服務中斷而無人知曉。
 
+<!-- manual-end:readiness -->
+
 ---
 
+<!-- manual-start:improvements -->
 ## 12. 改善建議
 
 ### 短期（1-2 週）
@@ -528,6 +535,8 @@ deploy-pages（重新部署靜態網站）
 12. **主動推播通知**：重要訊號自動推送
 13. **Whisper 本地部署**：降低語音辨識成本
 14. **多頻道支援**：擴展至其他投資 YouTuber
+
+<!-- manual-end:improvements -->
 
 ---
 
