@@ -24,7 +24,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install openai
+        run: pip install openai python-dotenv
 
       - name: Generate architecture doc
         run: python3 scripts/generate_architecture_doc.py

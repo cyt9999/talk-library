@@ -54,6 +54,24 @@ def fetch_channel_videos(channel_url, limit):
     return videos
 
 
+def fetch_video_date(video_id):
+    """Fetch actual upload date for a single video via yt-dlp."""
+    cmd = [
+        sys.executable, '-m', 'yt_dlp',
+        '--print', '%(upload_date)s',
+        '--no-download',
+        f'https://www.youtube.com/watch?v={video_id}'
+    ]
+    try:
+        result = subprocess.run(cmd, capture_output=True, encoding='utf-8', timeout=30)
+        raw = result.stdout.strip()
+        if result.returncode == 0 and raw and raw != 'NA' and len(raw) == 8:
+            return f"{raw[:4]}-{raw[4:6]}-{raw[6:8]}"
+    except subprocess.TimeoutExpired:
+        print(f"Warning: timeout fetching date for {video_id}", file=sys.stderr)
+    return ''
+
+
 def fetch_new_videos():
     """Fetch recent videos from all channels and return ones without summaries."""
     with open(CHANNELS_PATH, 'r', encoding='utf-8') as f:
@@ -72,10 +90,15 @@ def fetch_new_videos():
             video_id = data.get('id', '')
             if video_id and video_id not in existing_ids:
                 upload_date = data.get('upload_date') or data.get('release_date') or ''
-                if not upload_date:
-                    print(f"Warning: no upload_date for {video_id} ({data.get('title', '')})", file=sys.stderr)
                 if upload_date and len(upload_date) == 8:
                     upload_date = f"{upload_date[:4]}-{upload_date[4:6]}-{upload_date[6:8]}"
+
+                # --flat-playlist doesn't return dates; fetch individually
+                if not upload_date:
+                    print(f"Fetching date for {video_id}...", file=sys.stderr)
+                    upload_date = fetch_video_date(video_id)
+                    if not upload_date:
+                        print(f"Warning: could not get upload_date for {video_id} ({data.get('title', '')})", file=sys.stderr)
 
                 new_videos.append({
                     'videoId': video_id,
