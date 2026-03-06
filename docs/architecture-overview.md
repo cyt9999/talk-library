@@ -1,8 +1,9 @@
 # 投資Talk君 — 技術架構文件
 
-> **文件用途**：供開發團隊討論、改善與未來規劃使用
-> **最後更新**：2026-03-06
-> **專案倉庫**：https://github.com/cyt9999/talk-library
+> **文件用途**：供開發團隊討論、改善與未來規劃使用  
+> **最後更新**：2026-03-06  
+> **專案倉庫**：https://github.com/cyt9999/talk-library  
+> **此文件由 CI 自動產生**，手動維護段落以 `<!-- manual -->` 標記保護。
 
 ---
 
@@ -305,11 +306,11 @@ web_demo.py（Render）
 
 | 模組 | 行數 | 職責 |
 |------|------|------|
-| `app.js` | 377 | 核心工具：語言切換、資料載入、格式化、書籤更新 |
-| `search.js` | 323 | 客戶端搜尋/篩選（Debounce 300ms） |
-| `ticker.js` | 589 | 標的搜尋、自動補全、情緒圓餅圖 |
-| `chat.js` | 289 | Chat UI、API 呼叫、來源格式化 |
-| `bookmarks.js` | 116 | localStorage 書籤管理 |
+| `app.js` | 340 | 核心工具：語言切換、資料載入、格式化、書籤更新 |
+| `search.js` | 265 | 客戶端搜尋/篩選（Debounce 300ms） |
+| `ticker.js` | 498 | 標的搜尋、自動補全、情緒圓餅圖 |
+| `chat.js` | 260 | Chat UI、API 呼叫、來源格式化 |
+| `bookmarks.js` | 105 | localStorage 書籤管理 |
 
 ### 6.3 設計特點
 
@@ -558,4 +559,4 @@ deploy-pages（重新部署靜態網站）
 | Chat 模組 | `site/js/chat.js` | AI 問答介面 |
 | 樣式 | `site/css/style.css` | 深色主題、響應式設計 |
 | 部署設定 | `render.yaml` | Render 服務設定 |
-| CI/CD | `.github/workflows/*.yml` | 4 個自動化工作流程 |
+| CI/CD | `.github/workflows/*.yml` | 6 個自動化工作流程 |
