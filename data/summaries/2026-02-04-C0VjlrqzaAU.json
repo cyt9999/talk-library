@@ -1,0 +1,142 @@
+{
+  "id": "C0VjlrqzaAU",
+  "videoId": "C0VjlrqzaAU",
+  "source": "youtube",
+  "channelName": "投资TALK君",
+  "title": "✨【投资TALK君1387期】“赶紧让我跑！”软件板块的末日！AMD指引炸裂，但没用✨2026203#CPI #nvda #美股 #投资 #英伟达 #ai #特斯拉",
+  "publishedAt": "2026-02-04",
+  "summarizedAt": "2026-03-03T03:59:31.555304+00:00",
+  "duration": 1710,
+  "thumbnailUrl": "https://img.youtube.com/vi/C0VjlrqzaAU/hqdefault.jpg",
+  "videoUrl": "https://www.youtube.com/watch?v=C0VjlrqzaAU",
+  "summary": {
+    "zh-Hans": {
+      "keyPoints": [
+        {
+          "timestamp": 77,
+          "text": "软件板块近期下跌30%，市场担心AI对软件行业的影响。"
+        },
+        {
+          "timestamp": 453,
+          "text": "周二美股市场波动大，必需品消费和公共事业板块上涨。"
+        },
+        {
+          "timestamp": 651,
+          "text": "黄金价格近期反弹，市场对其未来走势存疑。"
+        },
+        {
+          "timestamp": 1700,
+          "text": "迪士尼流媒体业务盈利能力增强，未来增长潜力大。"
+        },
+        {
+          "timestamp": 2380,
+          "text": "市场对AMD和英伟达等芯片公司持悲观态度，估值偏低。"
+        }
+      ],
+      "paragraph": "视频讨论了近期软件行业因AI技术的发展而面临的下跌趋势和市场担忧。面对当前市场的不确定性，投资者对软件板块持观望态度。美股市场出现大幅度波动，尤其是必需品消费和公共事业板块表现强劲。迪士尼的流媒体业务在盈利方面表现出色，并有望在未来几年内实现显著增长。此外，市场对芯片公司，尤其是AMD和英伟达的估值偏低，反映出投资者对AI板块未来发展的谨慎态度。整体来看，市场处于高度不确定性之中，各方对未来走势意见不一。",
+      "tags": [
+        "美股",
+        "AI",
+        "流媒体",
+        "半导体",
+        "市场波动",
+        "联准会"
+      ]
+    },
+    "zh-Hant": {
+      "keyPoints": [
+        {
+          "timestamp": 77,
+          "text": "軟體板塊近期下跌30%，市場擔心AI對軟體行業的影響。"
+        },
+        {
+          "timestamp": 453,
+          "text": "週二美股市場波動大，必需品消費和公共事業板塊上漲。"
+        },
+        {
+          "timestamp": 651,
+          "text": "黃金價格近期反彈，市場對其未來走勢存疑。"
+        },
+        {
+          "timestamp": 1700,
+          "text": "迪士尼流媒體業務盈利能力增強，未來增長潛力大。"
+        },
+        {
+          "timestamp": 2380,
+          "text": "市場對AMD和英偉達等晶片公司持悲觀態度，估值偏低。"
+        }
+      ],
+      "paragraph": "視頻討論了近期軟體行業因AI技術的發展而面臨的下跌趨勢和市場擔憂。面對當前市場的不確定性，投資者對軟體板塊持觀望態度。美股市場出現大幅度波動，尤其是必需品消費和公共事業板塊表現強勁。迪士尼的流媒體業務在盈利方面表現出色，並有望在未來幾年內實現顯著增長。此外，市場對晶片公司，尤其是AMD和英偉達的估值偏低，反映出投資者對AI板塊未來發展的謹慎態度。整體來看，市場處於高度不確定性之中，各方對未來走勢意見不一。",
+      "tags": [
+        "美股",
+        "AI",
+        "流媒體",
+        "半導體",
+        "市場波動",
+        "聯準會"
+      ]
+    }
+  },
+  "tickers": [
+    {
+      "symbol": "MSFT",
+      "name": "微软",
+      "sentiment": "neutral",
+      "mentions": [
+        {
+          "start": 704,
+          "end": 1340,
+          "context": "微软在软件板块下跌中受影响，但AI可能对其未来有积极影响。"
+        }
+      ]
+    },
+    {
+      "symbol": "DIS",
+      "name": "迪士尼",
+      "sentiment": "bullish",
+      "mentions": [
+        {
+          "start": 3855,
+          "end": 4288,
+          "context": "迪士尼流媒体业务表现强劲，有望继续增长。"
+        }
+      ]
+    },
+    {
+      "symbol": "PYPL",
+      "name": "PayPal",
+      "sentiment": "bearish",
+      "mentions": [
+        {
+          "start": 4630,
+          "end": 4850,
+          "context": "PayPal营收增长放缓，新任CEO能否扭转公司局势引发质疑。"
+        }
+      ]
+    },
+    {
+      "symbol": "AMD",
+      "name": "AMD",
+      "sentiment": "neutral",
+      "mentions": [
+        {
+          "start": 5869,
+          "end": 6294,
+          "context": "AMD盈利增长，估值被市场低估，与英伟达的估值情况类似。"
+        }
+      ]
+    },
+    {
+      "symbol": "ORCL",
+      "name": "甲骨文",
+      "sentiment": "neutral",
+      "mentions": [
+        {
+          "start": 2205,
+          "end": 2308,
+          "context": "Oracle债券价格上涨，反映投资者对其风险降低的预期。"
+        }
+      ]
+    }
+  ]
+}

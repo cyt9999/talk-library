@@ -71,8 +71,9 @@ def fetch_new_videos():
         for data in yt_videos:
             video_id = data.get('id', '')
             if video_id and video_id not in existing_ids:
-                # Extract upload date from title or use empty
-                upload_date = data.get('upload_date') or ''
+                upload_date = data.get('upload_date') or data.get('release_date') or ''
+                if not upload_date:
+                    print(f"Warning: no upload_date for {video_id} ({data.get('title', '')})", file=sys.stderr)
                 if upload_date and len(upload_date) == 8:
                     upload_date = f"{upload_date[:4]}-{upload_date[4:6]}-{upload_date[6:8]}"
 
