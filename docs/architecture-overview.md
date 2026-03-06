@@ -446,9 +446,9 @@ deploy-pages（重新部署靜態網站）
 | 風險 | 說明 | 影響 | 建議 |
 |------|------|------|------|
 | **API 金鑰外洩** | OpenAI 金鑰若外洩可產生無上限費用 | 財務損失 | 設定 OpenAI 用量上限、定期輪換金鑰 |
-| **Render 冷啟動** | 免費方案閒置 15 分後休眠，首次請求等待 30+ 秒 | 使用體驗差 | 升級付費方案或建立 keep-alive 機制 |
-| **無認證的 Chat API** | 任何人皆可呼叫 `/api/ask`，消耗 OpenAI 額度 | 費用暴增 | 加入 API Key 或 Rate Limiting |
-| **Vector Store 狀態不一致** | ID 若不匹配，Chat 功能完全失效 | 服務中斷 | 加入啟動時驗證檢查 |
+| ~~**Render 冷啟動**~~ | ✅ 已透過 GitHub Actions keep-alive cron 每 14 分鐘 ping `/health` 解決 | — | — |
+| ~~**無認證的 Chat API**~~ | ✅ 已加入 Per-IP 速率限制（20 req/min），超過回傳 429 | — | 可進一步加入 API Key 認證 |
+| ~~**Vector Store 狀態不一致**~~ | ✅ 伺服器啟動時自動驗證 Vector Store ID 並記錄檔案數量 | — | — |
 
 ### 10.2 🟡 中風險
 
@@ -486,6 +486,10 @@ deploy-pages（重新部署靜態網站）
 - [x] 引用來源格式化顯示
 - [x] 雙語支援（繁體/簡體）
 - [x] 資料版本控制（Git 歷史）
+- [x] Chat API 速率限制（Per-IP 20 req/min）
+- [x] Vector Store 啟動驗證
+- [x] Render keep-alive（GitHub Actions cron）
+- [x] 架構文件自動更新（CI 自動產生）
 
 ### ⚠️ 部分就緒
 
@@ -495,7 +499,7 @@ deploy-pages（重新部署靜態網站）
 
 ### ❌ 尚未實作（正式環境必要）
 
-- [ ] **API 認證與速率限制**：目前 Chat API 完全開放，任何人都能使用
+- [x] **API 速率限制**：已加入 Per-IP 20 req/min 限制（可進一步加入 API Key 認證）
 - [ ] **監控與告警**：無法得知工作流程失敗或 API 異常
 - [ ] **錯誤重試機制**：失敗後不會自動重試
 - [ ] **用量儀表板**：無法追蹤 API 使用量與成本
@@ -516,10 +520,10 @@ deploy-pages（重新部署靜態網站）
 
 ### 短期（1-2 週）
 
-1. **加入 API 認證**：在 Chat API 前加上 API Key 驗證或 JWT Token
+1. ~~**加入 API 速率限制**~~：✅ 已完成 — Per-IP 20 req/min（可進一步加入 API Key 認證）
 2. **設定 OpenAI 用量上限**：在 OpenAI 帳戶設定每月硬上限
 3. **填寫 App 使用指南**：讓 AI 可以回答關於 App 功能的問題
-4. **加入 Render keep-alive**：用外部服務定時 ping，避免冷啟動
+4. ~~**加入 Render keep-alive**~~：✅ 已完成 — GitHub Actions cron 每 14 分鐘 ping
 
 ### 中期（1-2 月）
 
