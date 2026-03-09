@@ -9,6 +9,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 VECTOR_STORE_ID = os.getenv("VECTOR_STORE_ID", "")
 X_BEARER_TOKEN = os.getenv("X_BEARER_TOKEN") or os.getenv("XApi:BearerToken", "")
 X_TARGET_USERNAME = "TJ_Research"
+X_TARGET_USER_ID = "1620475218627121153"
 
 # Paths
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))

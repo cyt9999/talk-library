@@ -7,7 +7,7 @@ import sys
 
 import requests
 
-from config import X_BEARER_TOKEN, X_TARGET_USERNAME, TWEETS_DIR, TWEETS_FILE
+from config import X_BEARER_TOKEN, X_TARGET_USERNAME, X_TARGET_USER_ID, TWEETS_DIR, TWEETS_FILE
 
 TWITTER_API_BASE = "https://api.twitter.com/2"
 
@@ -20,8 +20,13 @@ def get_headers():
 
 
 def get_user_id(username):
-    """Look up X user ID from username, with local cache."""
-    # Check cache first
+    """Look up X user ID from username. Uses hardcoded ID or cache to avoid API calls."""
+    # Use hardcoded ID for known username (saves an API call)
+    if username == X_TARGET_USERNAME and X_TARGET_USER_ID:
+        print(f"Using known user ID for @{username}", file=sys.stderr)
+        return X_TARGET_USER_ID
+
+    # Check cache
     if os.path.exists(USER_ID_CACHE):
         with open(USER_ID_CACHE, 'r') as f:
             cache = json.load(f)
@@ -31,8 +36,9 @@ def get_user_id(username):
 
     url = f"{TWITTER_API_BASE}/users/by/username/{username}"
     resp = requests.get(url, headers=get_headers())
-    if resp.status_code == 402:
-        print("Error: X API usage limit (402). Try again later.", file=sys.stderr)
+    if resp.status_code in (402, 429):
+        print(f"Warning: X API limit ({resp.status_code}) on user lookup.", file=sys.stderr)
+        print("Error: Cannot resolve user ID and no cache available.", file=sys.stderr)
         sys.exit(1)
     resp.raise_for_status()
     data = resp.json()
