@@ -30,7 +30,11 @@ def process_new_youtube_videos():
             save_summary(summary, SUMMARIES_DIR)
             print(f"Done: {video['title']}")
         except Exception as e:
-            print(f"Error processing {video['title']}: {e}", file=sys.stderr)
+            err_msg = str(e)
+            if 'Sign in' in err_msg or 'members-only' in err_msg.lower():
+                print(f"Skipping (paid/members-only): {video['title']}", file=sys.stderr)
+            else:
+                print(f"Error processing {video['title']}: {e}", file=sys.stderr)
             continue
 
     return len(videos)
