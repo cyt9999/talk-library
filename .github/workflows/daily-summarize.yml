@@ -31,17 +31,25 @@ jobs:
           echo "$HOME/.deno/bin" >> $GITHUB_PATH
 
       - name: Write YouTube cookies
-        if: env.YT_COOKIES != ''
         env:
           YT_COOKIES: ${{ secrets.YT_COOKIES }}
-        run: echo "$YT_COOKIES" > /tmp/yt_cookies.txt
+        run: |
+          if [ -n "$YT_COOKIES" ]; then
+            printf '%s\n' "$YT_COOKIES" > /tmp/yt_cookies.txt
+            echo "Cookies file written ($(wc -l < /tmp/yt_cookies.txt) lines)"
+          else
+            echo "No YT_COOKIES secret found, skipping"
+          fi
 
       - name: Run pipeline (YouTube)
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          YT_COOKIES_FILE: /tmp/yt_cookies.txt
-        run: cd scripts && python run_pipeline.py youtube
+        run: |
+          if [ -f /tmp/yt_cookies.txt ]; then
+            export YT_COOKIES_FILE=/tmp/yt_cookies.txt
+          fi
+          cd scripts && python run_pipeline.py youtube
 
       - name: Commit and push
         run: |
