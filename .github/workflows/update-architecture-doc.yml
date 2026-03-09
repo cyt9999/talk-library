@@ -11,6 +11,9 @@ on:
       - 'render.yaml'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   update-doc:
     runs-on: ubuntu-latest
