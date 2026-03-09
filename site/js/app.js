@@ -94,7 +94,12 @@ var TalkApp = (function () {
       chatWelcome: '你好！我是投資Talk君 AI 助手，可以根據Talk君的影片內容回答你的投資問題。',
       chatOffline: 'AI 服務目前離線，請稍後再試',
       chatRateLimit: '請求過於頻繁，請稍後再試',
-      chatEmpty: '請輸入問題'
+      chatEmpty: '請輸入問題',
+      sortLabel: '排序',
+      sortDateDesc: '日期（新→舊）',
+      sortDateAsc: '日期（舊→新）',
+      sortDurationDesc: '時長（長→短）',
+      sortDurationAsc: '時長（短→長）'
     },
     'zh-Hans': {
       searchPlaceholder: '搜索视频标题、标签、代号...',
@@ -144,7 +149,12 @@ var TalkApp = (function () {
       chatWelcome: '你好！我是投资Talk君 AI 助手，可以根据Talk君的视频内容回答你的投资问题。',
       chatOffline: 'AI 服务目前离线，请稍后再试',
       chatRateLimit: '请求过于频繁，请稍后再试',
-      chatEmpty: '请输入问题'
+      chatEmpty: '请输入问题',
+      sortLabel: '排序',
+      sortDateDesc: '日期（新→旧）',
+      sortDateAsc: '日期（旧→新）',
+      sortDurationDesc: '时长（长→短）',
+      sortDurationAsc: '时长（短→长）'
     }
   };
 

@@ -15,6 +15,7 @@ var SearchFilter = (function () {
   var _activeTags = [];      // Currently selected tag filters
   var _activeTickers = [];   // Currently selected ticker filters
   var _searchQuery = '';     // Current search text
+  var _sortMode = 'date-desc'; // Current sort mode
   var _debounceTimer = null;
   var _onFilterCallback = null;
 
@@ -40,8 +41,9 @@ var SearchFilter = (function () {
     _renderTagChips();
     _renderTickerChips();
 
-    // Bind search input
+    // Bind search input and sort
     _bindSearchInput();
+    _bindSortSelect();
 
     // Initial render with all items
     _applyFilters();
@@ -206,6 +208,20 @@ var SearchFilter = (function () {
     }
   }
 
+  /* ----------------------------------------------------------
+     Sort Select Binding
+  ---------------------------------------------------------- */
+
+  function _bindSortSelect() {
+    var select = document.getElementById('sort-select');
+    if (!select) return;
+
+    select.addEventListener('change', function () {
+      _sortMode = select.value;
+      _applyFilters();
+    });
+  }
+
   /**
    * Update search placeholder text (called on lang change).
    */
@@ -282,6 +298,21 @@ var SearchFilter = (function () {
       }
 
       return true;
+    });
+
+    // Sort results
+    results.sort(function (a, b) {
+      switch (_sortMode) {
+        case 'date-asc':
+          return (a.publishedAt || '').localeCompare(b.publishedAt || '');
+        case 'duration-desc':
+          return (b.duration || 0) - (a.duration || 0);
+        case 'duration-asc':
+          return (a.duration || 0) - (b.duration || 0);
+        case 'date-desc':
+        default:
+          return (b.publishedAt || '').localeCompare(a.publishedAt || '');
+      }
     });
 
     if (_onFilterCallback) {

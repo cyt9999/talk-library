@@ -70,6 +70,17 @@
       <div class="chip-scroll" id="ticker-chips"></div>
     </div>
 
+    <!-- ====== Sort Bar ====== -->
+    <div class="sort-bar" id="sort-bar">
+      <label class="sort-label" data-label="sortLabel">排序</label>
+      <select id="sort-select" class="sort-select">
+        <option value="date-desc" data-label-option="sortDateDesc">日期（新→舊）</option>
+        <option value="date-asc" data-label-option="sortDateAsc">日期（舊→新）</option>
+        <option value="duration-desc" data-label-option="sortDurationDesc">時長（長→短）</option>
+        <option value="duration-asc" data-label-option="sortDurationAsc">時長（短→長）</option>
+      </select>
+    </div>
+
     <!-- ====== Card List ====== -->
     <div class="card-list" id="card-list">
       <!-- Populated by JS -->
@@ -266,6 +277,13 @@
         labels.forEach(function (el) {
           var key = el.getAttribute('data-label');
           if (key) el.textContent = TalkApp.label(key);
+        });
+
+        // Update sort select options
+        var sortOptions = document.querySelectorAll('#sort-select option[data-label-option]');
+        sortOptions.forEach(function (opt) {
+          var key = opt.getAttribute('data-label-option');
+          if (key) opt.textContent = TalkApp.label(key);
         });
 
         // Also update lang toggle button text
