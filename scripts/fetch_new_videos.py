@@ -12,6 +12,14 @@ MAX_VIDEOS = 15  # How many recent videos to check per channel
 YT_COOKIES_FILE = os.environ.get('YT_COOKIES_FILE', '')
 
 
+def _ytdlp_base_cmd():
+    """Build base yt-dlp command with cookies and remote components."""
+    cmd = [sys.executable, '-m', 'yt_dlp', '--remote-components', 'ejs:github']
+    if YT_COOKIES_FILE:
+        cmd += ['--cookies', YT_COOKIES_FILE]
+    return cmd
+
+
 def get_existing_video_ids():
     """Get set of video IDs that already have summaries."""
     ids = set()
@@ -31,15 +39,12 @@ def get_existing_video_ids():
 
 def fetch_channel_videos(channel_url, limit):
     """Use yt-dlp to list recent videos from a channel."""
-    cmd = [
-        sys.executable, '-m', 'yt_dlp',
+    cmd = _ytdlp_base_cmd() + [
         '--flat-playlist',
         '--dump-json',
         '--playlist-end', str(limit),
+        channel_url + '/videos',
     ]
-    if YT_COOKIES_FILE:
-        cmd += ['--cookies', YT_COOKIES_FILE]
-    cmd.append(channel_url + '/videos')
     result = subprocess.run(cmd, capture_output=True, encoding='utf-8')
     if result.returncode != 0:
         print(f"Warning: yt-dlp failed for {channel_url}: {result.stderr}", file=sys.stderr)
@@ -59,14 +64,11 @@ def fetch_channel_videos(channel_url, limit):
 
 def fetch_video_date(video_id):
     """Fetch actual upload date for a single video via yt-dlp."""
-    cmd = [
-        sys.executable, '-m', 'yt_dlp',
+    cmd = _ytdlp_base_cmd() + [
         '--print', '%(upload_date)s',
         '--no-download',
+        f'https://www.youtube.com/watch?v={video_id}',
     ]
-    if YT_COOKIES_FILE:
-        cmd += ['--cookies', YT_COOKIES_FILE]
-    cmd.append(f'https://www.youtube.com/watch?v={video_id}')
     try:
         result = subprocess.run(cmd, capture_output=True, encoding='utf-8', timeout=30)
         raw = result.stdout.strip()

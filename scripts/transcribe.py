@@ -18,6 +18,14 @@ MAX_FILE_SIZE = 25 * 1024 * 1024  # 25MB Whisper API limit
 YT_COOKIES_FILE = os.environ.get('YT_COOKIES_FILE', '')
 
 
+def _ytdlp_base_cmd():
+    """Build base yt-dlp command with cookies and remote components."""
+    cmd = [sys.executable, '-m', 'yt_dlp', '--remote-components', 'ejs:github']
+    if YT_COOKIES_FILE:
+        cmd += ['--cookies', YT_COOKIES_FILE]
+    return cmd
+
+
 def extract_video_id(video_url):
     """Extract YouTube video ID from URL."""
     m = re.search(r'(?:v=|youtu\.be/|/shorts/)([\w-]{11})', video_url)
@@ -29,17 +37,14 @@ def download_subtitles(video_id, tmp_dir):
 
     Returns the path to the subtitle file, or None if unavailable.
     """
-    cmd = [
-        sys.executable, '-m', 'yt_dlp',
+    cmd = _ytdlp_base_cmd() + [
         '--write-sub', '--write-auto-sub',
         '--sub-lang', 'zh',
         '--sub-format', 'json3',
         '--skip-download',
         '-o', os.path.join(tmp_dir, '%(id)s.%(ext)s'),
+        f'https://www.youtube.com/watch?v={video_id}',
     ]
-    if YT_COOKIES_FILE:
-        cmd += ['--cookies', YT_COOKIES_FILE]
-    cmd.append(f'https://www.youtube.com/watch?v={video_id}')
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode != 0:
         return None
@@ -134,16 +139,13 @@ def parse_json3_subtitles(json3_path):
 def download_audio(video_url, output_dir):
     """Download audio from YouTube video using yt-dlp."""
     output_path = os.path.join(output_dir, '%(id)s.%(ext)s')
-    cmd = [
-        sys.executable, '-m', 'yt_dlp',
+    cmd = _ytdlp_base_cmd() + [
         '-x',
         '--audio-format', 'mp3',
         '--audio-quality', '5',
         '-o', output_path,
+        video_url,
     ]
-    if YT_COOKIES_FILE:
-        cmd += ['--cookies', YT_COOKIES_FILE]
-    cmd.append(video_url)
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode != 0:
         raise RuntimeError(f"yt-dlp failed: {result.stderr}")
