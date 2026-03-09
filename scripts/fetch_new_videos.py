@@ -9,6 +9,7 @@ import subprocess
 CHANNELS_PATH = os.path.join(os.path.dirname(__file__), '..', 'data', 'channels.json')
 SUMMARIES_DIR = os.path.join(os.path.dirname(__file__), '..', 'data', 'summaries')
 MAX_VIDEOS = 15  # How many recent videos to check per channel
+YT_COOKIES_FILE = os.environ.get('YT_COOKIES_FILE', '')
 
 
 def get_existing_video_ids():
@@ -35,8 +36,10 @@ def fetch_channel_videos(channel_url, limit):
         '--flat-playlist',
         '--dump-json',
         '--playlist-end', str(limit),
-        channel_url + '/videos'
     ]
+    if YT_COOKIES_FILE:
+        cmd += ['--cookies', YT_COOKIES_FILE]
+    cmd.append(channel_url + '/videos')
     result = subprocess.run(cmd, capture_output=True, encoding='utf-8')
     if result.returncode != 0:
         print(f"Warning: yt-dlp failed for {channel_url}: {result.stderr}", file=sys.stderr)
@@ -60,8 +63,10 @@ def fetch_video_date(video_id):
         sys.executable, '-m', 'yt_dlp',
         '--print', '%(upload_date)s',
         '--no-download',
-        f'https://www.youtube.com/watch?v={video_id}'
     ]
+    if YT_COOKIES_FILE:
+        cmd += ['--cookies', YT_COOKIES_FILE]
+    cmd.append(f'https://www.youtube.com/watch?v={video_id}')
     try:
         result = subprocess.run(cmd, capture_output=True, encoding='utf-8', timeout=30)
         raw = result.stdout.strip()
