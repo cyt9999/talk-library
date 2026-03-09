@@ -44,4 +44,5 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add docs/architecture-overview.md
           git commit -m "docs: auto-update architecture overview"
+          git pull --rebase || true
           git push
