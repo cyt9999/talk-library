@@ -48,14 +48,18 @@ jobs:
       - name: Sync to vector store
         run: cd scripts/dify_sync && python3 sync_vector_store.py
 
-      - name: Commit data changes
+      - name: Commit and push data changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/
-          git diff --staged --quiet || git commit -m "chore: sync knowledge base data $(date +%Y-%m-%d)"
-          git pull --rebase || true
-          git push
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: sync knowledge base data $(date +%Y-%m-%d)"
+            git pull --rebase || true
+            git push
+          fi
 
       - name: Deploy to GitHub Pages
         uses: actions/checkout@v4
