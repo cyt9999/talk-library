@@ -7,6 +7,8 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
   summarize:
@@ -59,3 +61,22 @@ jobs:
           git diff --staged --quiet || git commit -m "chore: auto-summarize new videos $(date +%Y-%m-%d)"
           git pull --rebase || true
           git push
+
+      - name: Deploy to GitHub Pages
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Copy data into site
+        run: cp -r data site/data
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy Pages
+        uses: actions/deploy-pages@v4
