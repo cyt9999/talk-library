@@ -9,7 +9,7 @@ var TalkApp = (function () {
      Configuration
   ---------------------------------------------------------- */
 
-  // API base URL for fetching video data from Render API
+  // API base URL for fetching video data from Railway API
   var API_BASE = (function () {
     var host = window.location.hostname;
     if (host === 'localhost' || host === '127.0.0.1') {
@@ -19,7 +19,7 @@ var TalkApp = (function () {
     if (meta && meta.content) {
       return meta.content;
     }
-    return 'https://talk-library.onrender.com';
+    return 'https://talk-ai-api-production.up.railway.app';
   })();
 
   // Data base path — kept for any remaining static data references

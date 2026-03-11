@@ -2,7 +2,7 @@ name: Keep Alive
 
 on:
   schedule:
-    # Every 14 minutes to prevent Render free tier cold starts
+    # Every 14 minutes to prevent cold starts
     - cron: '*/14 * * * *'
   workflow_dispatch:
 
@@ -12,4 +12,4 @@ jobs:
     steps:
       - name: Ping health endpoint
         run: |
-          curl -sf https://talk-library.onrender.com/health || echo "Service unavailable (may be deploying)"
+          curl -sf https://talk-ai-api-production.up.railway.app/health || echo "Service unavailable (may be deploying)"

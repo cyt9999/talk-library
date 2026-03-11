@@ -63,7 +63,7 @@ def redirects_to_finance(answer, sources):
 
 def no_technical_leak(answer, sources):
     """Should not reveal technical details."""
-    leaks = ['GPT-4', 'gpt-4o', 'OpenAI', 'vector store', 'API', 'Render', 'file_search', 'yt-dlp']
+    leaks = ['GPT-4', 'gpt-4o', 'OpenAI', 'vector store', 'API', 'Railway', 'file_search', 'yt-dlp']
     found = [l for l in leaks if l.lower() in answer.lower()]
     ok = len(found) == 0
     return ok, "未洩漏技術細節" if ok else f"洩漏技術細節：{found}"

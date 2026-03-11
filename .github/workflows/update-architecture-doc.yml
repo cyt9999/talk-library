@@ -8,7 +8,7 @@ on:
       - 'site/**'
       - '.github/workflows/**'
       - 'data/docs/**'
-      - 'render.yaml'
+      - 'railway.toml'
   workflow_dispatch:
 
 permissions:

@@ -42,7 +42,7 @@
 | AI 模型 | OpenAI GPT-4o / GPT-4o-mini / Whisper |
 | 知識庫 | OpenAI Vector Store（file_search）|
 | 前端部署 | GitHub Pages（免費）|
-| API 部署 | Render Free Tier |
+| API 部署 | Railway |
 | CI/CD | GitHub Actions |
 | 資料儲存 | OpenAI Vector Store + `data/index.json`（Git）|
 
@@ -88,7 +88,7 @@
               │                         │
               ▼                         │
 ┌──────────────────────────────────┐    │
-│   Render API 伺服器（Docker）      │    │
+│   Railway API 伺服器（Docker）      │    │
 │                                  │────┘
 │  GET  /api/videos  (index.json)  │
 │  GET  /api/summary (Vector Store)│
@@ -274,7 +274,7 @@ fetch_new_videos.py              transcribe.py                    summarize.py
 使用者提問
     │
     ▼
-web_demo.py（Render）
+web_demo.py（Railway）
     │
     ├─ System Prompt：
     │   - 僅根據資料回答
@@ -347,16 +347,15 @@ web_demo.py（Render）
 | 費用 | 免費 |
 | 限制 | 靜態檔案、無伺服器端邏輯 |
 
-### 7.2 API 伺服器（Render）
+### 7.2 API 伺服器（Railway）
 
 | 項目 | 說明 |
 |------|------|
-| 平台 | Render Free Tier |
-| 網址 | `https://talk-library.onrender.com` |
+| 平台 | Railway |
+| 網址 | `https://talk-ai-api-production.up.railway.app` |
 | 容器 | Docker（Python 3.12-slim），Docker context 為 repo 根目錄 |
 | 端口 | 8080 |
 | 環境變數 | `OPENAI_API_KEY`、`VECTOR_STORE_ID` |
-| 費用 | 免費（閒置 15 分鐘後休眠） |
 | API 端點 | `GET /api/videos`、`GET /api/summary?id=X&date=Y`、`POST /api/ask` |
 
 ### 7.3 CORS 設定
@@ -364,7 +363,7 @@ web_demo.py（Render）
 ```python
 ALLOWED_ORIGINS = {
     "https://cyt9999.github.io",
-    "https://talk-library.onrender.com",
+    "https://talk-ai-api-production.up.railway.app",
     "http://localhost:5500",
 }
 ```
@@ -439,7 +438,7 @@ deploy-pages 僅在 site/ 變更時觸發（獨立於資料管線）
 | OpenAI API（轉錄+摘要） | ~$11 |
 | Chat API 查詢 | ~$1-5（視使用量） |
 | GitHub Pages | 免費 |
-| Render Free Tier | 免費 |
+| Railway | ~$5/月 |
 | GitHub Actions | 免費（公開倉庫） |
 | **合計** | **~$12-16/月** |
 
@@ -460,7 +459,7 @@ deploy-pages 僅在 site/ 變更時觸發（獨立於資料管線）
 | 風險 | 說明 | 影響 | 建議 |
 |------|------|------|------|
 | **API 金鑰外洩** | OpenAI 金鑰若外洩可產生無上限費用 | 財務損失 | 設定 OpenAI 用量上限、定期輪換金鑰 |
-| ~~**Render 冷啟動**~~ | ✅ 已透過 GitHub Actions keep-alive cron 每 14 分鐘 ping `/health` 解決 | — | — |
+| ~~**冷啟動**~~ | ✅ 已遷移至 Railway，搭配 GitHub Actions keep-alive cron 每 14 分鐘 ping `/health` | — | — |
 | ~~**無認證的 Chat API**~~ | ✅ 已加入 Per-IP 速率限制（20 req/min），超過回傳 429 | — | 可進一步加入 API Key 認證 |
 | ~~**Vector Store 狀態不一致**~~ | ✅ 伺服器啟動時自動驗證 Vector Store ID 並記錄檔案數量 | — | — |
 
@@ -496,13 +495,13 @@ deploy-pages 僅在 site/ 變更時觸發（獨立於資料管線）
 - [x] Google Sheets 每日同步（4/5 張運作中）
 - [x] Vector Store 自動同步管線
 - [x] 前端網站已部署（GitHub Pages）
-- [x] AI 問答功能已上線（Render）
+- [x] AI 問答功能已上線（Railway）
 - [x] 引用來源格式化顯示
 - [x] 雙語支援（繁體/簡體）
 - [x] 資料安全：敏感資料已從 Git 移除，僅存於 Vector Store
 - [x] Chat API 速率限制（Per-IP 20 req/min）
 - [x] Vector Store 啟動驗證
-- [x] Render keep-alive（GitHub Actions cron）
+- [x] Railway keep-alive（GitHub Actions cron）
 - [x] 架構文件自動更新（CI 自動產生）
 
 ### ⚠️ 部分就緒
@@ -537,11 +536,11 @@ deploy-pages 僅在 site/ 變更時觸發（獨立於資料管線）
 1. ~~**加入 API 速率限制**~~：✅ 已完成 — Per-IP 20 req/min（可進一步加入 API Key 認證）
 2. **設定 OpenAI 用量上限**：在 OpenAI 帳戶設定每月硬上限
 3. **填寫 App 使用指南**：讓 AI 可以回答關於 App 功能的問題
-4. ~~**加入 Render keep-alive**~~：✅ 已完成 — GitHub Actions cron 每 14 分鐘 ping
+4. ~~**加入 keep-alive**~~：✅ 已完成 — GitHub Actions cron 每 14 分鐘 ping
 
 ### 中期（1-2 月）
 
-5. **遷移至付費主機**：Render 付費方案或 Cloud Run，消除冷啟動
+5. ~~**遷移至付費主機**~~：✅ 已完成 — 已遷移至 Railway
 6. **加入監控**：GitHub Actions 失敗通知（Slack/Email）
 7. **加入自動化測試**：至少針對資料轉換與同步邏輯
 8. **改善摘要品質**：建立人工回饋迴圈，微調 Prompt
@@ -571,10 +570,10 @@ deploy-pages 僅在 site/ 變更時觸發（獨立於資料管線）
 | 推文抓取 | `scripts/dify_sync/fetch_tweets.py` | X API v2 |
 | Sheets 抓取 | `scripts/dify_sync/fetch_sheets.py` | Google Sheets API |
 | 知識庫同步 | `scripts/dify_sync/sync_vector_store.py` | Vector Store 差異同步 |
-| Chat API | `scripts/dify_sync/web_demo.py` | HTTP 伺服器（Render 部署） |
+| Chat API | `scripts/dify_sync/web_demo.py` | HTTP 伺服器（Railway 部署） |
 | 設定 | `scripts/dify_sync/config.py` | 環境變數集中管理 |
 | 前端核心 | `site/js/app.js` | 語言切換、資料載入 |
 | Chat 模組 | `site/js/chat.js` | AI 問答介面 |
 | 樣式 | `site/css/style.css` | 深色主題、響應式設計 |
-| 部署設定 | `render.yaml` | Render 服務設定 |
+| 部署設定 | `Dockerfile` | Railway Docker 部署 |
 | CI/CD | `.github/workflows/*.yml` | 6 個自動化工作流程 |

@@ -34,7 +34,7 @@ def _is_rate_limited(ip):
 # Allowed origins for CORS (GitHub Pages + local dev)
 ALLOWED_ORIGINS = {
     "https://cyt9999.github.io",
-    "https://talk-library.onrender.com",
+    "https://talk-ai-api-production.up.railway.app",
     "http://localhost:5500",
     "http://localhost:5501",
     "http://127.0.0.1:5500",
