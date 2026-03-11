@@ -30,9 +30,14 @@ def summary_to_markdown(data):
     key_points = hant.get("keyPoints", [])
     tickers = data.get("tickers", [])
 
+    video_id = data.get("id", "")
+    video_url = data.get("videoUrl", f"https://www.youtube.com/watch?v={video_id}" if video_id else "")
+
     lines = [f"# {title}"]
     lines.append(f"- 日期：{date}")
     lines.append("- 來源：YouTube")
+    if video_url:
+        lines.append(f"- 影片連結：{video_url}")
     if tags:
         lines.append(f"- 標籤：{', '.join(tags)}")
     if tickers:
