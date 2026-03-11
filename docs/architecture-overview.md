@@ -319,10 +319,10 @@ web_demo.py（Railway）
 
 | 模組 | 行數 | 職責 |
 |------|------|------|
-| `app.js` | 375 | 核心工具：語言切換、資料載入、格式化、書籤更新 |
+| `app.js` | 365 | 核心工具：語言切換、資料載入、格式化、書籤更新 |
 | `search.js` | 292 | 客戶端搜尋/篩選（Debounce 300ms） |
 | `ticker.js` | 498 | 標的搜尋、自動補全、情緒圓餅圖 |
-| `chat.js` | 284 | Chat UI、API 呼叫、來源格式化 |
+| `chat.js` | 275 | Chat UI、API 呼叫、來源格式化 |
 | `bookmarks.js` | 105 | localStorage 書籤管理 |
 
 ### 6.3 設計特點
