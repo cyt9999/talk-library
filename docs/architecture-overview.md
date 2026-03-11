@@ -44,7 +44,7 @@
 | 前端部署 | GitHub Pages（免費）|
 | API 部署 | Render Free Tier |
 | CI/CD | GitHub Actions |
-| 資料儲存 | Git（JSON 檔案）|
+| 資料儲存 | OpenAI Vector Store + `data/index.json`（Git）|
 
 ---
 
@@ -68,32 +68,46 @@
        │             │              │              │
        ▼             ▼              ▼              ▼
 ┌─────────────────────────────────────────────────────────┐
-│                   資料儲存層（JSON 檔案）                  │
+│              CI 暫存（不提交至 Git）                       │
 │  data/summaries/*.json  data/tweets/  data/sheets/      │
-│  data/docs/app-guide.md  data/index.json                │
+│  ↓ 轉換為 Markdown 後上傳至 Vector Store                  │
 └───────────────────────────┬─────────────────────────────┘
                             │
               ┌─────────────┴─────────────┐
-              ▼                           ▼
-┌──────────────────────┐    ┌──────────────────────────┐
-│   前端靜態網站         │    │   RAG 知識庫              │
-│   GitHub Pages        │    │   OpenAI Vector Store     │
-│                      │    │                          │
-│  - 首頁（搜尋/篩選）   │    │  Markdown 檔案 → 向量化    │
-│  - 摘要詳情頁          │    │  video-*.md              │
-│  - 標的搜尋            │    │  tweets-*.md             │
-│  - 收藏夾             │    │  sheet-*.md              │
-│  - AI 問答            │    │  app-guide.md            │
-└──────────┬───────────┘    └───────────┬──────────────┘
-           │                            │
-           │    POST /api/ask           │
-           └──────────────┐             │
-                          ▼             │
-              ┌──────────────────────┐  │
-              │   Chat API 伺服器     │  │
-              │   Render (Docker)    │──┘
-              │   GPT-4o + file_search
-              └──────────────────────┘
+              │                           ▼
+              │             ┌──────────────────────────┐
+              │             │   RAG 知識庫              │
+              │             │   OpenAI Vector Store     │
+              │             │                          │
+              │             │  Markdown 檔案 → 向量化    │
+              │             │  video-*.md              │
+              │             │  tweets-*.md             │
+              │             │  sheet-*.md              │
+              │             │  app-guide.md            │
+              │             └───────────┬──────────────┘
+              │                         │
+              ▼                         │
+┌──────────────────────────────────┐    │
+│   Render API 伺服器（Docker）      │    │
+│                                  │────┘
+│  GET  /api/videos  (index.json)  │
+│  GET  /api/summary (Vector Store)│
+│  POST /api/ask     (GPT-4o)     │
+└──────────────┬───────────────────┘
+               │
+               ▼
+┌──────────────────────┐
+│   前端靜態網站         │
+│   GitHub Pages        │
+│                      │
+│  - 首頁（搜尋/篩選）   │  ← fetch /api/videos
+│  - 摘要詳情頁          │  ← fetch /api/summary
+│  - 標的搜尋            │
+│  - 收藏夾             │
+│  - AI 問答            │  ← POST /api/ask
+└──────────────────────┘
+
+Git 倉庫中僅保留 data/index.json（公開 YouTube 元資料）
 ```
 
 ---
@@ -210,14 +224,13 @@ fetch_new_videos.py              transcribe.py                    summarize.py
 ```
 每日排程（daily-sync-kb.yml）
 
-  1. fetch_tweets.py     → data/tweets/tweets.json（增量）
-  2. fetch_sheets.py     → data/sheets/*.json（全量覆寫）
-  3. sync_vector_store.py：
+  1. fetch_sheets.py     → data/sheets/*.json（CI 暫存，不提交）
+  2. sync_vector_store.py：
      ├─ 所有 JSON → 轉換為 Markdown
      ├─ 比對 Vector Store 現有檔案
      ├─ 上傳新增/異動檔案
      └─ 刪除已移除檔案
-  4. git commit + push   → 保留資料變更歷史
+  （不提交至 Git — 資料僅存於 Vector Store）
 ```
 
 ---
@@ -330,20 +343,21 @@ web_demo.py（Render）
 |------|------|
 | 平台 | GitHub Pages |
 | 網址 | `https://cyt9999.github.io/talk-library/` |
-| 觸發條件 | 推送至 `main` 分支且變更了 `site/` 或 `data/` |
+| 觸發條件 | 推送至 `main` 分支且變更了 `site/` |
 | 費用 | 免費 |
 | 限制 | 靜態檔案、無伺服器端邏輯 |
 
-### 7.2 Chat API（Render）
+### 7.2 API 伺服器（Render）
 
 | 項目 | 說明 |
 |------|------|
 | 平台 | Render Free Tier |
 | 網址 | `https://talk-library.onrender.com` |
-| 容器 | Docker（Python 3.12-slim） |
+| 容器 | Docker（Python 3.12-slim），Docker context 為 repo 根目錄 |
 | 端口 | 8080 |
 | 環境變數 | `OPENAI_API_KEY`、`VECTOR_STORE_ID` |
 | 費用 | 免費（閒置 15 分鐘後休眠） |
+| API 端點 | `GET /api/videos`、`GET /api/summary?id=X&date=Y`、`POST /api/ask` |
 
 ### 7.3 CORS 設定
 
@@ -363,24 +377,25 @@ ALLOWED_ORIGINS = {
 
 ```
 觸發：每日 UTC 00:00 + 手動
-步驟：安裝 Python → 安裝 yt-dlp/ffmpeg → 執行管線 → 提交推送
+步驟：安裝 Python → 安裝 yt-dlp/ffmpeg → 執行管線 → 僅提交 data/index.json
 環境變數：OPENAI_API_KEY, ANTHROPIC_API_KEY
+（摘要 JSON 僅存於 CI 暫存，由 sync-kb 上傳至 Vector Store）
 ```
 
 ### 8.2 每日知識庫同步 (`daily-sync-kb.yml`)
 
 ```
 觸發：daily-summarize 完成後 + 手動
-步驟：抓取推文 → 抓取 Sheets → 同步 Vector Store → 提交推送
-環境變數：OPENAI_API_KEY, VECTOR_STORE_ID, X_BEARER_TOKEN,
+步驟：抓取 Sheets → 同步 Vector Store（不提交任何資料至 Git）
+環境變數：OPENAI_API_KEY, VECTOR_STORE_ID,
          GOOGLE_SERVICE_ACCOUNT_KEY, SHEET_ID_* (5個)
 ```
 
 ### 8.3 網站部署 (`deploy-pages.yml`)
 
 ```
-觸發：推送至 main（影響 site/ 或 data/）+ 手動
-步驟：複製 data/ 至 site/data/ → 部署至 GitHub Pages
+觸發：推送至 main（影響 site/）+ 手動
+步驟：部署 site/ 至 GitHub Pages（不含 data/）
 ```
 
 ### 8.4 手動上傳處理 (`manual-upload.yml`)
@@ -396,13 +411,12 @@ ALLOWED_ORIGINS = {
 UTC 00:00
     │
     ▼
-daily-summarize（抓取新影片、生成摘要）
+daily-summarize（抓取新影片、生成摘要、僅提交 index.json）
     │ 完成後自動觸發
     ▼
-daily-sync-kb（同步推文、Sheets、Vector Store）
-    │ 推送 data/ 變更
-    ▼
-deploy-pages（重新部署靜態網站）
+daily-sync-kb（抓取 Sheets → 同步 Vector Store，不提交 Git）
+
+deploy-pages 僅在 site/ 變更時觸發（獨立於資料管線）
 ```
 
 ---
@@ -464,7 +478,7 @@ deploy-pages（重新部署靜態網站）
 
 | 風險 | 說明 |
 |------|------|
-| GitHub Pages 容量限制 | 大量 JSON 檔案可能達到實際上限 |
+| ~~GitHub Pages 容量限制~~ | ✅ 已解決 — 資料不再部署至 Pages |
 | 客戶端搜尋效能 | 超過 1000+ 筆摘要時可能變慢 |
 | YouTube 字幕品質 | 自動生成字幕可能有辨識錯誤 |
 | 時區問題 | GitHub Actions 以 UTC 執行，可能影響日期判斷 |
@@ -485,7 +499,7 @@ deploy-pages（重新部署靜態網站）
 - [x] AI 問答功能已上線（Render）
 - [x] 引用來源格式化顯示
 - [x] 雙語支援（繁體/簡體）
-- [x] 資料版本控制（Git 歷史）
+- [x] 資料安全：敏感資料已從 Git 移除，僅存於 Vector Store
 - [x] Chat API 速率限制（Per-IP 20 req/min）
 - [x] Vector Store 啟動驗證
 - [x] Render keep-alive（GitHub Actions cron）
