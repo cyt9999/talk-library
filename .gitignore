@@ -23,3 +23,12 @@ data/uploads/*.mp4
 
 # Local dev copy of data in site/
 site/data/
+
+# Sensitive data — never commit
+data/summaries/
+data/sheets/
+data/tweets/
+data/mcp/
+data/test-reports/
+data/docs/
+data/uploads/
