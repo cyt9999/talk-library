@@ -352,7 +352,7 @@ web_demo.py（Railway）
 | 項目 | 說明 |
 |------|------|
 | 平台 | Railway |
-| 網址 | `https://talk-ai-api-production.up.railway.app` |
+| 網址 | `https://talk-library.up.railway.app` |
 | 容器 | Docker（Python 3.12-slim），Docker context 為 repo 根目錄 |
 | 端口 | 8080 |
 | 環境變數 | `OPENAI_API_KEY`、`VECTOR_STORE_ID` |
@@ -363,7 +363,7 @@ web_demo.py（Railway）
 ```python
 ALLOWED_ORIGINS = {
     "https://cyt9999.github.io",
-    "https://talk-ai-api-production.up.railway.app",
+    "https://talk-library.up.railway.app",
     "http://localhost:5500",
 }
 ```

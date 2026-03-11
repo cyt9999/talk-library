@@ -12,4 +12,4 @@ jobs:
     steps:
       - name: Ping health endpoint
         run: |
-          curl -sf https://talk-ai-api-production.up.railway.app/health || echo "Service unavailable (may be deploying)"
+          curl -sf https://talk-library.up.railway.app/health || echo "Service unavailable (may be deploying)"

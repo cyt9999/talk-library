@@ -19,7 +19,7 @@ var TalkApp = (function () {
     if (meta && meta.content) {
       return meta.content;
     }
-    return 'https://talk-ai-api-production.up.railway.app';
+    return 'https://talk-library.up.railway.app';
   })();
 
   // Data base path — kept for any remaining static data references
