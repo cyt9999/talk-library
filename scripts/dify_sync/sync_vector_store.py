@@ -11,9 +11,10 @@ from openai import OpenAI
 
 from config import (
     VECTOR_STORE_ID, SUMMARIES_DIR, TWEETS_FILE,
-    SHEETS_DIR, DOCS_DIR
+    SHEETS_DIR, DOCS_DIR, MCP_RAW_DIR
 )
 from convert_and_upload import summary_to_markdown, tweets_to_markdown_by_week
+from fetch_mcp_content import convert_all_mcp_data
 
 # Verify API key is available before proceeding
 api_key = os.getenv("OPENAI_API_KEY", "")
@@ -165,6 +166,13 @@ def convert_app_guide():
     return [("app-guide.md", content)]
 
 
+def convert_mcp():
+    """Convert MCP raw JSON data to Markdown files."""
+    if not os.path.isdir(MCP_RAW_DIR):
+        return []
+    return convert_all_mcp_data()
+
+
 def sync(dry_run=False):
     """Main sync: convert all → diff → upload new/changed → delete removed."""
     vector_store = get_or_create_vector_store()
@@ -178,6 +186,7 @@ def sync(dry_run=False):
         ("Tweets", convert_tweets),
         ("Google Sheets", convert_sheets),
         ("App guide", convert_app_guide),
+        ("MCP content", convert_mcp),
     ]:
         files = converter()
         print(f"  {label}: {len(files)} files", file=sys.stderr)
@@ -197,7 +206,7 @@ def sync(dry_run=False):
     for name, content in all_files:
         if name not in existing:
             to_upload.append((name, content, "new"))
-        elif name.startswith("sheet-") or name.startswith("tweets-"):
+        elif name.startswith("sheet-") or name.startswith("tweets-") or name.startswith("chatroom-") or name.startswith("club-"):
             # Always re-upload sheets (daily data) and tweet files
             to_upload.append((name, content, "update"))
             to_delete.append((name, existing[name]))
@@ -223,14 +232,37 @@ def sync(dry_run=False):
         print(f"  Deleting: {name}", file=sys.stderr)
         delete_file(vs_id, file_id)
 
-    # 5. Upload new/changed
-    uploaded = 0
-    for name, content, reason in to_upload:
-        print(f"  Uploading: {name} ({reason})", file=sys.stderr)
-        upload_file(vs_id, name, content)
-        uploaded += 1
+    # 5. Upload new/changed - batch approach for speed
+    if not to_upload:
+        print(f"\nSync complete: 0 uploaded, {len(to_delete)} deleted", file=sys.stderr)
+        return
 
-    print(f"\nSync complete: {uploaded} uploaded, {len(to_delete)} deleted", file=sys.stderr)
+    print(f"  Uploading {len(to_upload)} files to OpenAI...", file=sys.stderr)
+    file_ids = []
+    for name, content, reason in to_upload:
+        tmp = tempfile.NamedTemporaryFile(
+            mode='w', suffix='.md', delete=False, encoding='utf-8',
+            prefix=name.replace('.md', '_')
+        )
+        try:
+            tmp.write(content)
+            tmp.close()
+            with open(tmp.name, 'rb') as f:
+                file_obj = client.files.create(file=f, purpose="assistants")
+            file_ids.append(file_obj.id)
+            print(f"    Uploaded: {name} ({reason}) -> {file_obj.id}", file=sys.stderr)
+        finally:
+            os.unlink(tmp.name)
+
+    # Batch attach to vector store using file_batches
+    print(f"  Attaching {len(file_ids)} files to vector store...", file=sys.stderr)
+    batch = client.vector_stores.file_batches.create_and_poll(
+        vector_store_id=vs_id,
+        file_ids=file_ids
+    )
+    print(f"  Batch status: {batch.status}, counts: {batch.file_counts}", file=sys.stderr)
+
+    print(f"\nSync complete: {len(file_ids)} uploaded, {len(to_delete)} deleted", file=sys.stderr)
 
 
 def main():

@@ -274,6 +274,32 @@ var ChatModule = (function () {
       return sheetNames[sheetMatch[1]] || '📊 ' + sheetMatch[1];
     }
 
+    // chatroom-10918-2026-01-15 → 💬 社團大廳 [2026/01/15]
+    var chatroomMatch = name.match(/^chatroom-(\d+)-(\d{4})-(\d{2})-(\d{2})$/);
+    if (chatroomMatch) {
+      var boardNames = {
+        '10918': '社團大廳',
+        '10919': '持倉/總經',
+        '10921': 'VIP會員專屬',
+        '12784': 'VIP聊天室'
+      };
+      var boardLabel = boardNames[chatroomMatch[1]] || '聊天室';
+      return '💬 ' + boardLabel + ' [' + chatroomMatch[2] + '/' + chatroomMatch[3] + '/' + chatroomMatch[4] + ']';
+    }
+
+    // club-10918-2026-01-15 → 💬 社團文章 [2026/01/15]
+    var clubMatch = name.match(/^club-(\d+)-(\d{4})-(\d{2})-(\d{2})$/);
+    if (clubMatch) {
+      var clubBoardNames = {
+        '10918': '社團大廳',
+        '10919': '持倉/總經',
+        '10921': 'VIP會員專屬',
+        '12784': 'VIP聊天室'
+      };
+      var clubLabel = clubBoardNames[clubMatch[1]] || '社團';
+      return '💬 ' + clubLabel + '文章 [' + clubMatch[2] + '/' + clubMatch[3] + '/' + clubMatch[4] + ']';
+    }
+
     // app-guide → 📖 使用指南
     if (name === 'app-guide') {
       return '📖 使用指南';

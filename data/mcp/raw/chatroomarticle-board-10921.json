@@ -1,0 +1,104 @@
+{
+  "window": {
+    "startAt": "2025-12-11T00:00:00+08:00",
+    "endAt": "2026-03-11T23:59:59+08:00",
+    "startTimeMs": 1765382400000,
+    "endTimeMs": 1773244799000
+  },
+  "source": {
+    "type": "ChatroomArticle",
+    "boardId": "10921"
+  },
+  "total": 11,
+  "chatroomArticles": [
+    {
+      "articleId": "177104066",
+      "creatorId": 19463673,
+      "creatorName": "MassimoChen",
+      "createTime": 1772213922355,
+      "contentText": "最新直播回放一直出現錯誤，無法觀看",
+      "reply": null
+    },
+    {
+      "articleId": "177098122",
+      "creatorId": 19324769,
+      "creatorName": "9ts5j8ujnc",
+      "createTime": 1772174787148,
+      "contentText": "talk君的观点是推动。 \n\nJoseph W 一两周前的market weekly举了一个例子是压抑。 \n\n我认为生产力一定会提升，可是需求端呢？ 用JW的例子，会变成需求端（付钱的人和企业）减少了。 \n\n分享我的看法：\n1. 最后还是要",
+      "reply": null
+    },
+    {
+      "articleId": "176960509",
+      "creatorId": 19335151,
+      "creatorName": "up8ntfseru",
+      "createTime": 1771525945434,
+      "contentText": "感觉逃课君对于会员与否没有太大区别，我需要的仓位更新不更新，买卖信息是否是会员都看得见，为什么要买会员？希望花更多时间经营app",
+      "reply": null
+    },
+    {
+      "articleId": "176778757",
+      "creatorId": 19349330,
+      "creatorName": "fjlbejh6mf",
+      "createTime": 1770387867008,
+      "contentText": "感觉这个App里的数据不是每天更新的！ 例如昨天收市的高于20日平均线的股票占比数据就是错的！",
+      "reply": null
+    },
+    {
+      "articleId": "176724163",
+      "creatorId": 20058329,
+      "creatorName": "q01ehip4w5",
+      "createTime": 1770253637186,
+      "contentText": "感觉 VIP 和普通会员在可见信息上的差异不太明显，可能是我还没有充分了解 VIP 的功能。\n不知道其他 VIP 是否也有同样的感受。",
+      "reply": null
+    },
+    {
+      "articleId": "176719559",
+      "creatorId": 19363397,
+      "creatorName": "tianjinmouse",
+      "createTime": 1770228371299,
+      "contentText": "最近股市跌跌不休，手里现金有但不是非常多。除了微软，就是坐等下一个暴雷的大科技，环伺四周，江山一片红，茫茫然不知该开或加哪个标的。心仪的股票很多，但是面对众多的sale,选择综合症犯了😅不知道是不是只有我这个菜鸟有这种迷茫。请各位大牛分享心得。",
+      "reply": null
+    },
+    {
+      "articleId": "176600875",
+      "creatorId": 19323806,
+      "creatorName": "cran_sol",
+      "createTime": 1769762172414,
+      "contentText": "想问一下桃总，持仓的beta里是不考虑现金的，还是桃总现在是满仓\n\n如果是不考虑现金的话，那桃总对于持仓的beta其实一直说的都是纯正股仓位的beta，那现在1.3确实蛮低的了\n\n我在计算自己总仓位的beta一直都是把现金部分的beta按0计算的。",
+      "reply": null
+    },
+    {
+      "articleId": "176391859",
+      "creatorId": 19335151,
+      "creatorName": "up8ntfseru",
+      "createTime": 1769101498917,
+      "contentText": "talk君有WhatsApp的分享群？突然看见链接又没了",
+      "reply": null
+    },
+    {
+      "articleId": "175974275",
+      "creatorId": 19326048,
+      "creatorName": "frankaaa33",
+      "createTime": 1767721445860,
+      "contentText": "可以在k線的頁面加入rsi 嗎",
+      "reply": null
+    },
+    {
+      "articleId": "175615073",
+      "creatorId": 20796864,
+      "creatorName": "s2zhe8ko90",
+      "createTime": 1766045539222,
+      "contentText": "app更新之后点开语音回放/会员视频加载不出来",
+      "reply": null
+    },
+    {
+      "articleId": "175473858",
+      "creatorId": 19439146,
+      "creatorName": "Talk君小助手",
+      "createTime": 1765458600000,
+      "contentText": "谢谢大家今天在语音直播里的热烈参与与回馈！\n所有建议我们都已收录，之后也会持续优化🙏🏻\n\n接下来的直播，我们开放 VIP 专属许愿‼️\n想听什么主题？想让 Talk君拆哪个方向？\n直接在底下留言，我们会优先讨论安排\n\n期待看到大家的许愿清单！\n\n📍 主题：由您决定✨\n\n⏰ 时间：\n12/14 (日) 美东 20:00\n12/14 (日) 美西 17:00\n12/15 (一) 北京 09:00",
+      "reply": null
+    }
+  ],
+  "warnings": []
+}

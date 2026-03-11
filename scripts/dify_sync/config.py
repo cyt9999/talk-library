@@ -18,6 +18,7 @@ TWEETS_DIR = os.path.join(ROOT_DIR, 'data', 'tweets')
 TWEETS_FILE = os.path.join(TWEETS_DIR, 'tweets.json')
 SHEETS_DIR = os.path.join(ROOT_DIR, 'data', 'sheets')
 DOCS_DIR = os.path.join(ROOT_DIR, 'data', 'docs')
+MCP_RAW_DIR = os.path.join(ROOT_DIR, 'data', 'mcp', 'raw')
 
 # Google Sheets
 GOOGLE_SERVICE_ACCOUNT_KEY = os.getenv("GOOGLE_SERVICE_ACCOUNT_KEY", "")
