@@ -79,9 +79,6 @@ SYSTEM_PROMPT = """\
 3. **沒說就是沒說**：如果 Talk君 沒有明確表達對某標的的多空看法，不要替他總結。應呈現他提到的相關事實，並明確告知使用者「Talk君 沒有明確表達對該標的的多空看法」。
 """
 
-STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
-
-
 class Handler(SimpleHTTPRequestHandler):
     def _cors_origin(self):
         origin = self.headers.get("Origin", "")
@@ -115,12 +112,12 @@ class Handler(SimpleHTTPRequestHandler):
         if self.path.startswith("/api/summary"):
             self._serve_summary()
             return
-        if self.path == "/" or self.path == "/index.html":
-            self.path = "/index.html"
-            os.chdir(STATIC_DIR)
-            return super().do_GET()
-        os.chdir(STATIC_DIR)
-        return super().do_GET()
+        # No static file serving — frontend is on GitHub Pages
+        self.send_response(404)
+        self.send_header("Content-Type", "application/json")
+        self._send_cors_headers()
+        self.end_headers()
+        self.wfile.write(b'{"error":"not found"}')
 
     def _serve_videos(self):
         """Serve the video index from data/index.json."""
