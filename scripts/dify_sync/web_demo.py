@@ -109,12 +109,90 @@ class Handler(SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(b"ok")
             return
+        if self.path == "/api/videos":
+            self._serve_videos()
+            return
+        if self.path.startswith("/api/summary"):
+            self._serve_summary()
+            return
         if self.path == "/" or self.path == "/index.html":
             self.path = "/index.html"
             os.chdir(STATIC_DIR)
             return super().do_GET()
         os.chdir(STATIC_DIR)
         return super().do_GET()
+
+    def _serve_videos(self):
+        """Serve the video index from data/index.json."""
+        index_path = os.path.join(os.path.dirname(__file__), "data", "index.json")
+        try:
+            with open(index_path, "r", encoding="utf-8") as f:
+                data = f.read()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self._send_cors_headers()
+            self.end_headers()
+            self.wfile.write(data.encode("utf-8"))
+        except FileNotFoundError:
+            self.send_response(404)
+            self.send_header("Content-Type", "application/json")
+            self._send_cors_headers()
+            self.end_headers()
+            self.wfile.write(b'{"error":"index.json not found"}')
+
+    def _serve_summary(self):
+        """Serve a video summary by querying Vector Store."""
+        from urllib.parse import urlparse, parse_qs
+        params = parse_qs(urlparse(self.path).query)
+        video_id = params.get("id", [None])[0]
+        date = params.get("date", [None])[0]
+
+        if not video_id:
+            self.send_response(400)
+            self.send_header("Content-Type", "application/json")
+            self._send_cors_headers()
+            self.end_headers()
+            self.wfile.write(b'{"error":"missing id param"}')
+            return
+
+        try:
+            prompt = (
+                f"Return the COMPLETE content of the video summary for "
+                f"video ID {video_id} dated {date or 'unknown'}. "
+                f"Return ALL key points, tickers, and the full paragraph summary. "
+                f"Do not summarize or shorten."
+            )
+            response = client.responses.create(
+                model="gpt-4o-mini",
+                tools=[{"type": "file_search",
+                        "vector_store_ids": [VECTOR_STORE_ID]}],
+                input=prompt
+            )
+
+            answer = ""
+            for item in response.output:
+                if item.type == "message":
+                    for block in item.content:
+                        if block.type == "output_text":
+                            answer = block.text
+
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self._send_cors_headers()
+            self.end_headers()
+            self.wfile.write(json.dumps({
+                "id": video_id,
+                "date": date,
+                "summary": answer
+            }, ensure_ascii=False).encode("utf-8"))
+        except Exception as e:
+            self.send_response(500)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self._send_cors_headers()
+            self.end_headers()
+            self.wfile.write(json.dumps({
+                "error": str(e)
+            }, ensure_ascii=False).encode("utf-8"))
 
     def do_POST(self):
         if self.path == "/api/ask":

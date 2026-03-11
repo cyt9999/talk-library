@@ -3,7 +3,7 @@ services:
     name: talk-ai-api
     runtime: docker
     dockerfilePath: scripts/dify_sync/Dockerfile
-    dockerContext: scripts/dify_sync
+    dockerContext: .
     region: singapore
     plan: free
     envVars:

@@ -9,8 +9,20 @@ var TalkApp = (function () {
      Configuration
   ---------------------------------------------------------- */
 
-  // Data base path — always use data/ relative to current page.
-  // In local dev: site/data/ (copied). In deployed (GitHub Pages): data/ (copied by workflow).
+  // API base URL for fetching video data from Render API
+  var API_BASE = (function () {
+    var host = window.location.hostname;
+    if (host === 'localhost' || host === '127.0.0.1') {
+      return 'http://localhost:8080';
+    }
+    var meta = document.querySelector('meta[name="api-base-url"]');
+    if (meta && meta.content) {
+      return meta.content;
+    }
+    return 'https://talk-library.onrender.com';
+  })();
+
+  // Data base path — kept for any remaining static data references
   var DATA_BASE = 'data/';
 
   var LANG_KEY = 'talkjun_lang';
@@ -168,7 +180,7 @@ var TalkApp = (function () {
   ---------------------------------------------------------- */
 
   function fetchIndex() {
-    return fetch(DATA_BASE + 'index.json')
+    return fetch(API_BASE + '/api/videos')
       .then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.json();
@@ -176,17 +188,31 @@ var TalkApp = (function () {
   }
 
   /**
-   * Fetch a summary JSON.
-   * The files are named {publishedAt}-{id}.json (e.g. 2026-02-20-sample001.json).
-   * @param {string} id - The summary ID
+   * Fetch a video summary from the API.
+   * @param {string} id - The video ID
    * @param {string} publishedAt - The published date (YYYY-MM-DD)
    */
   function fetchSummary(id, publishedAt) {
-    var filename = publishedAt ? (publishedAt + '-' + id) : id;
-    return fetch(DATA_BASE + 'summaries/' + encodeURIComponent(filename) + '.json')
+    var params = 'id=' + encodeURIComponent(id);
+    if (publishedAt) params += '&date=' + encodeURIComponent(publishedAt);
+    return fetch(API_BASE + '/api/summary?' + params)
       .then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.json();
+      })
+      .then(function (data) {
+        // Normalize: API returns {id, date, summary} as text
+        return {
+          id: data.id,
+          videoId: data.id,
+          publishedAt: data.date,
+          title: '',
+          summary: {
+            'zh-Hant': { paragraph: data.summary, keyPoints: [], tags: [] },
+            'zh-Hans': { paragraph: data.summary, keyPoints: [], tags: [] }
+          },
+          tickers: []
+        };
       });
   }
 

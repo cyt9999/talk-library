@@ -2,11 +2,12 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-COPY requirements-api.txt .
-RUN pip install --no-cache-dir -r requirements-api.txt
+COPY scripts/dify_sync/requirements-api.txt requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY config.py .
-COPY web_demo.py .
+COPY scripts/dify_sync/config.py .
+COPY scripts/dify_sync/web_demo.py .
+COPY data/index.json ./data/index.json
 
 ENV PORT=8080
 EXPOSE 8080
