@@ -37,9 +37,10 @@ jobs:
       - name: Install dependencies
         run: pip install -r scripts/requirements.txt
 
-      - name: Fetch tweets
-        run: cd scripts/dify_sync && python3 fetch_tweets.py
-        continue-on-error: true
+      # Disabled: X API rate limit reached
+      # - name: Fetch tweets
+      #   run: cd scripts/dify_sync && python3 fetch_tweets.py
+      #   continue-on-error: true
 
       - name: Fetch Google Sheets
         run: cd scripts/dify_sync && python3 fetch_sheets.py
