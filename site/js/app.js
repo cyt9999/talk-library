@@ -9,18 +9,8 @@ var TalkApp = (function () {
      Configuration
   ---------------------------------------------------------- */
 
-  // API base URL for fetching video data from Railway API
-  var API_BASE = (function () {
-    var host = window.location.hostname;
-    if (host === 'localhost' || host === '127.0.0.1') {
-      return 'http://localhost:8080';
-    }
-    var meta = document.querySelector('meta[name="api-base-url"]');
-    if (meta && meta.content) {
-      return meta.content;
-    }
-    return 'https://talk-library.up.railway.app';
-  })();
+  // API base — same origin (Railway serves both frontend and API)
+  var API_BASE = '';
 
   // Data base path — kept for any remaining static data references
   var DATA_BASE = 'data/';

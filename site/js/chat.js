@@ -9,17 +9,8 @@ var ChatModule = (function () {
      Configuration
   ---------------------------------------------------------- */
 
-  // Auto-detect API URL: use localhost for dev, override for production
-  var API_URL = (function () {
-    var host = window.location.hostname;
-    if (host === 'localhost' || host === '127.0.0.1') {
-      return 'http://localhost:8080/api/ask';
-    }
-    // For production, check for a configured endpoint
-    var meta = document.querySelector('meta[name="chat-api-url"]');
-    if (meta && meta.content) return meta.content;
-    return 'http://localhost:8080/api/ask';
-  })();
+  // API URL — same origin (Railway serves both frontend and API)
+  var API_URL = '/api/ask';
 
   var _messagesEl = null;
   var _inputEl = null;

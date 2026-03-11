@@ -1,10 +1,8 @@
-name: Deploy to GitHub Pages
+name: Deploy to GitHub Pages (disabled — frontend now on Railway)
 
+# Disabled: frontend is served by Railway alongside the API
+# To re-enable, uncomment the triggers below
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'site/**'
   workflow_dispatch:
 
 permissions:
@@ -13,6 +11,7 @@ permissions:
 
 jobs:
   deploy:
+    if: false  # Disabled
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
