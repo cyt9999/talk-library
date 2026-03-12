@@ -1,16 +1,21 @@
 #!/usr/bin/env python3
 """Q&A API server. Runs locally or on Cloud Run."""
 
+import base64
 import json
 import os
 import sys
 import time
 from collections import defaultdict
+from datetime import date
 from http.server import HTTPServer, SimpleHTTPRequestHandler
+
+import requests as http_requests
 
 from openai import OpenAI
 
-from config import VECTOR_STORE_ID
+from config import (VECTOR_STORE_ID, DAILY_FREE_LIMIT, PERMISSION_CACHE_TTL,
+                     CMONEY_LICENSE_URL, CMONEY_AUTH_TYPE, CMONEY_SUBJECT_ID)
 
 client = OpenAI()
 
@@ -18,6 +23,10 @@ client = OpenAI()
 RATE_LIMIT = 20          # max requests per window
 RATE_WINDOW = 60         # window in seconds
 _request_log = defaultdict(list)   # ip -> [timestamp, ...]
+
+# --- Permission Control ---
+_permission_cache = {}   # uid -> {"is_premium": bool, "cached_at": float}
+_daily_usage = {}        # "uid:<id>" or "ip:<addr>" -> {"count": int, "date": "YYYY-MM-DD"}
 
 
 def _is_rate_limited(ip):
@@ -30,6 +39,56 @@ def _is_rate_limited(ip):
         return True
     _request_log[ip].append(now)
     return False
+
+
+def _decode_token(token):
+    """Decode JWT payload to extract uid (sub) and exp. No signature verification."""
+    try:
+        payload_b64 = token.split(".")[1]
+        padding = 4 - len(payload_b64) % 4
+        if padding != 4:
+            payload_b64 += "=" * padding
+        payload = json.loads(base64.urlsafe_b64decode(payload_b64))
+        uid = payload.get("sub")
+        exp = payload.get("exp")
+        return uid, exp
+    except Exception:
+        return None, None
+
+
+def _check_permission(uid, token):
+    """Check if user is premium via cache or CMoney license API."""
+    now = time.time()
+    cached = _permission_cache.get(uid)
+    if cached and (now - cached["cached_at"]) < PERMISSION_CACHE_TTL:
+        return cached["is_premium"]
+
+    try:
+        url = f"{CMONEY_LICENSE_URL}/{CMONEY_AUTH_TYPE}/{CMONEY_SUBJECT_ID}"
+        resp = http_requests.get(url, headers={"Authorization": f"Bearer {token}"}, timeout=5)
+        is_premium = resp.status_code == 200
+    except Exception:
+        is_premium = False
+
+    _permission_cache[uid] = {"is_premium": is_premium, "cached_at": now}
+    return is_premium
+
+
+def _check_daily_quota(key):
+    """Check and increment daily usage. Returns (allowed: bool, remaining: int)."""
+    today = date.today().isoformat()
+    usage = _daily_usage.get(key)
+
+    if not usage or usage["date"] != today:
+        _daily_usage[key] = {"count": 1, "date": today}
+        return True, DAILY_FREE_LIMIT - 1
+
+    if usage["count"] >= DAILY_FREE_LIMIT:
+        return False, 0
+
+    usage["count"] += 1
+    return True, DAILY_FREE_LIMIT - usage["count"]
+
 
 # Allowed origins for CORS (GitHub Pages + local dev)
 ALLOWED_ORIGINS = {
@@ -118,7 +177,7 @@ class Handler(SimpleHTTPRequestHandler):
         if origin:
             self.send_header("Access-Control-Allow-Origin", origin)
             self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-            self.send_header("Access-Control-Allow-Headers", "Content-Type")
+            self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
     def do_OPTIONS(self):
         self.send_response(204)
@@ -217,44 +276,76 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_POST(self):
         if self.path == "/api/ask":
-            # Rate limit check
+            # Rate limit check (existing — per-IP, anti-abuse)
             client_ip = self.client_address[0]
             if _is_rate_limited(client_ip):
-                self.send_response(429)
-                self.send_header("Content-Type", "application/json; charset=utf-8")
-                self._send_cors_headers()
-                self.end_headers()
-                self.wfile.write(json.dumps({
-                    "error": "請求過於頻繁，請稍後再試"
-                }, ensure_ascii=False).encode("utf-8"))
+                self._send_json(429, {"error": "請求過於頻繁，請稍後再試"})
                 return
 
+            # --- Permission check ---
+            auth_header = self.headers.get("Authorization", "")
+            token = auth_header.replace("Bearer ", "") if auth_header.startswith("Bearer ") else ""
+
+            remaining_quota = None
+
+            if token:
+                uid, exp = _decode_token(token)
+                if not uid:
+                    self._send_json(401, {"error": "無效的登入憑證，請重新登入"})
+                    return
+                if exp and time.time() > exp:
+                    self._send_json(401, {"error": "登入已過期，請重新登入"})
+                    return
+
+                is_premium = _check_permission(uid, token)
+                if not is_premium:
+                    allowed, remaining_quota = _check_daily_quota(f"uid:{uid}")
+                    if not allowed:
+                        self._send_json(403, {
+                            "error": "今日免費額度已用完，升級付費版即可無限提問！",
+                            "quota_exceeded": True,
+                            "remaining_quota": 0
+                        })
+                        return
+            else:
+                # No token — anonymous, IP-based limit
+                allowed, remaining_quota = _check_daily_quota(f"ip:{client_ip}")
+                if not allowed:
+                    self._send_json(403, {
+                        "error": "今日免費額度已用完，登入並升級付費版即可無限提問！",
+                        "quota_exceeded": True,
+                        "remaining_quota": 0
+                    })
+                    return
+
+            # --- Process question ---
             length = int(self.headers.get("Content-Length", 0))
             body = json.loads(self.rfile.read(length))
             question = body.get("question", "")
 
             try:
                 answer, sources = ask(question)
-                self.send_response(200)
-                self.send_header("Content-Type", "application/json; charset=utf-8")
-                self._send_cors_headers()
-                self.end_headers()
-                self.wfile.write(json.dumps({
+                response_data = {
                     "answer": answer,
                     "sources": sources
-                }, ensure_ascii=False).encode("utf-8"))
+                }
+                if remaining_quota is not None:
+                    response_data["remaining_quota"] = remaining_quota
+                self._send_json(200, response_data)
             except Exception as e:
-                self.send_response(500)
-                self.send_header("Content-Type", "application/json; charset=utf-8")
-                self._send_cors_headers()
-                self.end_headers()
-                self.wfile.write(json.dumps({
-                    "error": str(e)
-                }, ensure_ascii=False).encode("utf-8"))
+                self._send_json(500, {"error": str(e)})
         else:
             self.send_response(404)
             self._send_cors_headers()
             self.end_headers()
+
+    def _send_json(self, status_code, data):
+        """Send a JSON response with CORS headers."""
+        self.send_response(status_code)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self._send_cors_headers()
+        self.end_headers()
+        self.wfile.write(json.dumps(data, ensure_ascii=False).encode("utf-8"))
 
     def log_message(self, format, *args):
         print(f"[{self.log_date_time_string()}] {format % args}", file=sys.stderr)
