@@ -18,6 +18,11 @@ var ChatModule = (function () {
   var _isSending = false;
   var _videoIndex = {};  // videoId → title lookup
 
+  function _getTokenFromCookie() {
+    var match = document.cookie.match(/(?:^|;\s*)cm_at=([^;]*)/);
+    return match ? decodeURIComponent(match[1]) : '';
+  }
+
   /* ----------------------------------------------------------
      Initialization
   ---------------------------------------------------------- */
@@ -108,24 +113,45 @@ var ChatModule = (function () {
     _isSending = true;
     _sendBtn.disabled = true;
 
+    var headers = { 'Content-Type': 'application/json' };
+    var token = _getTokenFromCookie();
+    if (token) {
+      headers['Authorization'] = 'Bearer ' + token;
+    }
+
     fetch(API_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: headers,
       body: JSON.stringify({ question: text })
     })
       .then(function (res) {
         if (res.status === 429) throw new Error('RATE_LIMIT');
+        if (res.status === 401) throw new Error('AUTH_EXPIRED');
+        if (res.status === 403) {
+          return res.json().then(function (data) {
+            var err = new Error('QUOTA_EXCEEDED');
+            err.message_text = data.error;
+            throw err;
+          });
+        }
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.json();
       })
       .then(function (data) {
         thinkingEl.remove();
         _addAiBubble(data.answer || '', data.sources || []);
+        if (data.remaining_quota !== undefined && data.remaining_quota !== null) {
+          _showQuotaHint(data.remaining_quota);
+        }
       })
       .catch(function (err) {
         thinkingEl.remove();
         if (err.message === 'RATE_LIMIT') {
           _addErrorBubble(TalkApp.label('chatRateLimit'));
+        } else if (err.message === 'AUTH_EXPIRED') {
+          _addErrorBubble('登入已過期，請重新開啟頁面');
+        } else if (err.message === 'QUOTA_EXCEEDED') {
+          _addErrorBubble(err.message_text || '今日免費額度已用完，升級付費版即可無限提問！');
         } else {
           _addErrorBubble(TalkApp.label('chatError'));
         }
@@ -203,6 +229,18 @@ var ChatModule = (function () {
     _messagesEl.appendChild(el);
     _scrollToBottom();
     return el;
+  }
+
+  function _showQuotaHint(remaining) {
+    // Remove previous hint if exists
+    var prev = _messagesEl.querySelector('.chat-quota-hint');
+    if (prev) prev.remove();
+
+    var hint = document.createElement('div');
+    hint.className = 'chat-quota-hint';
+    hint.textContent = '今日免費剩餘 ' + remaining + '/' + 3 + ' 次';
+    _messagesEl.appendChild(hint);
+    _scrollToBottom();
   }
 
   /* ----------------------------------------------------------
