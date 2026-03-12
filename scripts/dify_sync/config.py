@@ -30,3 +30,10 @@ GOOGLE_SHEETS = [
     {"id": os.getenv("SHEET_ID_BETA", ""), "slug": "portfolio-beta", "name": "投資talk君-持倉Beta"},
     {"id": os.getenv("SHEET_ID_COMMUNITY", ""), "slug": "community-posts", "name": "爬蟲-投資talk君2025文章"},
 ]
+
+# Permission control
+DAILY_FREE_LIMIT = int(os.getenv("DAILY_FREE_LIMIT", "3"))
+PERMISSION_CACHE_TTL = int(os.getenv("PERMISSION_CACHE_TTL", "600"))  # seconds
+CMONEY_LICENSE_URL = "https://license.cmoney.tw/AuthorizationServer/Authorization"
+CMONEY_AUTH_TYPE = "MobilePaid"
+CMONEY_SUBJECT_ID = "245"
