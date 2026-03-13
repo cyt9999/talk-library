@@ -1,0 +1,9 @@
+2026-03-09T00:58:03.8080000Z Evaluating sync.if
+2026-03-09T00:58:03.8080000Z Evaluating: (success() && (((github.event_name == 'workflow_dispatch') || (github.event.workflow_run.conclusion == 'success'))))
+2026-03-09T00:58:03.8080000Z Expanded: (true && (('workflow_run' == 'workflow_dispatch') || ('success' == 'success')))
+2026-03-09T00:58:03.8080000Z Result: true
+2026-03-09T00:58:03.8110000Z Requested labels: ubuntu-latest
+2026-03-09T00:58:03.8110000Z Job defined at: cyt9999/talk-library/.github/workflows/daily-sync-kb.yml@refs/heads/main
+2026-03-09T00:58:03.8110000Z Waiting for a runner to pick up this job...
+2026-03-09T00:58:04.3130000Z Job is waiting for a hosted runner to come online.
+2026-03-09T00:58:04.3130000Z Job is about to start running on the hosted runner: GitHub Actions 1000000399

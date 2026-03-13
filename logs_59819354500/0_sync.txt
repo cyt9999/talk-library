@@ -1,0 +1,478 @@
+﻿2026-03-09T00:58:07.5166306Z Current runner version: '2.332.0'
+2026-03-09T00:58:07.5191947Z ##[group]Runner Image Provisioner
+2026-03-09T00:58:07.5193142Z Hosted Compute Agent
+2026-03-09T00:58:07.5194000Z Version: 20260213.493
+2026-03-09T00:58:07.5194978Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+2026-03-09T00:58:07.5196270Z Build Date: 2026-02-13T00:28:41Z
+2026-03-09T00:58:07.5197529Z Worker ID: ***146d9ee8-1510-48f8-b9d9-791aedbaba54***
+2026-03-09T00:58:07.5198544Z Azure Region: centralus
+2026-03-09T00:58:07.5199485Z ##[endgroup]
+2026-03-09T00:58:07.5201304Z ##[group]Operating System
+2026-03-09T00:58:07.5202277Z Ubuntu
+2026-03-09T00:58:07.5203100Z 24.04.3
+2026-03-09T00:58:07.5203861Z LTS
+2026-03-09T00:58:07.5204641Z ##[endgroup]
+2026-03-09T00:58:07.5205418Z ##[group]Runner Image
+2026-03-09T00:58:07.5206686Z Image: ubuntu-24.04
+2026-03-09T00:58:07.5207567Z Version: 20260302.42.1
+2026-03-09T00:58:07.5209107Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260302.42/images/ubuntu/Ubuntu2404-Readme.md
+2026-03-09T00:58:07.5210974Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260302.42
+2026-03-09T00:58:07.5212260Z ##[endgroup]
+2026-03-09T00:58:07.5213784Z ##[group]GITHUB_TOKEN Permissions
+2026-03-09T00:58:07.5216552Z Contents: write
+2026-03-09T00:58:07.5217551Z Metadata: read
+2026-03-09T00:58:07.5218314Z ##[endgroup]
+2026-03-09T00:58:07.5220725Z Secret source: Actions
+2026-03-09T00:58:07.5222450Z Prepare workflow directory
+2026-03-09T00:58:07.5767567Z Prepare all required actions
+2026-03-09T00:58:07.5812378Z Getting action download info
+2026-03-09T00:58:07.9177550Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-03-09T00:58:08.1107389Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-03-09T00:58:08.3066380Z Complete job name: sync
+2026-03-09T00:58:08.3788738Z ##[group]Run actions/checkout@v4
+2026-03-09T00:58:08.3789771Z with:
+2026-03-09T00:58:08.3790372Z   repository: cyt9999/talk-library
+2026-03-09T00:58:08.3791275Z   token: ***
+2026-03-09T00:58:08.3791857Z   ssh-strict: true
+2026-03-09T00:58:08.3792443Z   ssh-user: git
+2026-03-09T00:58:08.3793040Z   persist-credentials: true
+2026-03-09T00:58:08.3793672Z   clean: true
+2026-03-09T00:58:08.3794272Z   sparse-checkout-cone-mode: true
+2026-03-09T00:58:08.3794954Z   fetch-depth: 1
+2026-03-09T00:58:08.3795540Z   fetch-tags: false
+2026-03-09T00:58:08.3796311Z   show-progress: true
+2026-03-09T00:58:08.3796928Z   lfs: false
+2026-03-09T00:58:08.3797486Z   submodules: false
+2026-03-09T00:58:08.3798089Z   set-safe-directory: true
+2026-03-09T00:58:08.3798954Z env:
+2026-03-09T00:58:08.3800582Z   OPENAI_API_KEY: ***
+2026-03-09T00:58:08.3801298Z   VECTOR_STORE_ID: ***
+2026-03-09T00:58:08.3802532Z   X_BEARER_TOKEN: ***
+2026-03-09T00:58:08.3818648Z   GOOGLE_SERVICE_ACCOUNT_KEY: ***
+
+2026-03-09T00:58:08.3819575Z   SHEET_ID_MACRO: ***
+2026-03-09T00:58:08.3820353Z   SHEET_ID_POSITIONS: ***
+2026-03-09T00:58:08.3821173Z   SHEET_ID_DATASOURCES: ***
+2026-03-09T00:58:08.3821978Z   SHEET_ID_BETA: ***
+2026-03-09T00:58:08.3822740Z   SHEET_ID_COMMUNITY: ***
+2026-03-09T00:58:08.3823368Z ##[endgroup]
+2026-03-09T00:58:08.4954478Z Syncing repository: cyt9999/talk-library
+2026-03-09T00:58:08.4956763Z ##[group]Getting Git version info
+2026-03-09T00:58:08.4957765Z Working directory is '/home/runner/work/talk-library/talk-library'
+2026-03-09T00:58:08.4959070Z [command]/usr/bin/git version
+2026-03-09T00:58:08.5063922Z git version 2.53.0
+2026-03-09T00:58:08.5092017Z ##[endgroup]
+2026-03-09T00:58:08.5108214Z Temporarily overriding HOME='/home/runner/work/_temp/7178cb98-f374-4584-93b8-6fd2fdce95bc' before making global git config changes
+2026-03-09T00:58:08.5109842Z Adding repository directory to the temporary git global config as a safe directory
+2026-03-09T00:58:08.5113913Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/talk-library/talk-library
+2026-03-09T00:58:08.5160383Z Deleting the contents of '/home/runner/work/talk-library/talk-library'
+2026-03-09T00:58:08.5164178Z ##[group]Initializing the repository
+2026-03-09T00:58:08.5169171Z [command]/usr/bin/git init /home/runner/work/talk-library/talk-library
+2026-03-09T00:58:08.5305278Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-03-09T00:58:08.5307387Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-03-09T00:58:08.5394736Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-03-09T00:58:08.5396769Z hint: call:
+2026-03-09T00:58:08.5397716Z hint:
+2026-03-09T00:58:08.5398797Z hint: 	git config --global init.defaultBranch <name>
+2026-03-09T00:58:08.5400354Z hint:
+2026-03-09T00:58:08.5401657Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-03-09T00:58:08.5403629Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-03-09T00:58:08.5405230Z hint:
+2026-03-09T00:58:08.5406572Z hint: 	git branch -m <name>
+2026-03-09T00:58:08.5407748Z hint:
+2026-03-09T00:58:08.5409265Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-03-09T00:58:08.5411541Z Initialized empty Git repository in /home/runner/work/talk-library/talk-library/.git/
+2026-03-09T00:58:08.5415161Z [command]/usr/bin/git remote add origin https://github.com/cyt9999/talk-library
+2026-03-09T00:58:08.5419089Z ##[endgroup]
+2026-03-09T00:58:08.5420886Z ##[group]Disabling automatic garbage collection
+2026-03-09T00:58:08.5422321Z [command]/usr/bin/git config --local gc.auto 0
+2026-03-09T00:58:08.5429031Z ##[endgroup]
+2026-03-09T00:58:08.5430692Z ##[group]Setting up auth
+2026-03-09T00:58:08.5432242Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-03-09T00:58:08.5473348Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-03-09T00:58:08.5899279Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-03-09T00:58:08.5940205Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-03-09T00:58:08.6185661Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-03-09T00:58:08.6222227Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-03-09T00:58:08.6458410Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-03-09T00:58:08.6495633Z ##[endgroup]
+2026-03-09T00:58:08.6497037Z ##[group]Fetching the repository
+2026-03-09T00:58:08.6504985Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +2f8fcf4b806c7a7f61f45d99eab1e3432b8a1084:refs/remotes/origin/main
+2026-03-09T00:58:08.9992937Z From https://github.com/cyt9999/talk-library
+2026-03-09T00:58:08.9995074Z  * [new ref]         2f8fcf4b806c7a7f61f45d99eab1e3432b8a1084 -> origin/main
+2026-03-09T00:58:09.0028024Z ##[endgroup]
+2026-03-09T00:58:09.0029820Z ##[group]Determining the checkout info
+2026-03-09T00:58:09.0031838Z ##[endgroup]
+2026-03-09T00:58:09.0036422Z [command]/usr/bin/git sparse-checkout disable
+2026-03-09T00:58:09.0087482Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-03-09T00:58:09.0117618Z ##[group]Checking out the ref
+2026-03-09T00:58:09.0120692Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-03-09T00:58:09.0237349Z Switched to a new branch 'main'
+2026-03-09T00:58:09.0239428Z branch 'main' set up to track 'origin/main'.
+2026-03-09T00:58:09.0247197Z ##[endgroup]
+2026-03-09T00:58:09.0284983Z [command]/usr/bin/git log -1 --format=%H
+2026-03-09T00:58:09.0309750Z 2f8fcf4b806c7a7f61f45d99eab1e3432b8a1084
+2026-03-09T00:58:09.0654664Z ##[group]Run actions/setup-python@v5
+2026-03-09T00:58:09.0656510Z with:
+2026-03-09T00:58:09.0657594Z   python-version: 3.12
+2026-03-09T00:58:09.0658821Z   check-latest: false
+2026-03-09T00:58:09.0660335Z   token: ***
+2026-03-09T00:58:09.0661443Z   update-environment: true
+2026-03-09T00:58:09.0662733Z   allow-prereleases: false
+2026-03-09T00:58:09.0664013Z   freethreaded: false
+2026-03-09T00:58:09.0665157Z env:
+2026-03-09T00:58:09.0669119Z   OPENAI_API_KEY: ***
+2026-03-09T00:58:09.0670522Z   VECTOR_STORE_ID: ***
+2026-03-09T00:58:09.0673405Z   X_BEARER_TOKEN: ***
+2026-03-09T00:58:09.0714722Z   GOOGLE_SERVICE_ACCOUNT_KEY: ***
+
+2026-03-09T00:58:09.0716651Z   SHEET_ID_MACRO: ***
+2026-03-09T00:58:09.0718244Z   SHEET_ID_POSITIONS: ***
+2026-03-09T00:58:09.0719937Z   SHEET_ID_DATASOURCES: ***
+2026-03-09T00:58:09.0721575Z   SHEET_ID_BETA: ***
+2026-03-09T00:58:09.0723099Z   SHEET_ID_COMMUNITY: ***
+2026-03-09T00:58:09.0724315Z ##[endgroup]
+2026-03-09T00:58:09.2543322Z ##[group]Installed versions
+2026-03-09T00:58:09.2887125Z Successfully set up CPython (3.12.12)
+2026-03-09T00:58:09.2890478Z ##[endgroup]
+2026-03-09T00:58:09.3071282Z ##[group]Run pip install -r scripts/requirements.txt
+2026-03-09T00:58:09.3073859Z [36;1mpip install -r scripts/requirements.txt[0m
+2026-03-09T00:58:09.3180672Z shell: /usr/bin/bash -e ***0***
+2026-03-09T00:58:09.3182669Z env:
+2026-03-09T00:58:09.3187688Z   OPENAI_API_KEY: ***
+2026-03-09T00:58:09.3189753Z   VECTOR_STORE_ID: ***
+2026-03-09T00:58:09.3193455Z   X_BEARER_TOKEN: ***
+2026-03-09T00:58:09.3240482Z   GOOGLE_SERVICE_ACCOUNT_KEY: ***
+
+2026-03-09T00:58:09.3242870Z   SHEET_ID_MACRO: ***
+2026-03-09T00:58:09.3245086Z   SHEET_ID_POSITIONS: ***
+2026-03-09T00:58:09.3247544Z   SHEET_ID_DATASOURCES: ***
+2026-03-09T00:58:09.3249825Z   SHEET_ID_BETA: ***
+2026-03-09T00:58:09.3252036Z   SHEET_ID_COMMUNITY: ***
+2026-03-09T00:58:09.3254153Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.12/x64
+2026-03-09T00:58:09.3256989Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.12/x64/lib/pkgconfig
+2026-03-09T00:58:09.3260165Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.12/x64
+2026-03-09T00:58:09.3262862Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.12/x64
+2026-03-09T00:58:09.3265377Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.12/x64
+2026-03-09T00:58:09.3268072Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.12/x64/lib
+2026-03-09T00:58:09.3270301Z ##[endgroup]
+2026-03-09T00:58:11.8913645Z Collecting yt-dlp>=2024.0.0 (from -r scripts/requirements.txt (line 1))
+2026-03-09T00:58:11.9887131Z   Downloading yt_dlp-2026.3.3-py3-none-any.whl.metadata (182 kB)
+2026-03-09T00:58:12.1327148Z Collecting openai>=1.0.0 (from -r scripts/requirements.txt (line 2))
+2026-03-09T00:58:12.1483208Z   Downloading openai-2.26.0-py3-none-any.whl.metadata (29 kB)
+2026-03-09T00:58:12.1816070Z Collecting feedparser>=6.0.0 (from -r scripts/requirements.txt (line 3))
+2026-03-09T00:58:12.1983205Z   Downloading feedparser-6.0.12-py3-none-any.whl.metadata (2.7 kB)
+2026-03-09T00:58:12.2283138Z Collecting python-dotenv>=1.0.0 (from -r scripts/requirements.txt (line 4))
+2026-03-09T00:58:12.2435694Z   Downloading python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)
+2026-03-09T00:58:12.2839951Z Collecting requests>=2.31.0 (from -r scripts/requirements.txt (line 5))
+2026-03-09T00:58:12.2993498Z   Downloading requests-2.32.5-py3-none-any.whl.metadata (4.9 kB)
+2026-03-09T00:58:12.3521435Z Collecting google-auth>=2.0.0 (from -r scripts/requirements.txt (line 6))
+2026-03-09T00:58:12.3678022Z   Downloading google_auth-2.49.0-py3-none-any.whl.metadata (6.2 kB)
+2026-03-09T00:58:12.4365366Z Collecting google-api-python-client>=2.0.0 (from -r scripts/requirements.txt (line 7))
+2026-03-09T00:58:12.4521030Z   Downloading google_api_python_client-2.192.0-py3-none-any.whl.metadata (7.0 kB)
+2026-03-09T00:58:12.4863866Z Collecting anyio<5,>=3.5.0 (from openai>=1.0.0->-r scripts/requirements.txt (line 2))
+2026-03-09T00:58:12.5024247Z   Downloading anyio-4.12.1-py3-none-any.whl.metadata (4.3 kB)
+2026-03-09T00:58:12.5271357Z Collecting distro<2,>=1.7.0 (from openai>=1.0.0->-r scripts/requirements.txt (line 2))
+2026-03-09T00:58:12.5426877Z   Downloading distro-1.9.0-py3-none-any.whl.metadata (6.8 kB)
+2026-03-09T00:58:12.5736925Z Collecting httpx<1,>=0.23.0 (from openai>=1.0.0->-r scripts/requirements.txt (line 2))
+2026-03-09T00:58:12.5891094Z   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+2026-03-09T00:58:12.6936622Z Collecting jiter<1,>=0.10.0 (from openai>=1.0.0->-r scripts/requirements.txt (line 2))
+2026-03-09T00:58:12.7107241Z   Downloading jiter-0.13.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (5.2 kB)
+2026-03-09T00:58:12.8552026Z Collecting pydantic<3,>=1.9.0 (from openai>=1.0.0->-r scripts/requirements.txt (line 2))
+2026-03-09T00:58:12.8709993Z   Downloading pydantic-2.12.5-py3-none-any.whl.metadata (90 kB)
+2026-03-09T00:58:12.9129236Z Collecting sniffio (from openai>=1.0.0->-r scripts/requirements.txt (line 2))
+2026-03-09T00:58:12.9283058Z   Downloading sniffio-1.3.1-py3-none-any.whl.metadata (3.9 kB)
+2026-03-09T00:58:12.9764702Z Collecting tqdm>4 (from openai>=1.0.0->-r scripts/requirements.txt (line 2))
+2026-03-09T00:58:12.9924059Z   Downloading tqdm-4.67.3-py3-none-any.whl.metadata (57 kB)
+2026-03-09T00:58:13.0354547Z Collecting typing-extensions<5,>=4.11 (from openai>=1.0.0->-r scripts/requirements.txt (line 2))
+2026-03-09T00:58:13.0509488Z   Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+2026-03-09T00:58:13.0771774Z Collecting idna>=2.8 (from anyio<5,>=3.5.0->openai>=1.0.0->-r scripts/requirements.txt (line 2))
+2026-03-09T00:58:13.0927101Z   Downloading idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+2026-03-09T00:58:13.1283997Z Collecting certifi (from httpx<1,>=0.23.0->openai>=1.0.0->-r scripts/requirements.txt (line 2))
+2026-03-09T00:58:13.1440158Z   Downloading certifi-2026.2.25-py3-none-any.whl.metadata (2.5 kB)
+2026-03-09T00:58:13.1768405Z Collecting httpcore==1.* (from httpx<1,>=0.23.0->openai>=1.0.0->-r scripts/requirements.txt (line 2))
+2026-03-09T00:58:13.1927336Z   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+2026-03-09T00:58:13.2203940Z Collecting h11>=0.16 (from httpcore==1.*->httpx<1,>=0.23.0->openai>=1.0.0->-r scripts/requirements.txt (line 2))
+2026-03-09T00:58:13.2360514Z   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+2026-03-09T00:58:13.2614392Z Collecting annotated-types>=0.6.0 (from pydantic<3,>=1.9.0->openai>=1.0.0->-r scripts/requirements.txt (line 2))
+2026-03-09T00:58:13.2770090Z   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+2026-03-09T00:58:14.0281759Z Collecting pydantic-core==2.41.5 (from pydantic<3,>=1.9.0->openai>=1.0.0->-r scripts/requirements.txt (line 2))
+2026-03-09T00:58:14.0437204Z   Downloading pydantic_core-2.41.5-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (7.3 kB)
+2026-03-09T00:58:14.0719248Z Collecting typing-inspection>=0.4.2 (from pydantic<3,>=1.9.0->openai>=1.0.0->-r scripts/requirements.txt (line 2))
+2026-03-09T00:58:14.0914652Z   Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+2026-03-09T00:58:14.1171541Z Collecting sgmllib3k (from feedparser>=6.0.0->-r scripts/requirements.txt (line 3))
+2026-03-09T00:58:14.1347381Z   Downloading sgmllib3k-1.0.0.tar.gz (5.8 kB)
+2026-03-09T00:58:14.1415160Z   Installing build dependencies: started
+2026-03-09T00:58:15.1539404Z   Installing build dependencies: finished with status 'done'
+2026-03-09T00:58:15.1545658Z   Getting requirements to build wheel: started
+2026-03-09T00:58:15.5695697Z   Getting requirements to build wheel: finished with status 'done'
+2026-03-09T00:58:15.5705401Z   Preparing metadata (pyproject.toml): started
+2026-03-09T00:58:15.7663074Z   Preparing metadata (pyproject.toml): finished with status 'done'
+2026-03-09T00:58:15.8691468Z Collecting charset_normalizer<4,>=2 (from requests>=2.31.0->-r scripts/requirements.txt (line 5))
+2026-03-09T00:58:15.8879320Z   Downloading charset_normalizer-3.4.5-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (39 kB)
+2026-03-09T00:58:15.9286027Z Collecting urllib3<3,>=1.21.1 (from requests>=2.31.0->-r scripts/requirements.txt (line 5))
+2026-03-09T00:58:15.9437792Z   Downloading urllib3-2.6.3-py3-none-any.whl.metadata (6.9 kB)
+2026-03-09T00:58:15.9811524Z Collecting pyasn1-modules>=0.2.1 (from google-auth>=2.0.0->-r scripts/requirements.txt (line 6))
+2026-03-09T00:58:15.9962093Z   Downloading pyasn1_modules-0.4.2-py3-none-any.whl.metadata (3.5 kB)
+2026-03-09T00:58:16.2337835Z Collecting cryptography>=38.0.3 (from google-auth>=2.0.0->-r scripts/requirements.txt (line 6))
+2026-03-09T00:58:16.2493788Z   Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (5.7 kB)
+2026-03-09T00:58:16.2801870Z Collecting rsa<5,>=3.1.4 (from google-auth>=2.0.0->-r scripts/requirements.txt (line 6))
+2026-03-09T00:58:16.2962993Z   Downloading rsa-4.9.1-py3-none-any.whl.metadata (5.6 kB)
+2026-03-09T00:58:16.3335128Z Collecting pyasn1>=0.1.3 (from rsa<5,>=3.1.4->google-auth>=2.0.0->-r scripts/requirements.txt (line 6))
+2026-03-09T00:58:16.3488166Z   Downloading pyasn1-0.6.2-py3-none-any.whl.metadata (8.4 kB)
+2026-03-09T00:58:16.3771024Z Collecting httplib2<1.0.0,>=0.19.0 (from google-api-python-client>=2.0.0->-r scripts/requirements.txt (line 7))
+2026-03-09T00:58:16.3925241Z   Downloading httplib2-0.31.2-py3-none-any.whl.metadata (2.2 kB)
+2026-03-09T00:58:16.4247414Z Collecting google-auth-httplib2<1.0.0,>=0.2.0 (from google-api-python-client>=2.0.0->-r scripts/requirements.txt (line 7))
+2026-03-09T00:58:16.4399204Z   Downloading google_auth_httplib2-0.3.0-py3-none-any.whl.metadata (3.1 kB)
+2026-03-09T00:58:16.4891445Z Collecting google-api-core!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0,<3.0.0,>=1.31.5 (from google-api-python-client>=2.0.0->-r scripts/requirements.txt (line 7))
+2026-03-09T00:58:16.5051200Z   Downloading google_api_core-2.30.0-py3-none-any.whl.metadata (3.1 kB)
+2026-03-09T00:58:16.5310879Z Collecting uritemplate<5,>=3.0.1 (from google-api-python-client>=2.0.0->-r scripts/requirements.txt (line 7))
+2026-03-09T00:58:16.5469270Z   Downloading uritemplate-4.2.0-py3-none-any.whl.metadata (2.6 kB)
+2026-03-09T00:58:16.5771796Z Collecting googleapis-common-protos<2.0.0,>=1.56.3 (from google-api-core!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0,<3.0.0,>=1.31.5->google-api-python-client>=2.0.0->-r scripts/requirements.txt (line 7))
+2026-03-09T00:58:16.5927268Z   Downloading googleapis_common_protos-1.73.0-py3-none-any.whl.metadata (9.4 kB)
+2026-03-09T00:58:16.7588843Z Collecting protobuf<7.0.0,>=4.25.8 (from google-api-core!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0,<3.0.0,>=1.31.5->google-api-python-client>=2.0.0->-r scripts/requirements.txt (line 7))
+2026-03-09T00:58:16.7743674Z   Downloading protobuf-6.33.5-cp39-abi3-manylinux2014_x86_64.whl.metadata (593 bytes)
+2026-03-09T00:58:16.8039673Z Collecting proto-plus<2.0.0,>=1.22.3 (from google-api-core!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0,<3.0.0,>=1.31.5->google-api-python-client>=2.0.0->-r scripts/requirements.txt (line 7))
+2026-03-09T00:58:16.8195290Z   Downloading proto_plus-1.27.1-py3-none-any.whl.metadata (2.2 kB)
+2026-03-09T00:58:16.8736854Z Collecting pyparsing<4,>=3.1 (from httplib2<1.0.0,>=0.19.0->google-api-python-client>=2.0.0->-r scripts/requirements.txt (line 7))
+2026-03-09T00:58:16.8890325Z   Downloading pyparsing-3.3.2-py3-none-any.whl.metadata (5.8 kB)
+2026-03-09T00:58:17.0193418Z Collecting cffi>=2.0.0 (from cryptography>=38.0.3->google-auth>=2.0.0->-r scripts/requirements.txt (line 6))
+2026-03-09T00:58:17.0350099Z   Downloading cffi-2.0.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.6 kB)
+2026-03-09T00:58:17.0600322Z Collecting pycparser (from cffi>=2.0.0->cryptography>=38.0.3->google-auth>=2.0.0->-r scripts/requirements.txt (line 6))
+2026-03-09T00:58:17.0868764Z   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+2026-03-09T00:58:17.1141060Z Downloading yt_dlp-2026.3.3-py3-none-any.whl (3.3 MB)
+2026-03-09T00:58:17.4265003Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.3/3.3 MB 11.5 MB/s  0:00:00
+2026-03-09T00:58:17.4424886Z Downloading openai-2.26.0-py3-none-any.whl (1.1 MB)
+2026-03-09T00:58:17.5058172Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.1/1.1 MB 18.6 MB/s  0:00:00
+2026-03-09T00:58:17.5217443Z Downloading anyio-4.12.1-py3-none-any.whl (113 kB)
+2026-03-09T00:58:17.5427918Z Downloading distro-1.9.0-py3-none-any.whl (20 kB)
+2026-03-09T00:58:17.5608414Z Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+2026-03-09T00:58:17.5797702Z Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+2026-03-09T00:58:17.5999078Z Downloading jiter-0.13.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (360 kB)
+2026-03-09T00:58:17.6321112Z Downloading pydantic-2.12.5-py3-none-any.whl (463 kB)
+2026-03-09T00:58:17.6676963Z Downloading pydantic_core-2.41.5-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.1 MB)
+2026-03-09T00:58:17.7466220Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 25.9 MB/s  0:00:00
+2026-03-09T00:58:17.7621697Z Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+2026-03-09T00:58:17.7797910Z Downloading feedparser-6.0.12-py3-none-any.whl (81 kB)
+2026-03-09T00:58:17.7983055Z Downloading python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+2026-03-09T00:58:17.8157688Z Downloading requests-2.32.5-py3-none-any.whl (64 kB)
+2026-03-09T00:58:17.8340459Z Downloading charset_normalizer-3.4.5-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (196 kB)
+2026-03-09T00:58:17.8556462Z Downloading idna-3.11-py3-none-any.whl (71 kB)
+2026-03-09T00:58:17.8738347Z Downloading urllib3-2.6.3-py3-none-any.whl (131 kB)
+2026-03-09T00:58:17.8933991Z Downloading google_auth-2.49.0-py3-none-any.whl (240 kB)
+2026-03-09T00:58:17.9162293Z Downloading rsa-4.9.1-py3-none-any.whl (34 kB)
+2026-03-09T00:58:17.9344770Z Downloading google_api_python_client-2.192.0-py3-none-any.whl (14.8 MB)
+2026-03-09T00:58:18.2307523Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 14.8/14.8 MB 50.5 MB/s  0:00:00
+2026-03-09T00:58:18.2463347Z Downloading google_api_core-2.30.0-py3-none-any.whl (173 kB)
+2026-03-09T00:58:18.2663181Z Downloading google_auth_httplib2-0.3.0-py3-none-any.whl (9.5 kB)
+2026-03-09T00:58:18.2841767Z Downloading googleapis_common_protos-1.73.0-py3-none-any.whl (297 kB)
+2026-03-09T00:58:18.3043531Z Downloading httplib2-0.31.2-py3-none-any.whl (91 kB)
+2026-03-09T00:58:18.3230299Z Downloading proto_plus-1.27.1-py3-none-any.whl (50 kB)
+2026-03-09T00:58:18.3408553Z Downloading protobuf-6.33.5-cp39-abi3-manylinux2014_x86_64.whl (323 kB)
+2026-03-09T00:58:18.3627643Z Downloading pyparsing-3.3.2-py3-none-any.whl (122 kB)
+2026-03-09T00:58:18.3805340Z Downloading uritemplate-4.2.0-py3-none-any.whl (11 kB)
+2026-03-09T00:58:18.4004034Z Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+2026-03-09T00:58:18.4163115Z Downloading certifi-2026.2.25-py3-none-any.whl (153 kB)
+2026-03-09T00:58:18.4352278Z Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_x86_64.whl (4.5 MB)
+2026-03-09T00:58:18.4929447Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 77.1 MB/s  0:00:00
+2026-03-09T00:58:18.5087790Z Downloading cffi-2.0.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (219 kB)
+2026-03-09T00:58:18.5282836Z Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+2026-03-09T00:58:18.5503044Z Downloading pyasn1-0.6.2-py3-none-any.whl (83 kB)
+2026-03-09T00:58:18.5704094Z Downloading pyasn1_modules-0.4.2-py3-none-any.whl (181 kB)
+2026-03-09T00:58:18.5896104Z Downloading tqdm-4.67.3-py3-none-any.whl (78 kB)
+2026-03-09T00:58:18.6080917Z Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+2026-03-09T00:58:18.6262926Z Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+2026-03-09T00:58:18.6442790Z Downloading sniffio-1.3.1-py3-none-any.whl (10 kB)
+2026-03-09T00:58:18.7108543Z Building wheels for collected packages: sgmllib3k
+2026-03-09T00:58:18.7116813Z   Building wheel for sgmllib3k (pyproject.toml): started
+2026-03-09T00:58:18.9327245Z   Building wheel for sgmllib3k (pyproject.toml): finished with status 'done'
+2026-03-09T00:58:18.9334549Z   Created wheel for sgmllib3k: filename=sgmllib3k-1.0.0-py3-none-any.whl size=6091 sha256=5da17670dbdf6a9a36ef917482d4b065ea7ebd9bc11a41628a6e2ca0aafc03b5
+2026-03-09T00:58:18.9337356Z   Stored in directory: /home/runner/.cache/pip/wheels/03/f5/1a/23761066dac1d0e8e683e5fdb27e12de53209d05a4a37e6246
+2026-03-09T00:58:18.9353110Z Successfully built sgmllib3k
+2026-03-09T00:58:19.0141489Z Installing collected packages: sgmllib3k, yt-dlp, urllib3, uritemplate, typing-extensions, tqdm, sniffio, python-dotenv, pyparsing, pycparser, pyasn1, protobuf, jiter, idna, h11, feedparser, distro, charset_normalizer, certifi, annotated-types, typing-inspection, rsa, requests, pydantic-core, pyasn1-modules, proto-plus, httplib2, httpcore, googleapis-common-protos, cffi, anyio, pydantic, httpx, cryptography, openai, google-auth, google-auth-httplib2, google-api-core, google-api-python-client
+2026-03-09T00:58:24.3740523Z 
+2026-03-09T00:58:24.3780880Z Successfully installed annotated-types-0.7.0 anyio-4.12.1 certifi-2026.2.25 cffi-2.0.0 charset_normalizer-3.4.5 cryptography-46.0.5 distro-1.9.0 feedparser-6.0.12 google-api-core-2.30.0 google-api-python-client-2.192.0 google-auth-2.49.0 google-auth-httplib2-0.3.0 googleapis-common-protos-1.73.0 h11-0.16.0 httpcore-1.0.9 httplib2-0.31.2 httpx-0.28.1 idna-3.11 jiter-0.13.0 openai-2.26.0 proto-plus-1.27.1 protobuf-6.33.5 pyasn1-0.6.2 pyasn1-modules-0.4.2 pycparser-3.0 pydantic-2.12.5 pydantic-core-2.41.5 pyparsing-3.3.2 python-dotenv-1.2.2 requests-2.32.5 rsa-4.9.1 sgmllib3k-1.0.0 sniffio-1.3.1 tqdm-4.67.3 typing-extensions-4.15.0 typing-inspection-0.4.2 uritemplate-4.2.0 urllib3-2.6.3 yt-dlp-2026.3.3
+2026-03-09T00:58:24.8922574Z ##[group]Run cd scripts/dify_sync && python3 fetch_tweets.py
+2026-03-09T00:58:24.8923134Z [36;1mcd scripts/dify_sync && python3 fetch_tweets.py[0m
+2026-03-09T00:58:24.8975678Z shell: /usr/bin/bash -e ***0***
+2026-03-09T00:58:24.8976174Z env:
+2026-03-09T00:58:24.8977106Z   OPENAI_API_KEY: ***
+2026-03-09T00:58:24.8977469Z   VECTOR_STORE_ID: ***
+2026-03-09T00:58:24.8978151Z   X_BEARER_TOKEN: ***
+2026-03-09T00:58:24.8987882Z   GOOGLE_SERVICE_ACCOUNT_KEY: ***
+
+2026-03-09T00:58:24.8988370Z   SHEET_ID_MACRO: ***
+2026-03-09T00:58:24.8988759Z   SHEET_ID_POSITIONS: ***
+2026-03-09T00:58:24.8989163Z   SHEET_ID_DATASOURCES: ***
+2026-03-09T00:58:24.8989556Z   SHEET_ID_BETA: ***
+2026-03-09T00:58:24.8989918Z   SHEET_ID_COMMUNITY: ***
+2026-03-09T00:58:24.8990290Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.12/x64
+2026-03-09T00:58:24.8990801Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.12/x64/lib/pkgconfig
+2026-03-09T00:58:24.8991358Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.12/x64
+2026-03-09T00:58:24.8991817Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.12/x64
+2026-03-09T00:58:24.8992274Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.12/x64
+2026-03-09T00:58:24.8992740Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.12/x64/lib
+2026-03-09T00:58:24.8993139Z ##[endgroup]
+2026-03-09T00:58:25.0334391Z Fetching tweets from @TJ_Research...
+2026-03-09T00:58:25.2000671Z Error: X API usage limit (402). Try again later.
+2026-03-09T00:58:25.2190150Z ##[error]Process completed with exit code 1.
+2026-03-09T00:58:25.2242701Z ##[group]Run cd scripts/dify_sync && python3 fetch_sheets.py
+2026-03-09T00:58:25.2243244Z [36;1mcd scripts/dify_sync && python3 fetch_sheets.py[0m
+2026-03-09T00:58:25.2295001Z shell: /usr/bin/bash -e ***0***
+2026-03-09T00:58:25.2295331Z env:
+2026-03-09T00:58:25.2296527Z   OPENAI_API_KEY: ***
+2026-03-09T00:58:25.2296885Z   VECTOR_STORE_ID: ***
+2026-03-09T00:58:25.2297556Z   X_BEARER_TOKEN: ***
+2026-03-09T00:58:25.2307493Z   GOOGLE_SERVICE_ACCOUNT_KEY: ***
+
+2026-03-09T00:58:25.2307929Z   SHEET_ID_MACRO: ***
+2026-03-09T00:58:25.2308310Z   SHEET_ID_POSITIONS: ***
+2026-03-09T00:58:25.2308715Z   SHEET_ID_DATASOURCES: ***
+2026-03-09T00:58:25.2309103Z   SHEET_ID_BETA: ***
+2026-03-09T00:58:25.2309472Z   SHEET_ID_COMMUNITY: ***
+2026-03-09T00:58:25.2309837Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.12/x64
+2026-03-09T00:58:25.2310363Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.12/x64/lib/pkgconfig
+2026-03-09T00:58:25.2310915Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.12/x64
+2026-03-09T00:58:25.2311549Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.12/x64
+2026-03-09T00:58:25.2312009Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.12/x64
+2026-03-09T00:58:25.2312466Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.12/x64/lib
+2026-03-09T00:58:25.2312856Z ##[endgroup]
+2026-03-09T00:58:26.1873650Z   Fetching: 投資talk君-總經公告 (macro-announcements)...
+2026-03-09T00:58:28.2484800Z   Saved: macro-announcements.json (1487 rows)
+2026-03-09T00:58:28.2487427Z   Fetching: 投資Talk君-持倉績效 ytd (positions-ytd)...
+2026-03-09T00:58:29.1260886Z   Saved: positions-ytd.json (14 rows)
+2026-03-09T00:58:29.4303002Z   Fetching: 投資talk君-資料來源 (data-sources)...
+2026-03-09T00:58:29.4304258Z   Saved: data-sources.json (43 rows)
+2026-03-09T00:58:29.4306199Z   Fetching: 投資talk君-持倉Beta (portfolio-beta)...
+2026-03-09T00:58:30.0126235Z   Saved: portfolio-beta.json (1 rows)
+2026-03-09T00:58:30.0127987Z   Fetching: 爬蟲-投資talk君2025文章 (community-posts)...
+2026-03-09T00:58:30.5241260Z   Saved: community-posts.json (92 rows)
+2026-03-09T00:58:30.5241753Z Fetched 5 sheets (0 errors)
+2026-03-09T00:58:30.5798330Z ##[group]Run cd scripts/dify_sync && python3 sync_vector_store.py
+2026-03-09T00:58:30.5798921Z [36;1mcd scripts/dify_sync && python3 sync_vector_store.py[0m
+2026-03-09T00:58:30.5849208Z shell: /usr/bin/bash -e ***0***
+2026-03-09T00:58:30.5849549Z env:
+2026-03-09T00:58:30.5850478Z   OPENAI_API_KEY: ***
+2026-03-09T00:58:30.5850844Z   VECTOR_STORE_ID: ***
+2026-03-09T00:58:30.5851520Z   X_BEARER_TOKEN: ***
+2026-03-09T00:58:30.5861264Z   GOOGLE_SERVICE_ACCOUNT_KEY: ***
+
+2026-03-09T00:58:30.5861689Z   SHEET_ID_MACRO: ***
+2026-03-09T00:58:30.5862095Z   SHEET_ID_POSITIONS: ***
+2026-03-09T00:58:30.5862501Z   SHEET_ID_DATASOURCES: ***
+2026-03-09T00:58:30.5862884Z   SHEET_ID_BETA: ***
+2026-03-09T00:58:30.5863249Z   SHEET_ID_COMMUNITY: ***
+2026-03-09T00:58:30.5863599Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.12/x64
+2026-03-09T00:58:30.5864107Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.12/x64/lib/pkgconfig
+2026-03-09T00:58:30.5864667Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.12/x64
+2026-03-09T00:58:30.5865116Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.12/x64
+2026-03-09T00:58:30.5865568Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.12/x64
+2026-03-09T00:58:30.5866235Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.12/x64/lib
+2026-03-09T00:58:30.5866623Z ##[endgroup]
+2026-03-09T00:58:31.2285441Z OPENAI_API_KEY set (length=164)
+2026-03-09T00:58:31.2286523Z VECTOR_STORE_ID=***
+2026-03-09T00:58:32.0824359Z Using existing vector store: ***
+2026-03-09T00:58:32.0824843Z Converting sources to Markdown...
+2026-03-09T00:58:32.0838882Z   YouTube summaries: 15 files
+2026-03-09T00:58:32.0849578Z   Tweets: 2 files
+2026-03-09T00:58:32.0887077Z   Google Sheets: 5 files
+2026-03-09T00:58:32.0887635Z   App guide: 1 files
+2026-03-09T00:58:32.0888160Z Listing vector store files...
+2026-03-09T00:58:36.2029143Z   23 files in vector store
+2026-03-09T00:58:36.2029609Z 
+2026-03-09T00:58:36.2029803Z Sync plan:
+2026-03-09T00:58:36.2030247Z   Upload: 23 files
+2026-03-09T00:58:36.2030720Z   Delete: 23 files
+2026-03-09T00:58:36.2031216Z   Deleting: app-guide_txqe89ht.md
+2026-03-09T00:58:37.0986780Z   Deleting: sheet-positions-ytd-latest_9m0ipqjh.md
+2026-03-09T00:58:37.9578390Z   Deleting: sheet-portfolio-beta-latest_yurhywqa.md
+2026-03-09T00:58:38.9378985Z   Deleting: sheet-macro-announcements-latest_zjdipyh3.md
+2026-03-09T00:58:39.7216610Z   Deleting: sheet-data-sources-latest__xutcmjy.md
+2026-03-09T00:58:40.3764529Z   Deleting: sheet-community-posts-latest_0giyq4tw.md
+2026-03-09T00:58:40.9954416Z   Deleting: tweets-2026-W10_k3fhzt6r.md
+2026-03-09T00:58:41.5957621Z   Deleting: tweets-2026-W09_kr4blhw3.md
+2026-03-09T00:58:42.2411159Z   Deleting: video-2026-03-03-0226_05j4jpr7.md
+2026-03-09T00:58:42.9312720Z   Deleting: video-2026-03-02-SOu7F_546O4_6vkl1_41.md
+2026-03-09T00:58:43.5850148Z   Deleting: video-2026-02-27-_g0OkpUdPjI__x6w891z.md
+2026-03-09T00:58:44.2077721Z   Deleting: video-2026-02-25-5fJXsu5vVDA_5kh9757l.md
+2026-03-09T00:58:44.9011645Z   Deleting: video-2026-02-24-0110_free_final_bp3owmtl.md
+2026-03-09T00:58:45.6679422Z   Deleting: video-2026-02-22-fHCZCA5oztM_9q7b6p90.md
+2026-03-09T00:58:46.4887704Z   Deleting: video-2026-02-20-iEVZ9gDKta0_lqpnw107.md
+2026-03-09T00:58:47.1003922Z   Deleting: video-2026-02-18-5Xvsubl_Tbs_yq1nyc9a.md
+2026-03-09T00:58:47.7377513Z   Deleting: video-2026-02-16-INA1z-9Hezw_q9c7kdv3.md
+2026-03-09T00:58:48.3609302Z   Deleting: video-2026-02-14-mHuRFwVhgDE_idpck_4b.md
+2026-03-09T00:58:48.9933890Z   Deleting: video-2026-02-13-4hOl4i0sQWk_x6ib3e9m.md
+2026-03-09T00:58:49.6584624Z   Deleting: video-2026-02-11-XKgWzUWnoa8_7vfybaaa.md
+2026-03-09T00:58:50.2549836Z   Deleting: video-2026-02-09-qpewTQQtVNw_x2wj8g_j.md
+2026-03-09T00:58:50.9254967Z   Deleting: video-2026-02-04-C0VjlrqzaAU_r4a5lpv4.md
+2026-03-09T00:58:51.5681168Z   Deleting: video-2026-02-02-bYf0rXG8nX0_2ecd82lf.md
+2026-03-09T00:58:52.1569497Z   Uploading: video-2026-02-02-bYf0rXG8nX0.md (new)
+2026-03-09T00:58:58.7280765Z   Uploading: video-2026-02-04-C0VjlrqzaAU.md (new)
+2026-03-09T00:59:05.5342795Z   Uploading: video-2026-02-09-qpewTQQtVNw.md (new)
+2026-03-09T00:59:12.2826979Z   Uploading: video-2026-02-11-XKgWzUWnoa8.md (new)
+2026-03-09T00:59:19.2001430Z   Uploading: video-2026-02-13-4hOl4i0sQWk.md (new)
+2026-03-09T00:59:24.7277055Z   Uploading: video-2026-02-14-mHuRFwVhgDE.md (new)
+2026-03-09T00:59:39.3986419Z   Uploading: video-2026-02-16-INA1z-9Hezw.md (new)
+2026-03-09T00:59:46.4338371Z   Uploading: video-2026-02-18-5Xvsubl_Tbs.md (new)
+2026-03-09T00:59:54.4951420Z   Uploading: video-2026-02-20-iEVZ9gDKta0.md (new)
+2026-03-09T01:00:11.6738148Z   Uploading: video-2026-02-22-fHCZCA5oztM.md (new)
+2026-03-09T01:00:17.2134502Z   Uploading: video-2026-02-24-0110_free_final.md (new)
+2026-03-09T01:00:24.0236977Z   Uploading: video-2026-02-25-5fJXsu5vVDA.md (new)
+2026-03-09T01:00:32.1304906Z   Uploading: video-2026-02-27-_g0OkpUdPjI.md (new)
+2026-03-09T01:01:41.9398483Z   Uploading: video-2026-03-02-SOu7F_546O4.md (new)
+2026-03-09T01:02:00.0620070Z   Uploading: video-2026-03-03-0226.md (new)
+2026-03-09T01:02:17.3987949Z   Uploading: tweets-2026-W09.md (new)
+2026-03-09T01:02:22.8816658Z   Uploading: tweets-2026-W10.md (new)
+2026-03-09T01:02:30.7924691Z   Uploading: sheet-community-posts-latest.md (new)
+2026-03-09T01:02:44.0063359Z   Uploading: sheet-data-sources-latest.md (new)
+2026-03-09T01:02:49.3298890Z   Uploading: sheet-macro-announcements-latest.md (new)
+2026-03-09T01:02:56.1937251Z   Uploading: sheet-portfolio-beta-latest.md (new)
+2026-03-09T01:03:03.0857943Z   Uploading: sheet-positions-ytd-latest.md (new)
+2026-03-09T01:03:21.9340916Z   Uploading: app-guide.md (new)
+2026-03-09T01:03:28.6184593Z 
+2026-03-09T01:03:28.6185027Z Sync complete: 23 uploaded, 23 deleted
+2026-03-09T01:03:28.6949475Z ##[group]Run git config user.name "github-actions[bot]"
+2026-03-09T01:03:28.6950133Z [36;1mgit config user.name "github-actions[bot]"[0m
+2026-03-09T01:03:28.6950646Z [36;1mgit config user.email "github-actions[bot]@users.noreply.github.com"[0m
+2026-03-09T01:03:28.6951116Z [36;1mgit add data/[0m
+2026-03-09T01:03:28.6951636Z [36;1mgit diff --staged --quiet || git commit -m "chore: sync knowledge base data $(date +%Y-%m-%d)"[0m
+2026-03-09T01:03:28.6952169Z [36;1mgit push[0m
+2026-03-09T01:03:28.7002233Z shell: /usr/bin/bash -e ***0***
+2026-03-09T01:03:28.7002558Z env:
+2026-03-09T01:03:28.7003465Z   OPENAI_API_KEY: ***
+2026-03-09T01:03:28.7003806Z   VECTOR_STORE_ID: ***
+2026-03-09T01:03:28.7004467Z   X_BEARER_TOKEN: ***
+2026-03-09T01:03:28.7014217Z   GOOGLE_SERVICE_ACCOUNT_KEY: ***
+
+2026-03-09T01:03:28.7014652Z   SHEET_ID_MACRO: ***
+2026-03-09T01:03:28.7015035Z   SHEET_ID_POSITIONS: ***
+2026-03-09T01:03:28.7015438Z   SHEET_ID_DATASOURCES: ***
+2026-03-09T01:03:28.7016035Z   SHEET_ID_BETA: ***
+2026-03-09T01:03:28.7016394Z   SHEET_ID_COMMUNITY: ***
+2026-03-09T01:03:28.7016750Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.12/x64
+2026-03-09T01:03:28.7017247Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.12/x64/lib/pkgconfig
+2026-03-09T01:03:28.7017924Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.12/x64
+2026-03-09T01:03:28.7018374Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.12/x64
+2026-03-09T01:03:28.7018807Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.12/x64
+2026-03-09T01:03:28.7019257Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.12/x64/lib
+2026-03-09T01:03:28.7019635Z ##[endgroup]
+2026-03-09T01:03:28.7263509Z [main c6f3b1d] chore: sync knowledge base data 2026-03-09
+2026-03-09T01:03:28.7264295Z  1 file changed, 1 insertion(+), 1 deletion(-)
+2026-03-09T01:03:29.2579697Z To https://github.com/cyt9999/talk-library
+2026-03-09T01:03:29.2580427Z    2f8fcf4..c6f3b1d  main -> main
+2026-03-09T01:03:29.2703216Z Post job cleanup.
+2026-03-09T01:03:29.4448354Z Post job cleanup.
+2026-03-09T01:03:29.5406415Z [command]/usr/bin/git version
+2026-03-09T01:03:29.5443085Z git version 2.53.0
+2026-03-09T01:03:29.5491762Z Temporarily overriding HOME='/home/runner/work/_temp/1d763091-3119-402e-aa29-b97450321258' before making global git config changes
+2026-03-09T01:03:29.5493091Z Adding repository directory to the temporary git global config as a safe directory
+2026-03-09T01:03:29.5497354Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/talk-library/talk-library
+2026-03-09T01:03:29.5532412Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-03-09T01:03:29.5566790Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-03-09T01:03:29.5811643Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-03-09T01:03:29.5833188Z http.https://github.com/.extraheader
+2026-03-09T01:03:29.5845869Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-03-09T01:03:29.5877622Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-03-09T01:03:29.6118268Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-03-09T01:03:29.6150359Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-03-09T01:03:29.6497451Z Cleaning up orphan processes
