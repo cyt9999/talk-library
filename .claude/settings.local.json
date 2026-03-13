@@ -81,7 +81,7 @@
       "Bash(claude mcp list 2>&1)",
       "Bash(brew install uv 2>&1 | tail -5)",
       "Bash(which uvx && uvx --version)",
-      "Bash(claude mcp add mcp-atlassian -- uvx mcp-atlassian --jira-url \"https://cmoneyteam.atlassian.net\" --jira-username \"chi_tasi@cmoney.com.tw\" --jira-api-token \"ATATT3xFfGF0Tv046sPL7x6yN8JWrx8WcUHXl4SqhsIL_rKWlRLi1JM1aVUMTer0MuTrYvqu-KRrWokJXjK-eAvNsBghOoyCgjhQDW731RAHqSkziBQe1VoOiKXZh-Xm6lSp6P71Uq_CYZezobnje-CsRYckyaNkoiDqOF-fOgQdaQ_fnlBdPs4=0FBF226B\" 2>&1)",
+      "Bash(claude mcp add mcp-atlassian:*)",
       "mcp__authorcontentsource__columnist_get_group_articles",
       "mcp__authorcontentsource__columnist_get_chatroom_articles",
       "mcp__atlassian__search",
@@ -112,7 +112,10 @@
       "Bash(find /Users/a01-0218-0042/Documents/TALK君/talk_library -name \"*render*\" -o -name \"*railway*\" 2>/dev/null | head -20)",
       "Bash(grep -r \"talk-library\" /Users/a01-0218-0042/Documents/TALK君/talk_library --include=\"*.py\" --include=\"*.js\" --include=\"*.html\" --include=\"*.md\" --include=\"*.yml\" --include=\"*.yaml\" --include=\"*.toml\" 2>/dev/null | grep -E \"\\(up\\\\.railway|onrender|api.*url\\)\" | head -20)",
       "Bash(grep -r \"meta.*name=\" /Users/a01-0218-0042/Documents/TALK君/talk_library/site --include=\"*.html\" 2>/dev/null | grep -E \"\\(api|chat|url\\)\" | head -20)",
-      "Bash(for i in 1 2 3; do curl -s -o /dev/null -w \"Request $i: HTTP %{http_code} \\(%{time_total}s\\)\\\\n\" https://talk-library.up.railway.app/health; done)"
+      "Bash(for i in 1 2 3; do curl -s -o /dev/null -w \"Request $i: HTTP %{http_code} \\(%{time_total}s\\)\\\\n\" https://talk-library.up.railway.app/health; done)",
+      "Bash(curl -s https://talk-library.up.railway.app/api/videos | python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(f'Videos count: {len\\(d\\)}, Size: {sys.stdin.seek\\(0,2\\) if hasattr\\(sys.stdin,\\\\\"seek\\\\\"\\) else \\\\\"?\\\\\"}'\\)\" 2>/dev/null || curl -s https://talk-library.up.railway.app/api/videos | wc -c)",
+      "Bash(ls /Users/a01-0218-0042/.claude/projects/-Users-a01-0218-0042-Documents-TALK--talk-library/*.json 2>/dev/null)",
+      "Bash(grep -rl \"mcp-atlassian\" /Users/a01-0218-0042/.claude/ --include=\"*.json\" 2>/dev/null | grep -v jsonl | head -10)"
     ]
   }
 }

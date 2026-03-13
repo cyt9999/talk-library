@@ -8,7 +8,7 @@ import sys
 import time
 from collections import defaultdict
 from datetime import date
-from http.server import HTTPServer, SimpleHTTPRequestHandler
+from http.server import HTTPServer, SimpleHTTPRequestHandler, ThreadingHTTPServer
 
 import requests as http_requests
 
@@ -402,7 +402,7 @@ def main():
 
     port = int(os.getenv("PORT", sys.argv[1] if len(sys.argv) > 1 else 8080))
     host = "0.0.0.0"
-    server = HTTPServer((host, port), Handler)
+    server = ThreadingHTTPServer((host, port), Handler)
     print(f"投資Talk君 AI — API Server")
     print(f"Listening on {host}:{port}")
     try:
