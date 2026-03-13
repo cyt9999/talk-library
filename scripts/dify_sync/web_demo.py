@@ -221,58 +221,45 @@ class Handler(SimpleHTTPRequestHandler):
             self.wfile.write(b'{"error":"index.json not found"}')
 
     def _serve_summary(self):
-        """Serve a video summary by querying Vector Store."""
+        """Serve a video summary from static JSON files in data/summaries/."""
         from urllib.parse import urlparse, parse_qs
         params = parse_qs(urlparse(self.path).query)
         video_id = params.get("id", [None])[0]
         date = params.get("date", [None])[0]
 
         if not video_id:
-            self.send_response(400)
-            self.send_header("Content-Type", "application/json")
-            self._send_cors_headers()
-            self.end_headers()
-            self.wfile.write(b'{"error":"missing id param"}')
+            self._send_json(400, {"error": "missing id param"})
             return
 
+        summaries_dir = os.path.join(os.path.dirname(__file__), "data", "summaries")
+
+        # Try exact match: {date}-{id}.json
+        if date:
+            exact_path = os.path.join(summaries_dir, f"{date}-{video_id}.json")
+            if os.path.isfile(exact_path):
+                self._serve_file_json(exact_path)
+                return
+
+        # Fallback: search for any file ending with -{id}.json
         try:
-            prompt = (
-                f"Return the COMPLETE content of the video summary for "
-                f"video ID {video_id} dated {date or 'unknown'}. "
-                f"Return ALL key points, tickers, and the full paragraph summary. "
-                f"Do not summarize or shorten."
-            )
-            response = client.responses.create(
-                model="gpt-4o-mini",
-                tools=[{"type": "file_search",
-                        "vector_store_ids": [VECTOR_STORE_ID]}],
-                input=prompt
-            )
+            for fname in os.listdir(summaries_dir):
+                if fname.endswith(f"-{video_id}.json"):
+                    self._serve_file_json(os.path.join(summaries_dir, fname))
+                    return
+        except FileNotFoundError:
+            pass
 
-            answer = ""
-            for item in response.output:
-                if item.type == "message":
-                    for block in item.content:
-                        if block.type == "output_text":
-                            answer = block.text
+        self._send_json(404, {"error": "summary not found", "id": video_id})
 
-            self.send_response(200)
-            self.send_header("Content-Type", "application/json; charset=utf-8")
-            self._send_cors_headers()
-            self.end_headers()
-            self.wfile.write(json.dumps({
-                "id": video_id,
-                "date": date,
-                "summary": answer
-            }, ensure_ascii=False).encode("utf-8"))
-        except Exception as e:
-            self.send_response(500)
-            self.send_header("Content-Type", "application/json; charset=utf-8")
-            self._send_cors_headers()
-            self.end_headers()
-            self.wfile.write(json.dumps({
-                "error": str(e)
-            }, ensure_ascii=False).encode("utf-8"))
+    def _serve_file_json(self, path):
+        """Read and serve a JSON file."""
+        with open(path, "r", encoding="utf-8") as f:
+            data = f.read()
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self._send_cors_headers()
+        self.end_headers()
+        self.wfile.write(data.encode("utf-8"))
 
     def do_POST(self):
         if self.path == "/api/ask":

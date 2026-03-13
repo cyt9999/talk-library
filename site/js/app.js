@@ -189,20 +189,6 @@ var TalkApp = (function () {
       .then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.json();
-      })
-      .then(function (data) {
-        // Normalize: API returns {id, date, summary} as text
-        return {
-          id: data.id,
-          videoId: data.id,
-          publishedAt: data.date,
-          title: '',
-          summary: {
-            'zh-Hant': { paragraph: data.summary, keyPoints: [], tags: [] },
-            'zh-Hans': { paragraph: data.summary, keyPoints: [], tags: [] }
-          },
-          tickers: []
-        };
       });
   }
 
